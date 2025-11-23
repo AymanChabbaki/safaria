@@ -1,0 +1,465 @@
+{
+  "info": {
+    "name": "SAFARIA API",
+    "description": "Complete API collection for SAFARIA platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        }
+      }
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newadmin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Verify Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/verify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "verify"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Artisans",
+      "item": [
+        {
+          "name": "Get All Artisans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/artisans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "artisans"]
+            }
+          }
+        },
+        {
+          "name": "Get Single Artisan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/artisans/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "artisans", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Artisan",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Test Artisan",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Test description for artisan",
+                  "type": "text"
+                },
+                {
+                  "key": "latitude",
+                  "value": "31.6295",
+                  "type": "text"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-7.9811",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "500",
+                  "type": "text"
+                },
+                {
+                  "key": "main_image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/artisans",
+              "host": ["{{base_url}}"],
+              "path": ["api", "artisans"]
+            }
+          }
+        },
+        {
+          "name": "Update Artisan",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Updated Artisan Name",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "600",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/artisans/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "artisans", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Artisan",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/artisans/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "artisans", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sejours",
+      "item": [
+        {
+          "name": "Get All Sejours",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/sejours",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sejours"]
+            }
+          }
+        },
+        {
+          "name": "Create Sejour",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Test Sejour",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Test sejour description",
+                  "type": "text"
+                },
+                {
+                  "key": "latitude",
+                  "value": "34.0617",
+                  "type": "text"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-4.9777",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "800",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sejours",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sejours"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Caravanes",
+      "item": [
+        {
+          "name": "Get All Caravanes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/caravanes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "caravanes"]
+            }
+          }
+        },
+        {
+          "name": "Create Caravane",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Test Caravane",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Test caravane description",
+                  "type": "text"
+                },
+                {
+                  "key": "latitude",
+                  "value": "31.0801",
+                  "type": "text"
+                },
+                {
+                  "key": "longitude",
+                  "value": "-4.0133",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "2000",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/caravanes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "caravanes"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "item": [
+        {
+          "name": "Create Reservation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_name\": \"Test User\",\n  \"user_phone\": \"+212-600-000000\",\n  \"itemType\": \"artisanat\",\n  \"itemId\": 1,\n  \"reservation_date\": \"2025-12-25\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/reservations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reservations"]
+            }
+          }
+        },
+        {
+          "name": "Get All Reservations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/reservations",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reservations"]
+            }
+          }
+        },
+        {
+          "name": "Update Reservation Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/reservations/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reservations", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "360 Images",
+      "item": [
+        {
+          "name": "Upload 360 Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "itemType",
+                  "value": "artisanat",
+                  "type": "text"
+                },
+                {
+                  "key": "itemId",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/360",
+              "host": ["{{base_url}}"],
+              "path": ["api", "360"]
+            }
+          }
+        },
+        {
+          "name": "Get 360 Images",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/360/artisanat/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "360", "artisanat", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
