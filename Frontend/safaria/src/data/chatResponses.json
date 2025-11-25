@@ -1,0 +1,59 @@
+{
+  "fr": {
+    "greeting": "Bonjour ! Comment puis-je vous aider aujourd'hui ?",
+    "itineraries": {
+      "question": "Comment créer un itinéraire ?",
+      "answer": "Pour créer un itinéraire personnalisé :\n\n1. Explorez la carte interactive pour découvrir nos artisans, séjours et caravanes\n2. Sélectionnez vos destinations préférées\n3. Réservez directement en ligne\n4. Nous vous enverrons un itinéraire détaillé par email\n\nBesoin d'aide ? Contactez-nous : contact@safaria.ma"
+    },
+    "payment": {
+      "question": "Méthodes de paiement",
+      "answer": "Nous acceptons plusieurs modes de paiement :\n\n• Cartes bancaires (Visa, Mastercard)\n• Virement bancaire\n• Paiement à la livraison (pour l'artisanat)\n• PayPal\n\nTous les paiements sont sécurisés et cryptés. Vous recevrez une confirmation par email après chaque transaction."
+    },
+    "cancellation": {
+      "question": "Politique d'annulation",
+      "answer": "Notre politique d'annulation :\n\n• Annulation gratuite jusqu'à 7 jours avant la date prévue\n• Remboursement partiel (50%) entre 3-7 jours avant\n• Pas de remboursement moins de 3 jours avant\n\nPour annuler, connectez-vous à votre compte et accédez à 'Mes Réservations'."
+    },
+    "contact": {
+      "question": "Nous contacter",
+      "answer": "Nous sommes là pour vous aider !\n\nEmail : contact@safaria.ma\nTéléphone : +212 6 00 00 00 00\nAdresse : Marrakech, Maroc\n\nDisponible du lundi au samedi, 9h-18h"
+    }
+  },
+  "en": {
+    "greeting": "Hello! How can I help you today?",
+    "itineraries": {
+      "question": "How to create an itinerary?",
+      "answer": "To create a personalized itinerary:\n\n1. Explore the interactive map to discover our artisans, stays, and caravans\n2. Select your favorite destinations\n3. Book directly online\n4. We'll send you a detailed itinerary by email\n\nNeed help? Contact us: contact@safaria.ma"
+    },
+    "payment": {
+      "question": "Payment Methods",
+      "answer": "We accept several payment methods:\n\n• Credit cards (Visa, Mastercard)\n• Bank transfer\n• Cash on delivery (for handicrafts)\n• PayPal\n\nAll payments are secure and encrypted. You'll receive an email confirmation after each transaction."
+    },
+    "cancellation": {
+      "question": "Cancellation Policy",
+      "answer": "Our cancellation policy:\n\n• Free cancellation up to 7 days before scheduled date\n• Partial refund (50%) between 3-7 days before\n• No refund less than 3 days before\n\nTo cancel, log into your account and go to 'My Reservations'."
+    },
+    "contact": {
+      "question": "Contact Us",
+      "answer": "We're here to help!\n\nEmail: contact@safaria.ma\nPhone: +212 6 00 00 00 00\nAddress: Marrakech, Morocco\n\nAvailable Monday to Saturday, 9am-6pm"
+    }
+  },
+  "ar": {
+    "greeting": "مرحبا! كيف يمكنني مساعدتك اليوم؟",
+    "itineraries": {
+      "question": "كيفية إنشاء مسار رحلة؟",
+      "answer": "لإنشاء مسار رحلة مخصص:\n\n1. استكشف الخريطة التفاعلية لاكتشاف حرفيينا وإقاماتنا وقوافلنا\n2. اختر وجهاتك المفضلة\n3. احجز مباشرة عبر الإنترنت\n4. سنرسل لك مساراً تفصيلياً عبر البريد الإلكتروني\n\nتحتاج مساعدة؟ اتصل بنا: contact@safaria.ma"
+    },
+    "payment": {
+      "question": "طرق الدفع",
+      "answer": "نقبل عدة طرق للدفع:\n\n• البطاقات البنكية (فيزا، ماستركارد)\n• التحويل البنكي\n• الدفع عند التسليم (للحرف اليدوية)\n• باي بال\n\nجميع المدفوعات آمنة ومشفرة. ستتلقى تأكيداً عبر البريد الإلكتروني بعد كل معاملة."
+    },
+    "cancellation": {
+      "question": "سياسة الإلغاء",
+      "answer": "سياسة الإلغاء لدينا:\n\n• إلغاء مجاني حتى 7 أيام قبل التاريخ المحدد\n• استرداد جزئي (50٪) بين 3-7 أيام قبل\n• لا يوجد استرداد قبل أقل من 3 أيام\n\nللإلغاء، قم بتسجيل الدخول إلى حسابك وانتقل إلى 'حجوزاتي'."
+    },
+    "contact": {
+      "question": "اتصل بنا",
+      "answer": "نحن هنا لمساعدتك!\n\nالبريد الإلكتروني: contact@safaria.ma\nالهاتف: +212 6 00 00 00 00\nالعنوان: مراكش، المغرب\n\nمتاح من الاثنين إلى السبت، 9 صباحاً - 6 مساءً"
+    }
+  }
+}

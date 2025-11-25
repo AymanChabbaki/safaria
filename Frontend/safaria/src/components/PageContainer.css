@@ -1,0 +1,20 @@
+/**
+ * ============================================================
+ * SAFARIA Platform - Page Container Styles
+ * ============================================================
+ */
+
+.page-container {
+  width: 100%;
+  margin: 0 auto;
+  min-height: calc(100vh - 400px);
+}
+
+/* ============================================================
+ * RESPONSIVE DESIGN
+ * ============================================================ */
+@media screen and (max-width: 768px) {
+  .page-container {
+    padding: 1rem !important;
+  }
+}
