@@ -146,40 +146,47 @@ const mockData = {
 const MapPage = () => {
   const { language } = useAppStore();
   const navigate = useNavigate();
-  const [mapData, setMapData] = useState(mockData); // Use mock data by default
-  const [loading, setLoading] = useState(false);
+  const [mapData, setMapData] = useState({ artisans: [], sejours: [], caravanes: [] });
+  const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [mapCenter, setMapCenter] = useState([31.7917, -7.0926]); // Morocco center (Marrakech)
 
-  // Fetch all data (will fall back to mock data if API fails)
+  // Fetch all data from database (refetch when language changes)
   useEffect(() => {
     const fetchMapData = async () => {
       try {
         setLoading(true);
         const [artisansRes, sejoursRes, caravanesRes] = await Promise.all([
-          api.artisans.getAll(),
-          api.sejours.getAll(),
-          api.caravanes.getAll()
+          api.artisans.getAll(language).catch(() => ({ data: [] })),
+          api.sejours.getAll(language).catch(() => ({ data: [] })),
+          api.caravanes.getAll(language).catch(() => ({ data: [] }))
         ]);
         
-        // Only update if we got data from API
-        if (artisansRes.data?.length || sejoursRes.data?.length || caravanesRes.data?.length) {
-          setMapData({
-            artisans: artisansRes.data || [],
-            sejours: sejoursRes.data || [],
-            caravanes: caravanesRes.data || []
-          });
+        const fetchedData = {
+          artisans: artisansRes.data || [],
+          sejours: sejoursRes.data || [],
+          caravanes: caravanesRes.data || []
+        };
+        
+        // Check if database is empty
+        const totalItems = fetchedData.artisans.length + fetchedData.sejours.length + fetchedData.caravanes.length;
+        
+        if (totalItems === 0) {
+          console.log('Database is empty, using mock data');
+          setMapData(mockData);
+        } else {
+          setMapData(fetchedData);
         }
       } catch (error) {
-        console.error('Error fetching map data, using mock data:', error);
-        // Keep mock data on error
+        console.error('Error fetching map data:', error);
+        setMapData(mockData);
       } finally {
         setLoading(false);
       }
     };
     
     fetchMapData();
-  }, []);
+  }, [language]); // Refetch when language changes
 
   // Filter data based on active filter
   const getFilteredMarkers = () => {
@@ -290,64 +297,52 @@ const MapPage = () => {
                     alt="SAFARIA" 
                     className="h-8 w-auto"
                   />
-                  <span className={`px-2 py-1 text-xs font-bold rounded-full ${
+                  <span className={`px-2 py-1 text-xs font-bold rounded-full flex items-center gap-1 ${
                     marker.type === 'artisan' ? 'bg-red-100 text-red-700' :
                     marker.type === 'sejour' ? 'bg-blue-100 text-blue-700' :
                     'bg-yellow-100 text-yellow-700'
                   }`}>
-                    {marker.type === 'artisan' ? '🎨 Artisan' :
-                     marker.type === 'sejour' ? '🏡 Séjour' :
-                     '🐪 Caravane'}
+                    {marker.type === 'artisan' ? <><Palette className="w-3 h-3" /> Artisan</> :
+                     marker.type === 'sejour' ? <><HomeIcon className="w-3 h-3" /> Séjour</> :
+                     <><Tent className="w-3 h-3" /> Caravane</>}
                   </span>
                 </div>
 
                 {/* Popup Image */}
                 <div className="relative mb-3 rounded-lg overflow-hidden shadow-md">
                   <img 
-                    src={marker.data.image || '/logoSAFARIA.png'}
+                    src={marker.data.main_image ? `http://localhost:5000${marker.data.main_image}` : marker.data.image || '/logoSAFARIA.png'}
                     alt={marker.data.name || marker.data.title}
-                    className="w-full h-40 object-cover"
+                    className="w-full h-32 object-cover"
                     onError={(e) => { e.target.src = '/logoSAFARIA.png'; }}
                   />
-                  <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
-                    <span className="text-xs font-bold text-chefchaouen-600">⭐ 4.8</span>
-                  </div>
                 </div>
                 
                 {/* Popup Title */}
-                <h3 className="font-bold text-lg text-desert-800 mb-2">
+                <h3 className="font-bold text-base text-desert-800 mb-1">
                   {marker.data.name || marker.data.title}
                 </h3>
                 
                 {/* Popup Description */}
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                <p className="text-xs text-gray-600 mb-2 line-clamp-2">
                   {marker.data.description}
                 </p>
                 
-                {/* Price & Location */}
-                <div className="space-y-2 mb-3 bg-sand-50 p-2 rounded-lg">
-                  {marker.data.price && (
-                    <p className="text-base font-bold text-chefchaouen-600 flex items-center justify-between">
-                      <span>Prix:</span>
-                      <span className="text-lg">
-                        {marker.data.price} DH
-                        {marker.type === 'sejour' && <span className="text-xs font-normal">/nuit</span>}
-                        {marker.type === 'caravane' && <span className="text-xs font-normal">/personne</span>}
-                      </span>
-                    </p>
-                  )}
-                  <p className="text-xs text-gray-600 flex items-center">
-                    <MapPin className="w-3 h-3 mr-1" />
-                    {marker.data.region || marker.data.location || 'Maroc'}
+                {/* Price */}
+                {marker.data.price_per_night || marker.data.price_per_person || marker.data.price && (
+                  <p className="text-sm font-bold text-chefchaouen-600 mb-2">
+                    {marker.data.price_per_night || marker.data.price_per_person || marker.data.price} DH
+                    {marker.data.price_per_night && <span className="text-xs font-normal">/nuit</span>}
+                    {marker.data.price_per_person && <span className="text-xs font-normal">/personne</span>}
                   </p>
-                </div>
+                )}
                 
-                {/* CTA Button */}
+                {/* Show More Button */}
                 <button 
                   onClick={() => handleViewDetails(marker.type, marker.data.id)}
-                  className="w-full px-4 py-2.5 bg-gradient-to-r from-chefchaouen-500 to-desert-500 text-white font-bold rounded-lg hover:from-chefchaouen-600 hover:to-desert-600 transition-all transform hover:scale-105 shadow-md"
+                  className="w-full px-4 py-2 bg-gradient-to-r from-chefchaouen-500 to-desert-500 text-white font-semibold rounded-lg hover:from-chefchaouen-600 hover:to-desert-600 transition-all transform hover:scale-105 shadow-md text-sm"
                 >
-                  {t(language, 'map.viewDetails')} →
+                  Show More Details →
                 </button>
               </div>
             </Popup>

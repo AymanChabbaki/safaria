@@ -8,6 +8,29 @@
 
 const { pool } = require('../config/db');
 const { sendSuccess, sendError, sendNotFound } = require('../utils/responseHelper');
+const { generateReceipt, generateReceiptNumber, generateTransactionId } = require('../utils/pdfGenerator');
+const path = require('path');
+const fs = require('fs').promises;
+
+/**
+ * Helper function to normalize itemType values
+ * Converts 'artisan' to 'artisanat' to match database ENUM
+ */
+const normalizeItemType = (itemType) => {
+    if (itemType === 'artisan') return 'artisanat';
+    return itemType; // sejour, caravane remain unchanged
+};
+
+/**
+ * Helper function to get table name from itemType
+ */
+const getTableName = (itemType) => {
+    const normalized = normalizeItemType(itemType);
+    if (normalized === 'artisanat') return 'artisans';
+    if (normalized === 'sejour') return 'sejours';
+    if (normalized === 'caravane') return 'caravanes';
+    return null;
+};
 
 /**
  * @route   POST /api/reservations
@@ -23,17 +46,18 @@ const createReservation = async (req, res) => {
             return sendError(res, 'All fields are required: user_name, user_phone, itemType, itemId, reservation_date', 400);
         }
         
-        // Validate itemType
+        // Normalize and validate itemType
+        const normalizedItemType = normalizeItemType(itemType);
         const validItemTypes = ['artisanat', 'sejour', 'caravane'];
-        if (!validItemTypes.includes(itemType)) {
+        if (!validItemTypes.includes(normalizedItemType)) {
             return sendError(res, 'Invalid itemType. Must be: artisanat, sejour, or caravane', 400);
         }
         
         // Verify that the item exists in the corresponding table
-        let tableName;
-        if (itemType === 'artisanat') tableName = 'artisans';
-        else if (itemType === 'sejour') tableName = 'sejours';
-        else if (itemType === 'caravane') tableName = 'caravanes';
+        const tableName = getTableName(normalizedItemType);
+        if (!tableName) {
+            return sendError(res, 'Invalid itemType', 400);
+        }
         
         const [item] = await pool.query(`SELECT id FROM ${tableName} WHERE id = ?`, [itemId]);
         
@@ -93,20 +117,33 @@ const getAllReservations = async (req, res) => {
         // Enrich reservations with item details
         const enrichedReservations = await Promise.all(
             reservations.map(async (reservation) => {
-                let tableName;
-                if (reservation.itemType === 'artisanat') tableName = 'artisans';
-                else if (reservation.itemType === 'sejour') tableName = 'sejours';
-                else if (reservation.itemType === 'caravane') tableName = 'caravanes';
+                const tableName = getTableName(reservation.item_type);
                 
-                const [item] = await pool.query(
-                    `SELECT id, name, price FROM ${tableName} WHERE id = ?`,
-                    [reservation.itemId]
-                );
+                if (!tableName) {
+                    console.error('Invalid item_type:', reservation.item_type);
+                    return {
+                        ...reservation,
+                        itemDetails: null
+                    };
+                }
                 
-                return {
-                    ...reservation,
-                    item_details: item[0] || null
-                };
+                try {
+                    const [item] = await pool.query(
+                        `SELECT id, name, price, latitude, longitude FROM ${tableName} WHERE id = ?`,
+                        [reservation.item_id]
+                    );
+                    
+                    return {
+                        ...reservation,
+                        itemDetails: item[0] || null
+                    };
+                } catch (error) {
+                    console.error('Error fetching item details:', error);
+                    return {
+                        ...reservation,
+                        itemDetails: null
+                    };
+                }
             })
         );
         
@@ -133,14 +170,14 @@ const getReservationById = async (req, res) => {
         }
         
         // Get item details
-        let tableName;
-        if (reservation[0].itemType === 'artisanat') tableName = 'artisans';
-        else if (reservation[0].itemType === 'sejour') tableName = 'sejours';
-        else if (reservation[0].itemType === 'caravane') tableName = 'caravanes';
+        const tableName = getTableName(reservation[0].item_type);
+        if (!tableName) {
+            return sendError(res, 'Invalid item type in reservation', 400);
+        }
         
         const [item] = await pool.query(
             `SELECT * FROM ${tableName} WHERE id = ?`,
-            [reservation[0].itemId]
+            [reservation[0].item_id]
         );
         
         const result = {
@@ -220,10 +257,219 @@ const deleteReservation = async (req, res) => {
     }
 };
 
+/**
+ * @route   POST /api/reservations/payment
+ * @desc    Process payment and create reservation with receipt
+ * @access  Public
+ */
+const processPayment = async (req, res) => {
+    const connection = await pool.getConnection();
+    
+    try {
+        const { reservationData, payment } = req.body;
+        
+        console.log('=== PAYMENT REQUEST RECEIVED ===');
+        console.log('Full request body:', JSON.stringify(req.body, null, 2));
+        
+        // Validation
+        if (!reservationData || !payment) {
+            return sendError(res, 'Missing reservation data or payment information', 400);
+        }
+        
+        // Extract data
+        const {
+            itemId,
+            itemType,
+            itemName,
+            itemPrice,
+            checkIn,
+            checkOut,
+            guests,
+            email,
+            phone,
+            specialRequests,
+            days,
+            subtotal,
+            serviceFee,
+            taxes,
+            total
+        } = reservationData;
+        
+        console.log('Extracted fields:', {
+            itemId, itemType, itemName, itemPrice,
+            checkIn, checkOut, guests, email, phone,
+            days, subtotal, serviceFee, taxes, total
+        });
+        
+        const {
+            cardNumber,
+            cardHolder,
+            billingAddress
+        } = payment;
+        
+        // Validate required fields
+        const missingFields = [];
+        if (!itemId) missingFields.push('itemId');
+        if (!itemType) missingFields.push('itemType');
+        if (!email) missingFields.push('email');
+        if (!phone) missingFields.push('phone');
+        if (!checkIn) missingFields.push('checkIn');
+        if (!checkOut) missingFields.push('checkOut');
+        if (!guests) missingFields.push('guests');
+        
+        if (missingFields.length > 0) {
+            console.log('Missing reservation fields:', missingFields);
+            console.log('Received reservationData:', reservationData);
+            return sendError(res, `Missing required reservation fields: ${missingFields.join(', ')}`, 400);
+        }
+        
+        if (!cardNumber || !cardHolder) {
+            console.log('Missing payment fields. cardNumber:', !!cardNumber, 'cardHolder:', !!cardHolder);
+            return sendError(res, 'Missing required payment fields', 400);
+        }
+        
+        // Generate transaction details
+        const transactionId = generateTransactionId();
+        const receiptNumber = generateReceiptNumber();
+        const cardLastFour = cardNumber.replace(/\s/g, '').slice(-4);
+        
+        // Start transaction
+        await connection.beginTransaction();
+        
+        // Normalize itemType to match database ENUM values
+        const normalizedItemType = normalizeItemType(itemType);
+        
+        // Insert reservation
+        const [reservationResult] = await connection.query(
+            `INSERT INTO reservations (
+                user_email, user_phone, item_type, item_id, item_name, item_price,
+                start_date, end_date, guests, days, special_requests,
+                subtotal, service_fee, taxes, total_price, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed')`,
+            [
+                email, phone, normalizedItemType, itemId, itemName, itemPrice,
+                checkIn, checkOut, guests, days, specialRequests || null,
+                subtotal, serviceFee, taxes, total
+            ]
+        );
+        
+        const reservationId = reservationResult.insertId;
+        
+        // Create receipts directory if it doesn't exist
+        const receiptsDir = path.join(__dirname, '../../receipts');
+        try {
+            await fs.access(receiptsDir);
+        } catch {
+            await fs.mkdir(receiptsDir, { recursive: true });
+        }
+        
+        // Generate PDF receipt
+        const receiptFileName = `receipt_${receiptNumber}_${Date.now()}.pdf`;
+        const receiptPath = path.join(receiptsDir, receiptFileName);
+        const receiptRelativePath = `receipts/${receiptFileName}`;
+        
+        const receiptData = {
+            receiptNumber,
+            transactionId,
+            customerEmail: email,
+            customerPhone: phone,
+            itemName,
+            itemType,
+            itemPrice,
+            checkIn,
+            checkOut,
+            days,
+            guests,
+            specialRequests: specialRequests || 'None',
+            subtotal,
+            serviceFee,
+            taxes,
+            total,
+            paymentStatus: 'Paid'
+        };
+        
+        await generateReceipt(receiptData, receiptPath);
+        
+        // Insert payment record (ONLY store last 4 digits, NO full card details)
+        await connection.query(
+            `INSERT INTO payments (
+                reservation_id, transaction_id, receipt_number, payment_method,
+                card_last_four, card_holder_name, billing_address,
+                amount, currency, payment_status, receipt_pdf_path
+            ) VALUES (?, ?, ?, 'card', ?, ?, ?, ?, 'MAD', 'completed', ?)`,
+            [
+                reservationId, transactionId, receiptNumber,
+                cardLastFour, cardHolder, billingAddress || null,
+                total, receiptRelativePath
+            ]
+        );
+        
+        // Commit transaction
+        await connection.commit();
+        
+        return sendSuccess(res, {
+            reservationId,
+            transactionId,
+            receiptNumber,
+            message: 'Payment processed successfully'
+        }, 'Payment completed', 201);
+        
+    } catch (error) {
+        await connection.rollback();
+        console.error('Error processing payment:', error);
+        return sendError(res, 'Failed to process payment', 500, error.message);
+    } finally {
+        connection.release();
+    }
+};
+
+/**
+ * @route   GET /api/reservations/:id/receipt
+ * @desc    Download PDF receipt for a reservation
+ * @access  Public
+ */
+const getReceipt = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // Get payment record with receipt path
+        const [payment] = await pool.query(
+            `SELECT receipt_pdf_path, receipt_number 
+             FROM payments 
+             WHERE reservation_id = ?`,
+            [id]
+        );
+        
+        if (payment.length === 0 || !payment[0].receipt_pdf_path) {
+            return sendNotFound(res, 'Receipt');
+        }
+        
+        const receiptPath = path.join(__dirname, '../../', payment[0].receipt_pdf_path);
+        
+        // Check if file exists
+        try {
+            await fs.access(receiptPath);
+        } catch {
+            return sendError(res, 'Receipt file not found', 404);
+        }
+        
+        // Send PDF file
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${payment[0].receipt_number}.pdf"`);
+        res.sendFile(receiptPath);
+        
+    } catch (error) {
+        console.error('Error fetching receipt:', error);
+        return sendError(res, 'Failed to retrieve receipt', 500, error.message);
+    }
+};
+
 module.exports = {
     createReservation,
     getAllReservations,
     getReservationById,
     updateReservationStatus,
-    deleteReservation
+    deleteReservation,
+    processPayment,
+    getReceipt
 };

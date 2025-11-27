@@ -50,11 +50,27 @@ const createArtisan = async (req, res) => {
  */
 const getAllArtisans = async (req, res) => {
     try {
+        // Set UTF-8 charset for proper French character handling
+        await pool.query('SET NAMES utf8mb4');
+        
+        const { lang = 'fr' } = req.query; // Default to French
+        
         const [artisans] = await pool.query(
             'SELECT * FROM artisans ORDER BY created_at DESC'
         );
         
-        return sendSuccess(res, artisans, 'Artisans retrieved successfully');
+        // Map data to correct language
+        const localizedArtisans = artisans.map(artisan => ({
+            ...artisan,
+            name: lang === 'ar' ? (artisan.name_ar || artisan.name) : 
+                  lang === 'en' ? (artisan.name_en || artisan.name) : 
+                  artisan.name,
+            description: lang === 'ar' ? (artisan.description_ar || artisan.description) : 
+                         lang === 'en' ? (artisan.description_en || artisan.description) : 
+                         artisan.description
+        }));
+        
+        return sendSuccess(res, localizedArtisans, 'Artisans retrieved successfully');
     } catch (error) {
         console.error('Error fetching artisans:', error);
         return sendError(res, 'Failed to fetch artisans', 500, error.message);
@@ -69,6 +85,10 @@ const getAllArtisans = async (req, res) => {
 const getArtisanById = async (req, res) => {
     try {
         const { id } = req.params;
+        const { lang = 'fr' } = req.query; // Default to French
+        
+        // Set UTF-8 charset for proper French character handling
+        await pool.query('SET NAMES utf8mb4');
         
         const [artisan] = await pool.query('SELECT * FROM artisans WHERE id = ?', [id]);
         
@@ -82,8 +102,19 @@ const getArtisanById = async (req, res) => {
             ['artisanat', id]
         );
         
-        const result = {
+        // Localize the data
+        const localizedArtisan = {
             ...artisan[0],
+            name: lang === 'ar' ? (artisan[0].name_ar || artisan[0].name) : 
+                  lang === 'en' ? (artisan[0].name_en || artisan[0].name) : 
+                  artisan[0].name,
+            description: lang === 'ar' ? (artisan[0].description_ar || artisan[0].description) : 
+                         lang === 'en' ? (artisan[0].description_en || artisan[0].description) : 
+                         artisan[0].description
+        };
+        
+        const result = {
+            ...localizedArtisan,
             images_360: images
         };
         

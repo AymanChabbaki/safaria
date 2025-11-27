@@ -12,11 +12,15 @@ const {
     getAllReservations,
     getReservationById,
     updateReservationStatus,
-    deleteReservation
+    deleteReservation,
+    processPayment,
+    getReceipt
 } = require('../controllers/reservationController');
 
-// Public route - anyone can create a reservation
+// Public routes
 router.post('/', createReservation);
+router.post('/payment', processPayment); // Process payment and create reservation
+router.get('/:id/receipt', getReceipt); // Download PDF receipt
 
 // Protected routes - require authentication
 router.get('/', getAllReservations);

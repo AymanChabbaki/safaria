@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from 'react';
 import { FaEye, FaCheck, FaTimes, FaSpinner } from "react-icons/fa";
+import { Calendar } from 'lucide-react';
 import { motion } from "framer-motion";
 import api from "../../utils/api";
 
@@ -50,7 +51,9 @@ const AdminReservationsPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">📅 Gestion des Réservations</h1>
+        <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
+          <Calendar className="w-8 h-8" /> Gestion des Réservations
+        </h1>
         <p className="text-gray-600 mt-1">Consultez et gérez toutes les réservations</p>
       </div>
 

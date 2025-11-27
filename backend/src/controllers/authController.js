@@ -13,22 +13,22 @@ const { sendSuccess, sendError } = require('../utils/responseHelper');
 
 /**
  * @route   POST /api/auth/login
- * @desc    Authenticate admin user and return JWT token
+ * @desc    Authenticate user and return JWT token
  * @access  Public
  */
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
         
         // Validation
-        if (!username || !password) {
-            return sendError(res, 'Username and password are required', 400);
+        if (!email || !password) {
+            return sendError(res, 'Email and password are required', 400);
         }
         
-        // Find user by username
+        // Find user by email
         const [users] = await pool.query(
-            'SELECT * FROM users WHERE username = ?',
-            [username]
+            'SELECT * FROM users WHERE email = ?',
+            [email]
         );
         
         if (users.length === 0) {
@@ -38,7 +38,7 @@ const login = async (req, res) => {
         const user = users[0];
         
         // Verify password
-        const isValidPassword = await bcrypt.compare(password, user.password_hash);
+        const isValidPassword = await bcrypt.compare(password, user.password);
         
         if (!isValidPassword) {
             return sendError(res, 'Invalid credentials', 401);
@@ -48,7 +48,7 @@ const login = async (req, res) => {
         const token = jwt.sign(
             {
                 id: user.id,
-                username: user.username,
+                email: user.email,
                 role: user.role
             },
             process.env.JWT_SECRET,
@@ -62,7 +62,9 @@ const login = async (req, res) => {
             token,
             user: {
                 id: user.id,
-                username: user.username,
+                email: user.email,
+                name: user.name,
+                phone: user.phone,
                 role: user.role
             }
         }, 'Login successful');
@@ -74,46 +76,70 @@ const login = async (req, res) => {
 
 /**
  * @route   POST /api/auth/register
- * @desc    Register a new admin user (for initial setup)
- * @access  Private
+ * @desc    Register a new user
+ * @access  Public
  */
 const register = async (req, res) => {
     try {
-        const { username, password, role = 'admin' } = req.body;
+        const { name, email, phone, password, role = 'user' } = req.body;
         
         // Validation
-        if (!username || !password) {
-            return sendError(res, 'Username and password are required', 400);
+        if (!email || !password) {
+            return sendError(res, 'Email and password are required', 400);
         }
         
         if (password.length < 6) {
             return sendError(res, 'Password must be at least 6 characters long', 400);
         }
         
-        // Check if username already exists
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return sendError(res, 'Invalid email format', 400);
+        }
+        
+        // Check if email already exists
         const [existing] = await pool.query(
-            'SELECT id FROM users WHERE username = ?',
-            [username]
+            'SELECT id FROM users WHERE email = ?',
+            [email]
         );
         
         if (existing.length > 0) {
-            return sendError(res, 'Username already exists', 400);
+            return sendError(res, 'Email already exists', 400);
         }
         
         // Hash password
-        const password_hash = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
         
         // Insert new user
         const [result] = await pool.query(
-            'INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)',
-            [username, password_hash, role]
+            'INSERT INTO users (email, name, phone, password, role) VALUES (?, ?, ?, ?, ?)',
+            [email, name || null, phone || null, hashedPassword, role]
         );
         
-        // Return success (without password)
+        // Generate JWT token for auto-login
+        const token = jwt.sign(
+            {
+                id: result.insertId,
+                email,
+                role
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: process.env.JWT_EXPIRES_IN || '7d'
+            }
+        );
+        
+        // Return success with token for auto-login
         return sendSuccess(res, {
-            id: result.insertId,
-            username,
-            role
+            token,
+            user: {
+                id: result.insertId,
+                email,
+                name: name || null,
+                phone: phone || null,
+                role
+            }
         }, 'User registered successfully', 201);
     } catch (error) {
         console.error('Error during registration:', error);

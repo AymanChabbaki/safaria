@@ -55,11 +55,12 @@ api.interceptors.response.use(
 
 /**
  * Get all artisan experiences
+ * @param {string} lang - Language code (fr, ar, en)
  * @returns {Promise} Array of artisans
  */
-export const getArtisans = async () => {
+export const getArtisans = async (lang = 'fr') => {
   try {
-    const response = await api.get('/api/artisans');
+    const response = await api.get('/api/artisans', { params: { lang } });
     return response.data;
   } catch (error) {
     console.error('Error fetching artisans:', error);
@@ -70,11 +71,12 @@ export const getArtisans = async () => {
 /**
  * Get single artisan by ID
  * @param {number} id - Artisan ID
+ * @param {string} lang - Language code (fr, ar, en)
  * @returns {Promise} Artisan details
  */
-export const getArtisanById = async (id) => {
+export const getArtisanById = async (id, lang = 'fr') => {
   try {
-    const response = await api.get(`/api/artisans/${id}`);
+    const response = await api.get(`/api/artisans/${id}`, { params: { lang } });
     return response.data;
   } catch (error) {
     console.error(`Error fetching artisan ${id}:`, error);
@@ -138,11 +140,12 @@ export const deleteArtisan = async (id) => {
 
 /**
  * Get all sejour experiences
+ * @param {string} lang - Language code (fr, ar, en)
  * @returns {Promise} Array of sejours
  */
-export const getSejours = async () => {
+export const getSejours = async (lang = 'fr') => {
   try {
-    const response = await api.get('/api/sejours');
+    const response = await api.get('/api/sejours', { params: { lang } });
     return response.data;
   } catch (error) {
     console.error('Error fetching sejours:', error);
@@ -153,11 +156,12 @@ export const getSejours = async () => {
 /**
  * Get single sejour by ID
  * @param {number} id - Sejour ID
+ * @param {string} lang - Language code (fr, ar, en)
  * @returns {Promise} Sejour details
  */
-export const getSejourById = async (id) => {
+export const getSejourById = async (id, lang = 'fr') => {
   try {
-    const response = await api.get(`/api/sejours/${id}`);
+    const response = await api.get(`/api/sejours/${id}`, { params: { lang } });
     return response.data;
   } catch (error) {
     console.error(`Error fetching sejour ${id}:`, error);
@@ -221,11 +225,12 @@ export const deleteSejour = async (id) => {
 
 /**
  * Get all caravane experiences
+ * @param {string} lang - Language code (fr, ar, en)
  * @returns {Promise} Array of caravanes
  */
-export const getCaravanes = async () => {
+export const getCaravanes = async (lang = 'fr') => {
   try {
-    const response = await api.get('/api/caravanes');
+    const response = await api.get('/api/caravanes', { params: { lang } });
     return response.data;
   } catch (error) {
     console.error('Error fetching caravanes:', error);
@@ -236,11 +241,12 @@ export const getCaravanes = async () => {
 /**
  * Get single caravane by ID
  * @param {number} id - Caravane ID
+ * @param {string} lang - Language code (fr, ar, en)
  * @returns {Promise} Caravane details
  */
-export const getCaravaneById = async (id) => {
+export const getCaravaneById = async (id, lang = 'fr') => {
   try {
-    const response = await api.get(`/api/caravanes/${id}`);
+    const response = await api.get(`/api/caravanes/${id}`, { params: { lang } });
     return response.data;
   } catch (error) {
     console.error(`Error fetching caravane ${id}:`, error);
@@ -436,6 +442,41 @@ export const deleteReservation = async (id) => {
   }
 };
 
+/**
+ * Process payment and create reservation
+ * @param {Object} data - Reservation and payment data
+ * @returns {Promise} Payment result with transaction ID
+ */
+export const processPayment = async (data) => {
+  try {
+    console.log('Sending payment data:', data); // Debug log
+    const response = await api.post('/api/reservations/payment', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error processing payment:', error);
+    console.error('Error response:', error.response?.data); // Log backend error
+    console.error('Error status:', error.response?.status); // Log status code
+    throw error;
+  }
+};
+
+/**
+ * Download receipt PDF
+ * @param {number} reservationId - Reservation ID
+ * @returns {Promise} Blob data for PDF
+ */
+export const downloadReceipt = async (reservationId) => {
+  try {
+    const response = await api.get(`/api/reservations/${reservationId}/receipt`, {
+      responseType: 'blob'
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error downloading receipt for reservation ${reservationId}:`, error);
+    throw error;
+  }
+};
+
 // ============================================================
 // 360° IMAGES API
 // ============================================================
@@ -494,7 +535,7 @@ export const delete360Image = async (id) => {
 
 /**
  * Login user
- * @param {Object} data - Login credentials (username, password)
+ * @param {Object} data - Login credentials (email, password)
  * @returns {Promise} User data and token
  */
 export const login = async (data) => {
@@ -510,6 +551,28 @@ export const login = async (data) => {
     return response.data;
   } catch (error) {
     console.error('Error during login:', error);
+    throw error;
+  }
+};
+
+/**
+ * Register new user
+ * @param {Object} data - User registration data (name, email, phone, password)
+ * @returns {Promise} User data and token
+ */
+export const register = async (data) => {
+  try {
+    const response = await api.post('/api/auth/register', data);
+    
+    // Store token and user data
+    if (response.data.success) {
+      localStorage.setItem('safaria_token', response.data.data.token);
+      localStorage.setItem('safaria_user', JSON.stringify(response.data.data.user));
+    }
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error during registration:', error);
     throw error;
   }
 };
@@ -555,5 +618,62 @@ export const getCurrentUser = () => {
   return userStr ? JSON.parse(userStr) : null;
 };
 
-// Export axios instance for custom requests
-export default api;
+// ============================================================
+// ORGANIZED API EXPORTS
+// ============================================================
+export default {
+  // Axios instance
+  instance: api,
+  
+  // Auth
+  auth: {
+    login,
+    register,
+    logout,
+    verifyToken,
+    isAuthenticated,
+    getCurrentUser
+  },
+  
+  // Artisans
+  artisans: {
+    getAll: getArtisans,
+    getById: getArtisanById,
+    create: createArtisan,
+    update: updateArtisan,
+    delete: deleteArtisan
+  },
+  
+  // Sejours
+  sejours: {
+    getAll: getSejours,
+    getById: getSejourById,
+    create: createSejour,
+    update: updateSejour,
+    delete: deleteSejour
+  },
+  
+  // Caravanes
+  caravanes: {
+    getAll: getCaravanes,
+    getById: getCaravaneById,
+    create: createCaravane,
+    update: updateCaravane,
+    delete: deleteCaravane
+  },
+  
+  // Reservations
+  reservations: {
+    getAll: getReservations,
+    getById: getReservationById,
+    create: createReservation,
+    updateStatus: updateReservationStatus,
+    delete: deleteReservation
+  },
+  
+  // Payments
+  payments: {
+    process: processPayment,
+    downloadReceipt: downloadReceipt
+  }
+};

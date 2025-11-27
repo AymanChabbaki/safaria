@@ -50,11 +50,27 @@ const createSejour = async (req, res) => {
  */
 const getAllSejours = async (req, res) => {
     try {
+        // Set UTF-8 charset for proper French character handling
+        await pool.query('SET NAMES utf8mb4');
+        
+        const { lang = 'fr' } = req.query; // Default to French
+        
         const [sejours] = await pool.query(
             'SELECT * FROM sejours ORDER BY created_at DESC'
         );
         
-        return sendSuccess(res, sejours, 'Sejours retrieved successfully');
+        // Map data to correct language
+        const localizedSejours = sejours.map(sejour => ({
+            ...sejour,
+            name: lang === 'ar' ? (sejour.name_ar || sejour.name) : 
+                  lang === 'en' ? (sejour.name_en || sejour.name) : 
+                  sejour.name,
+            description: lang === 'ar' ? (sejour.description_ar || sejour.description) : 
+                         lang === 'en' ? (sejour.description_en || sejour.description) : 
+                         sejour.description
+        }));
+        
+        return sendSuccess(res, localizedSejours, 'Sejours retrieved successfully');
     } catch (error) {
         console.error('Error fetching sejours:', error);
         return sendError(res, 'Failed to fetch sejours', 500, error.message);
@@ -69,6 +85,10 @@ const getAllSejours = async (req, res) => {
 const getSejourById = async (req, res) => {
     try {
         const { id } = req.params;
+        const { lang = 'fr' } = req.query; // Default to French
+        
+        // Set UTF-8 charset for proper French character handling
+        await pool.query('SET NAMES utf8mb4');
         
         const [sejour] = await pool.query('SELECT * FROM sejours WHERE id = ?', [id]);
         
@@ -82,8 +102,19 @@ const getSejourById = async (req, res) => {
             ['sejour', id]
         );
         
-        const result = {
+        // Localize the data
+        const localizedSejour = {
             ...sejour[0],
+            name: lang === 'ar' ? (sejour[0].name_ar || sejour[0].name) : 
+                  lang === 'en' ? (sejour[0].name_en || sejour[0].name) : 
+                  sejour[0].name,
+            description: lang === 'ar' ? (sejour[0].description_ar || sejour[0].description) : 
+                         lang === 'en' ? (sejour[0].description_en || sejour[0].description) : 
+                         sejour[0].description
+        };
+        
+        const result = {
+            ...localizedSejour,
             images_360: images
         };
         

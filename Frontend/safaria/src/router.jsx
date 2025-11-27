@@ -16,10 +16,10 @@ import AdminLayout from './layouts/AdminLayout';
 // Public Pages
 import HomePage from './pages/Home/HomePage';
 import MapPage from './pages/Map/MapPage';
-import ArtisanatDetailsPage from './pages/Details/ArtisanatDetailsPage';
-import SejourDetailsPage from './pages/Details/SejourDetailsPage';
-import CaravaneDetailsPage from './pages/Details/CaravaneDetailsPage';
+import UniversalDetailsPage from './pages/Details/UniversalDetailsPage';
 import ReservationPage from './pages/Reservation/ReservationPage';
+import PaymentPage from './pages/Payment/PaymentPage';
+import HistoryPage from './pages/History/HistoryPage';
 
 // Auth Pages
 import LoginPage from './pages/Auth/LoginPage';
@@ -92,19 +92,23 @@ export const router = createBrowserRouter([
       },
       
       // ============================================================
-      // DETAILS ROUTES (Type-specific)
+      // DETAILS ROUTES (Universal)
       // ============================================================
       {
+        path: 'artisan/:id',
+        element: <UniversalDetailsPage type="artisan" />,
+      },
+      {
         path: 'artisanat/:id',
-        element: <ArtisanatDetailsPage />,
+        element: <UniversalDetailsPage type="artisan" />,
       },
       {
         path: 'sejour/:id',
-        element: <SejourDetailsPage />,
+        element: <UniversalDetailsPage type="sejour" />,
       },
       {
         path: 'caravane/:id',
-        element: <CaravaneDetailsPage />,
+        element: <UniversalDetailsPage type="caravane" />,
       },
       
       // ============================================================
@@ -115,6 +119,30 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ReservationPage />
+          </ProtectedRoute>
+        ),
+      },
+      
+      // ============================================================
+      // PAYMENT ROUTE (Protected)
+      // ============================================================
+      {
+        path: 'payment',
+        element: (
+          <ProtectedRoute>
+            <PaymentPage />
+          </ProtectedRoute>
+        ),
+      },
+      
+      // ============================================================
+      // HISTORY ROUTE (Protected)
+      // ============================================================
+      {
+        path: 'history',
+        element: (
+          <ProtectedRoute>
+            <HistoryPage />
           </ProtectedRoute>
         ),
       },

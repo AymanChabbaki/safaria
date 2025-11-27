@@ -50,11 +50,27 @@ const createCaravane = async (req, res) => {
  */
 const getAllCaravanes = async (req, res) => {
     try {
+        // Set UTF-8 charset for proper French character handling
+        await pool.query('SET NAMES utf8mb4');
+        
+        const { lang = 'fr' } = req.query; // Default to French
+        
         const [caravanes] = await pool.query(
             'SELECT * FROM caravanes ORDER BY created_at DESC'
         );
         
-        return sendSuccess(res, caravanes, 'Caravanes retrieved successfully');
+        // Map data to correct language
+        const localizedCaravanes = caravanes.map(caravane => ({
+            ...caravane,
+            name: lang === 'ar' ? (caravane.name_ar || caravane.name) : 
+                  lang === 'en' ? (caravane.name_en || caravane.name) : 
+                  caravane.name,
+            description: lang === 'ar' ? (caravane.description_ar || caravane.description) : 
+                         lang === 'en' ? (caravane.description_en || caravane.description) : 
+                         caravane.description
+        }));
+        
+        return sendSuccess(res, localizedCaravanes, 'Caravanes retrieved successfully');
     } catch (error) {
         console.error('Error fetching caravanes:', error);
         return sendError(res, 'Failed to fetch caravanes', 500, error.message);
@@ -69,6 +85,10 @@ const getAllCaravanes = async (req, res) => {
 const getCaravaneById = async (req, res) => {
     try {
         const { id } = req.params;
+        const { lang = 'fr' } = req.query; // Default to French
+        
+        // Set UTF-8 charset for proper French character handling
+        await pool.query('SET NAMES utf8mb4');
         
         const [caravane] = await pool.query('SELECT * FROM caravanes WHERE id = ?', [id]);
         
@@ -82,8 +102,19 @@ const getCaravaneById = async (req, res) => {
             ['caravane', id]
         );
         
-        const result = {
+        // Localize the data
+        const localizedCaravane = {
             ...caravane[0],
+            name: lang === 'ar' ? (caravane[0].name_ar || caravane[0].name) : 
+                  lang === 'en' ? (caravane[0].name_en || caravane[0].name) : 
+                  caravane[0].name,
+            description: lang === 'ar' ? (caravane[0].description_ar || caravane[0].description) : 
+                         lang === 'en' ? (caravane[0].description_en || caravane[0].description) : 
+                         caravane[0].description
+        };
+        
+        const result = {
+            ...localizedCaravane,
             images_360: images
         };
         

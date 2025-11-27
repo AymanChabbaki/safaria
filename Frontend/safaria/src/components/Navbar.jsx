@@ -8,7 +8,7 @@
 
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { FaBars, FaTimes, FaUser, FaMapMarkerAlt, FaHome, FaGlobe, FaChevronDown } from 'react-icons/fa';
+import { FaBars, FaTimes, FaUser, FaMapMarkerAlt, FaHome, FaGlobe, FaChevronDown, FaClock, FaCalendarAlt, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import useAuthStore from '../store/useAuthStore';
 import useAppStore from '../store/useAppStore';
@@ -150,25 +150,25 @@ const Navbar = () => {
                           className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-sand-100 transition"
                           onClick={handleNavClick}
                         >
-                          <span className="text-xl">📊</span>
+                          <FaChartBar className="text-lg" />
                           <span className="font-medium">{t(language, 'nav.admin')}</span>
                         </Link>
                       )}
                       
                       <Link 
-                        to="/reservation" 
+                        to="/history" 
                         className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-sand-100 transition"
                         onClick={handleNavClick}
                       >
-                        <span className="text-xl">📅</span>
-                        <span className="font-medium">{t(language, 'nav.reservations')}</span>
+                        <FaCalendarAlt className="text-lg" />
+                        <span className="font-medium">{t(language, 'nav.reservation')}</span>
                       </Link>
                       
                       <button 
                         className="w-full flex items-center space-x-3 px-4 py-3 text-red-600 hover:bg-red-50 transition"
                         onClick={handleLogout}
                       >
-                        <span className="text-xl">🚪</span>
+                        <FaSignOutAlt className="text-lg" />
                         <span className="font-medium">{t(language, 'nav.logout')}</span>
                       </button>
                     </motion.div>
@@ -273,25 +273,25 @@ const Navbar = () => {
                       className="flex items-center space-x-3 px-4 py-3 text-white rounded-lg hover:bg-white/20 transition"
                       onClick={handleNavClick}
                     >
-                      <span>📊</span>
+                      <FaChartBar className="text-lg" />
                       <span className="font-medium">{t(language, 'nav.admin')}</span>
                     </Link>
                   )}
                   
                   <Link 
-                    to="/reservation" 
+                    to="/history" 
                     className="flex items-center space-x-3 px-4 py-3 text-white rounded-lg hover:bg-white/20 transition"
                     onClick={handleNavClick}
                   >
-                    <span>📅</span>
-                    <span className="font-medium">{t(language, 'nav.reservations')}</span>
+                    <FaCalendarAlt className="text-lg" />
+                    <span className="font-medium">{t(language, 'nav.reservation')}</span>
                   </Link>
                   
                   <button 
                     className="w-full flex items-center space-x-3 px-4 py-3 text-red-300 rounded-lg hover:bg-red-900/30 transition"
                     onClick={handleLogout}
                   >
-                    <span>🚪</span>
+                    <FaSignOutAlt className="text-lg" />
                     <span className="font-medium">{t(language, 'nav.logout')}</span>
                   </button>
                 </div>

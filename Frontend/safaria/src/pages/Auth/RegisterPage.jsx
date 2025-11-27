@@ -6,6 +6,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 import useAuthStore from '../../store/useAuthStore';
 import PageContainer from '../../components/PageContainer';
 
@@ -48,7 +49,9 @@ const RegisterPage = () => {
   return (
     <PageContainer maxWidth="500px">
       <div style={{ padding: '3rem 0' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>✨ Inscription</h1>
+        <h1 style={{ textAlign: 'center', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+          <Sparkles size={28} /> Inscription
+        </h1>
         
         <form onSubmit={handleSubmit} style={{
           background: 'white',

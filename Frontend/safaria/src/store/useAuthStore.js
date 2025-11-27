@@ -30,24 +30,25 @@ const useAuthStore = create(
           set({ isLoading: true, error: null });
           
           try {
-            const response = await api.login({ email, password });
-            const { user, token } = response.data;
+            const response = await api.auth.login({ email, password });
             
-            // Store token in localStorage
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            
-            set({ 
-              user, 
-              token, 
-              isAuthenticated: true, 
-              isLoading: false,
-              error: null 
-            });
-            
-            return { success: true, user };
+            if (response.success) {
+              const { user, token } = response.data;
+              
+              set({ 
+                user, 
+                token, 
+                isAuthenticated: true, 
+                isLoading: false,
+                error: null 
+              });
+              
+              return { success: true, user };
+            } else {
+              throw new Error(response.message || 'Login failed');
+            }
           } catch (error) {
-            const errorMessage = error.response?.data?.message || 'Erreur de connexion';
+            const errorMessage = error.response?.data?.message || error.message || 'Erreur de connexion';
             set({ 
               error: errorMessage, 
               isLoading: false,
@@ -65,24 +66,25 @@ const useAuthStore = create(
           set({ isLoading: true, error: null });
           
           try {
-            const response = await api.register(userData);
-            const { user, token } = response.data;
+            const response = await api.auth.register(userData);
             
-            // Store token in localStorage
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
-            
-            set({ 
-              user, 
-              token, 
-              isAuthenticated: true, 
-              isLoading: false,
-              error: null 
-            });
-            
-            return { success: true, user };
+            if (response.success) {
+              const { user, token } = response.data;
+              
+              set({ 
+                user, 
+                token, 
+                isAuthenticated: true, 
+                isLoading: false,
+                error: null 
+              });
+              
+              return { success: true, user };
+            } else {
+              throw new Error(response.message || 'Registration failed');
+            }
           } catch (error) {
-            const errorMessage = error.response?.data?.message || 'Erreur d\'inscription';
+            const errorMessage = error.response?.data?.message || error.message || 'Erreur d\'inscription';
             set({ 
               error: errorMessage, 
               isLoading: false 

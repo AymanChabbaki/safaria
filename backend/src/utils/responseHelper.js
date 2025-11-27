@@ -10,6 +10,8 @@
  * Send success response
  */
 const sendSuccess = (res, data, message = 'Success', statusCode = 200) => {
+    // Ensure UTF-8 encoding for Arabic and French characters
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
     return res.status(statusCode).json({
         success: true,
         message,

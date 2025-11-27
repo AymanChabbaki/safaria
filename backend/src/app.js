@@ -16,7 +16,7 @@ const artisanRoutes = require('./routes/artisanRoutes');
 const sejourRoutes = require('./routes/sejourRoutes');
 const caravaneRoutes = require('./routes/caravaneRoutes');
 const reservationRoutes = require('./routes/reservationRoutes');
-const image360Routes = require('./routes/image360Routes');
+const images360Routes = require('./routes/images360Routes');
 const authRoutes = require('./routes/authRoutes');
 
 // Initialize Express app
@@ -73,7 +73,7 @@ app.use('/api/artisans', artisanRoutes);
 app.use('/api/sejours', sejourRoutes);
 app.use('/api/caravanes', caravaneRoutes);
 app.use('/api/reservations', reservationRoutes);
-app.use('/api/360', image360Routes);
+app.use('/api/images360', images360Routes);
 app.use('/api/auth', authRoutes);
 
 // ============================================================
