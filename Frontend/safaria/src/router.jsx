@@ -33,6 +33,7 @@ import AdminArtisansPage from './pages/Admin/AdminArtisansPage';
 import AdminSejoursPage from './pages/Admin/AdminSejoursPage';
 import AdminCaravanesPage from './pages/Admin/AdminCaravanesPage';
 import AdminReservationsPage from './pages/Admin/AdminReservationsPage';
+import AdminProfilePage from './pages/Admin/AdminProfilePage';
 
 // Error Pages
 import NotFoundPage from './pages/NotFoundPage';
@@ -230,6 +231,10 @@ export const router = createBrowserRouter([
       {
         path: 'reservations',
         element: <AdminReservationsPage />,
+      },
+      {
+        path: 'profile',
+        element: <AdminProfilePage />,
       },
       
       // ============================================================

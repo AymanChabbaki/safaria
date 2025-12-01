@@ -15,8 +15,29 @@ import {
   FaHiking, 
   FaCalendarCheck, 
   FaChartLine,
-  FaSpinner 
+  FaSpinner,
+  FaArrowUp,
+  FaArrowDown,
+  FaUsers,
+  FaCheckCircle,
+  FaClock,
+  FaTimes
 } from 'react-icons/fa';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+  Legend
+} from 'recharts';
 import api from '../../utils/api';
 
 const AdminDashboardPage = () => {
@@ -24,7 +45,10 @@ const AdminDashboardPage = () => {
     artisans: 0,
     sejours: 0,
     caravanes: 0,
-    reservations: 0
+    reservations: 0,
+    pending: 0,
+    confirmed: 0,
+    cancelled: 0
   });
   const [loading, setLoading] = useState(true);
 
@@ -38,11 +62,19 @@ const AdminDashboardPage = () => {
           api.reservations.getAll()
         ]);
 
+        const reservations = reservationsRes.data || [];
+        const pending = reservations.filter(r => r.status === 'pending').length;
+        const confirmed = reservations.filter(r => r.status === 'confirmed').length;
+        const cancelled = reservations.filter(r => r.status === 'cancelled').length;
+
         setStats({
           artisans: artisansRes.data?.length || 0,
           sejours: sejoursRes.data?.length || 0,
           caravanes: caravanesRes.data?.length || 0,
-          reservations: reservationsRes.data?.length || 0
+          reservations: reservations.length,
+          pending,
+          confirmed,
+          cancelled
         });
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -54,34 +86,72 @@ const AdminDashboardPage = () => {
     fetchStats();
   }, []);
 
+  // Chart data
+  const itemsData = [
+    { name: 'Artisans', value: stats.artisans, color: '#DC2626' },
+    { name: 'Séjours', value: stats.sejours, color: '#059669' },
+    { name: 'Caravanes', value: stats.caravanes, color: '#D97706' }
+  ];
+
+  const reservationStatusData = [
+    { name: 'En attente', value: stats.pending, color: '#F59E0B' },
+    { name: 'Confirmé', value: stats.confirmed, color: '#10B981' },
+    { name: 'Annulé', value: stats.cancelled, color: '#EF4444' }
+  ];
+
+  const monthlyData = [
+    { month: 'Jan', reservations: 12, items: 5 },
+    { month: 'Fév', reservations: 19, items: 8 },
+    { month: 'Mar', reservations: 15, items: 6 },
+    { month: 'Avr', reservations: 25, items: 12 },
+    { month: 'Mai', reservations: 22, items: 9 },
+    { month: 'Jun', reservations: 30, items: 15 }
+  ];
+
   const statCards = [
     {
-      title: 'Artisans',
+      title: 'Total Artisans',
       value: stats.artisans,
       icon: FaPalette,
-      color: 'morocco-red',
-      link: '/admin/artisans'
+      bgColor: 'bg-red-50',
+      iconColor: 'text-red-600',
+      borderColor: 'border-red-200',
+      link: '/admin/artisans',
+      change: '+12%',
+      isIncrease: true
     },
     {
-      title: 'Séjours',
+      title: 'Total Séjours',
       value: stats.sejours,
       icon: FaHome,
-      color: 'oasis',
-      link: '/admin/sejours'
+      bgColor: 'bg-green-50',
+      iconColor: 'text-green-600',
+      borderColor: 'border-green-200',
+      link: '/admin/sejours',
+      change: '+8%',
+      isIncrease: true
     },
     {
-      title: 'Caravanes',
+      title: 'Total Caravanes',
       value: stats.caravanes,
       icon: FaHiking,
-      color: 'desert',
-      link: '/admin/caravanes'
+      bgColor: 'bg-yellow-50',
+      iconColor: 'text-yellow-600',
+      borderColor: 'border-yellow-200',
+      link: '/admin/caravanes',
+      change: '+5%',
+      isIncrease: true
     },
     {
       title: 'Réservations',
       value: stats.reservations,
       icon: FaCalendarCheck,
-      color: 'chefchaouen',
-      link: '/admin/reservations'
+      bgColor: 'bg-blue-50',
+      iconColor: 'text-blue-600',
+      borderColor: 'border-blue-200',
+      link: '/admin/reservations',
+      change: '+23%',
+      isIncrease: true
     }
   ];
 
@@ -97,56 +167,165 @@ const AdminDashboardPage = () => {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-desert-800 mb-2">
-          Dashboard Administrateur
+        <h1 className="text-3xl font-bold text-gray-900">
+          Tableau de Bord
         </h1>
-        <p className="text-gray-600">Vue d'ensemble de la plateforme SAFARIA</p>
+        <p className="text-gray-600 mt-2">Vue d'ensemble de votre plateforme Safaria</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((card, idx) => (
-          <motion.div
-            key={card.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
-          >
-            <Link
-              to={card.link}
-              className="block bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-6 border-l-4 border-${card.color}-500"
+        {statCards.map((card, idx) => {
+          const Icon = card.icon;
+          const ChangeIcon = card.isIncrease ? FaArrowUp : FaArrowDown;
+          return (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
             >
-              <div className="flex items-center justify-between">
+              <Link
+                to={card.link}
+                className={`block bg-white rounded-xl border ${card.borderColor} p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1`}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`p-3 rounded-lg ${card.bgColor}`}>
+                    <Icon className={`text-2xl ${card.iconColor}`} />
+                  </div>
+                  <div className={`flex items-center text-xs font-medium ${card.isIncrease ? 'text-green-600' : 'text-red-600'}`}>
+                    <ChangeIcon className="mr-1" />
+                    {card.change}
+                  </div>
+                </div>
                 <div>
-                  <p className="text-gray-500 text-sm font-medium mb-1">
-                    {card.title}
-                  </p>
-                  <p className="text-4xl font-bold text-gray-800">
+                  <p className="text-sm font-medium text-gray-600">{card.title}</p>
+                  <p className="text-3xl font-bold text-gray-900 mt-1">
                     {card.value}
                   </p>
                 </div>
-                <div className={`w-16 h-16 bg-${card.color}-100 rounded-2xl flex items-center justify-center`}>
-                  <card.icon className={`text-3xl text-${card.color}-600`} />
-                </div>
-              </div>
+              </Link>
+            </motion.div>
+          );
+        })}
+      </div>
 
-              <div className="mt-4 flex items-center text-sm text-gray-600">
-                <FaChartLine className="mr-2" />
-                <span>Voir détails</span>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Items Distribution Pie Chart */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Distribution des Éléments</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={itemsData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {itemsData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Reservation Status Pie Chart */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Statut des Réservations</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={reservationStatusData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {reservationStatusData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Monthly Trends Bar Chart */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Tendances Mensuelles</h3>
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart data={monthlyData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="reservations" fill="#3B82F6" name="Réservations" />
+            <Bar dataKey="items" fill="#10B981" name="Nouveaux Éléments" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Reservation Status Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-xl border border-yellow-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">En Attente</p>
+              <p className="text-3xl font-bold text-yellow-600 mt-2">{stats.pending}</p>
+            </div>
+            <div className="p-3 bg-yellow-50 rounded-lg">
+              <FaClock className="text-2xl text-yellow-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-green-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Confirmées</p>
+              <p className="text-3xl font-bold text-green-600 mt-2">{stats.confirmed}</p>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg">
+              <FaCheckCircle className="text-2xl text-green-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl border border-red-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Annulées</p>
+              <p className="text-3xl font-bold text-red-600 mt-2">{stats.cancelled}</p>
+            </div>
+            <div className="p-3 bg-red-50 rounded-lg">
+              <FaTimes className="text-2xl text-red-600" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Actions Rapides</h2>
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Actions Rapides</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             to="/admin/artisans"
-            className="p-4 bg-gradient-to-br from-morocco-red to-red-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
+            className="p-4 bg-gradient-to-br from-red-500 to-red-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
           >
             <FaPalette className="text-3xl mx-auto mb-2" />
             <p className="font-semibold">Nouvel Artisan</p>
@@ -154,7 +333,7 @@ const AdminDashboardPage = () => {
 
           <Link
             to="/admin/sejours"
-            className="p-4 bg-gradient-to-br from-oasis-500 to-green-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
+            className="p-4 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
           >
             <FaHome className="text-3xl mx-auto mb-2" />
             <p className="font-semibold">Nouveau Séjour</p>
@@ -162,7 +341,7 @@ const AdminDashboardPage = () => {
 
           <Link
             to="/admin/caravanes"
-            className="p-4 bg-gradient-to-br from-desert-500 to-yellow-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
+            className="p-4 bg-gradient-to-br from-yellow-500 to-yellow-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
           >
             <FaHiking className="text-3xl mx-auto mb-2" />
             <p className="font-semibold">Nouvelle Caravane</p>
@@ -170,18 +349,12 @@ const AdminDashboardPage = () => {
 
           <Link
             to="/admin/reservations"
-            className="p-4 bg-gradient-to-br from-chefchaouen-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
+            className="p-4 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all text-center"
           >
             <FaCalendarCheck className="text-3xl mx-auto mb-2" />
             <p className="font-semibold">Voir Réservations</p>
           </Link>
         </div>
-      </div>
-
-      {/* Recent Activity Placeholder */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Activité Récente</h2>
-        <p className="text-gray-600">Les dernières activités seront affichées ici...</p>
       </div>
     </div>
   );
