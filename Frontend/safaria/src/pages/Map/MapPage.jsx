@@ -311,7 +311,13 @@ const MapPage = () => {
                 {/* Popup Image */}
                 <div className="relative mb-3 rounded-lg overflow-hidden shadow-md">
                   <img 
-                    src={marker.data.main_image ? `http://localhost:5000${marker.data.main_image}` : marker.data.image || '/logoSAFARIA.png'}
+                    src={
+                      marker.data.images && marker.data.images.length > 0
+                        ? `http://localhost:5000${marker.data.images[0]}`
+                        : marker.data.main_image
+                          ? `http://localhost:5000${marker.data.main_image}`
+                          : marker.data.image || '/logoSAFARIA.png'
+                    }
                     alt={marker.data.name || marker.data.title}
                     className="w-full h-32 object-cover"
                     onError={(e) => { e.target.src = '/logoSAFARIA.png'; }}

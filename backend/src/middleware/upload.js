@@ -32,6 +32,8 @@ const storage = multer.diskStorage({
             uploadPath += 'caravanes/';
         } else if (req.baseUrl.includes('/360')) {
             uploadPath += '360/';
+        } else if (req.baseUrl.includes('/auth')) {
+            uploadPath += 'profiles/';
         }
         
         ensureDirectoryExists(uploadPath);

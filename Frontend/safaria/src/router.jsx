@@ -16,10 +16,13 @@ import AdminLayout from './layouts/AdminLayout';
 // Public Pages
 import HomePage from './pages/Home/HomePage';
 import MapPage from './pages/Map/MapPage';
+import ExperiencesPage from './pages/Experiences/ExperiencesPage';
 import UniversalDetailsPage from './pages/Details/UniversalDetailsPage';
 import ReservationPage from './pages/Reservation/ReservationPage';
 import PaymentPage from './pages/Payment/PaymentPage';
 import HistoryPage from './pages/History/HistoryPage';
+import ProfilePage from './pages/Profile/ProfilePage';
+import FavoritesPage from './pages/Favorites/FavoritesPage';
 
 // Auth Pages
 import LoginPage from './pages/Auth/LoginPage';
@@ -90,6 +93,10 @@ export const router = createBrowserRouter([
         path: 'map',
         element: <MapPage />,
       },
+      {
+        path: 'experiences',
+        element: <ExperiencesPage />,
+      },
       
       // ============================================================
       // DETAILS ROUTES (Universal)
@@ -143,6 +150,30 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <HistoryPage />
+          </ProtectedRoute>
+        ),
+      },
+      
+      // ============================================================
+      // PROFILE ROUTE (Protected)
+      // ============================================================
+      {
+        path: 'profile',
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      
+      // ============================================================
+      // FAVORITES ROUTE (Protected)
+      // ============================================================
+      {
+        path: 'favorites',
+        element: (
+          <ProtectedRoute>
+            <FavoritesPage />
           </ProtectedRoute>
         ),
       },

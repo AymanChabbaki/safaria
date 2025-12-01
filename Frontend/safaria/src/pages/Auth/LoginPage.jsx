@@ -54,7 +54,12 @@ const LoginPage = () => {
         });
     
     if (result.success) {
-      navigate('/');
+      // Redirect based on user role
+      if (result.user?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }
   };
   

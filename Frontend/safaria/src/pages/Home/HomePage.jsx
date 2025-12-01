@@ -235,7 +235,7 @@ const HomePage = () => {
                 {t(language, 'home.localCraftsDesc') || 'Rencontrez des artisans passionnés et découvrez l\'artisanat marocain authentique.'}
               </p>
               <Link 
-                to="/map" 
+                to="/experiences?category=artisan" 
                 className="block text-center text-morocco-red hover:text-red-700 font-semibold transition-colors"
               >
                 {t(language, 'home.discover') || 'Découvrir'} →
@@ -261,7 +261,7 @@ const HomePage = () => {
                 {t(language, 'home.culturalStaysDesc') || 'Vivez une immersion totale dans la culture marocaine avec nos hébergements traditionnels.'}
               </p>
               <Link 
-                to="/map" 
+                to="/experiences?category=sejour" 
                 className="block text-center text-chefchaouen-600 hover:text-chefchaouen-700 font-semibold transition-colors"
               >
                 {t(language, 'home.explore') || 'Explorer'} →
@@ -287,7 +287,7 @@ const HomePage = () => {
                 {t(language, 'home.desertCaravansDesc') || 'Partez à l\'aventure dans le désert du Sahara pour une expérience inoubliable.'}
               </p>
               <Link 
-                to="/map" 
+                to="/experiences?category=caravane" 
                 className="block text-center text-desert-600 hover:text-desert-700 font-semibold transition-colors"
               >
                 {t(language, 'home.book') || 'Réserver'} →

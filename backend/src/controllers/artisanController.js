@@ -59,16 +59,30 @@ const getAllArtisans = async (req, res) => {
             'SELECT * FROM artisans ORDER BY created_at DESC'
         );
         
-        // Map data to correct language
-        const localizedArtisans = artisans.map(artisan => ({
-            ...artisan,
-            name: lang === 'ar' ? (artisan.name_ar || artisan.name) : 
-                  lang === 'en' ? (artisan.name_en || artisan.name) : 
-                  artisan.name,
-            description: lang === 'ar' ? (artisan.description_ar || artisan.description) : 
-                         lang === 'en' ? (artisan.description_en || artisan.description) : 
-                         artisan.description
-        }));
+        // Map data to correct language and parse images
+        const localizedArtisans = artisans.map(artisan => {
+            let parsedImages = [];
+            try {
+                if (artisan.images) {
+                    parsedImages = typeof artisan.images === 'string' 
+                        ? JSON.parse(artisan.images) 
+                        : artisan.images;
+                }
+            } catch (e) {
+                parsedImages = artisan.main_image ? [artisan.main_image] : [];
+            }
+            
+            return {
+                ...artisan,
+                images: parsedImages,
+                name: lang === 'ar' ? (artisan.name_ar || artisan.name) : 
+                      lang === 'en' ? (artisan.name_en || artisan.name) : 
+                      artisan.name,
+                description: lang === 'ar' ? (artisan.description_ar || artisan.description) : 
+                             lang === 'en' ? (artisan.description_en || artisan.description) : 
+                             artisan.description
+            };
+        });
         
         return sendSuccess(res, localizedArtisans, 'Artisans retrieved successfully');
     } catch (error) {
@@ -102,6 +116,19 @@ const getArtisanById = async (req, res) => {
             ['artisanat', id]
         );
         
+        // Parse images JSON array
+        let parsedImages = [];
+        try {
+            if (artisan[0].images) {
+                parsedImages = typeof artisan[0].images === 'string' 
+                    ? JSON.parse(artisan[0].images) 
+                    : artisan[0].images;
+            }
+        } catch (e) {
+            console.warn('Failed to parse images JSON:', e);
+            parsedImages = artisan[0].main_image ? [artisan[0].main_image] : [];
+        }
+        
         // Localize the data
         const localizedArtisan = {
             ...artisan[0],
@@ -115,7 +142,9 @@ const getArtisanById = async (req, res) => {
         
         const result = {
             ...localizedArtisan,
-            images_360: images
+            images: parsedImages,
+            images_360: images,
+            has360: images.length > 0
         };
         
         return sendSuccess(res, result, 'Artisan retrieved successfully');

@@ -8,7 +8,7 @@
 
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { FaBars, FaTimes, FaUser, FaMapMarkerAlt, FaHome, FaGlobe, FaChevronDown, FaClock, FaCalendarAlt, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
+import { FaBars, FaTimes, FaUser, FaMapMarkerAlt, FaHome, FaGlobe, FaChevronDown, FaClock, FaCalendarAlt, FaChartBar, FaSignOutAlt, FaHeart } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import useAuthStore from '../store/useAuthStore';
 import useAppStore from '../store/useAppStore';
@@ -130,7 +130,15 @@ const Navbar = () => {
                   className="flex items-center space-x-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white font-medium transition duration-300"
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                 >
-                  <FaUser className="text-lg" />
+                  {user?.photo ? (
+                    <img 
+                      src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000${user.photo}`}
+                      alt={user.name} 
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                    />
+                  ) : (
+                    <FaUser className="text-lg" />
+                  )}
                   <span>{user?.name || t(language, 'nav.user')}</span>
                   <FaChevronDown className="text-sm" />
                 </button>
@@ -154,6 +162,24 @@ const Navbar = () => {
                           <span className="font-medium">{t(language, 'nav.admin')}</span>
                         </Link>
                       )}
+                      
+                      <Link 
+                        to="/profile" 
+                        className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-sand-100 transition"
+                        onClick={handleNavClick}
+                      >
+                        <FaUser className="text-lg" />
+                        <span className="font-medium">{t(language, 'nav.profile')}</span>
+                      </Link>
+                      
+                      <Link 
+                        to="/favorites" 
+                        className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-sand-100 transition"
+                        onClick={handleNavClick}
+                      >
+                        <FaHeart className="text-lg text-red-500" />
+                        <span className="font-medium">{t(language, 'nav.favorites')}</span>
+                      </Link>
                       
                       <Link 
                         to="/history" 
@@ -277,6 +303,24 @@ const Navbar = () => {
                       <span className="font-medium">{t(language, 'nav.admin')}</span>
                     </Link>
                   )}
+                  
+                  <Link 
+                    to="/profile" 
+                    className="flex items-center space-x-3 px-4 py-3 text-white rounded-lg hover:bg-white/20 transition"
+                    onClick={handleNavClick}
+                  >
+                    <FaUser className="text-lg" />
+                    <span className="font-medium">{t(language, 'nav.profile')}</span>
+                  </Link>
+                  
+                  <Link 
+                    to="/favorites" 
+                    className="flex items-center space-x-3 px-4 py-3 text-white rounded-lg hover:bg-white/20 transition"
+                    onClick={handleNavClick}
+                  >
+                    <FaHeart className="text-lg text-red-400" />
+                    <span className="font-medium">{t(language, 'nav.favorites')}</span>
+                  </Link>
                   
                   <Link 
                     to="/history" 

@@ -65,7 +65,9 @@ const login = async (req, res) => {
                 email: user.email,
                 name: user.name,
                 phone: user.phone,
-                role: user.role
+                photo: user.photo,
+                role: user.role,
+                created_at: user.created_at
             }
         }, 'Login successful');
     } catch (error) {
@@ -117,12 +119,20 @@ const register = async (req, res) => {
             [email, name || null, phone || null, hashedPassword, role]
         );
         
+        // Fetch the newly created user to get created_at
+        const [newUsers] = await pool.query(
+            'SELECT id, email, name, phone, photo, role, created_at FROM users WHERE id = ?',
+            [result.insertId]
+        );
+        
+        const newUser = newUsers[0];
+        
         // Generate JWT token for auto-login
         const token = jwt.sign(
             {
-                id: result.insertId,
-                email,
-                role
+                id: newUser.id,
+                email: newUser.email,
+                role: newUser.role
             },
             process.env.JWT_SECRET,
             {
@@ -134,11 +144,13 @@ const register = async (req, res) => {
         return sendSuccess(res, {
             token,
             user: {
-                id: result.insertId,
-                email,
-                name: name || null,
-                phone: phone || null,
-                role
+                id: newUser.id,
+                email: newUser.email,
+                name: newUser.name,
+                phone: newUser.phone,
+                photo: newUser.photo,
+                role: newUser.role,
+                created_at: newUser.created_at
             }
         }, 'User registered successfully', 201);
     } catch (error) {
@@ -164,8 +176,110 @@ const verifyToken = async (req, res) => {
     }
 };
 
+/**
+ * @route   PUT /api/auth/profile
+ * @desc    Update user profile (name, phone, photo)
+ * @access  Private
+ */
+const updateProfile = async (req, res) => {
+    try {
+        console.log('Update profile request:', {
+            userId: req.user?.id,
+            body: req.body,
+            file: req.file ? { filename: req.file.filename, size: req.file.size } : null
+        });
+
+        const userId = req.user?.id;
+        if (!userId) {
+            return sendError(res, 'User ID not found in token', 401);
+        }
+
+        const { name, phone, currentPassword, newPassword } = req.body;
+        let photoPath = null;
+
+        // Handle password change if requested
+        if (currentPassword && newPassword) {
+            // Verify current password
+            const [users] = await pool.query(
+                'SELECT password FROM users WHERE id = ?',
+                [userId]
+            );
+
+            if (users.length === 0) {
+                return sendError(res, 'User not found', 404);
+            }
+
+            const isValidPassword = await bcrypt.compare(currentPassword, users[0].password);
+            if (!isValidPassword) {
+                return sendError(res, 'Current password is incorrect', 401);
+            }
+
+            // Validate new password
+            if (newPassword.length < 6) {
+                return sendError(res, 'New password must be at least 6 characters', 400);
+            }
+        }
+
+        // Handle photo upload if exists
+        if (req.file) {
+            photoPath = `/uploads/profiles/${req.file.filename}`;
+        }
+
+        // Build update query dynamically
+        const updates = [];
+        const values = [];
+
+        if (name) {
+            updates.push('name = ?');
+            values.push(name);
+        }
+
+        if (phone !== undefined) {
+            updates.push('phone = ?');
+            values.push(phone || null);
+        }
+
+        if (photoPath) {
+            updates.push('photo = ?');
+            values.push(photoPath);
+        }
+
+        if (newPassword) {
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            updates.push('password = ?');
+            values.push(hashedPassword);
+        }
+
+        if (updates.length === 0) {
+            return sendError(res, 'No fields to update', 400);
+        }
+
+        values.push(userId);
+        const query = `UPDATE users SET ${updates.join(', ')} WHERE id = ?`;
+
+        console.log('Executing query:', query);
+        await pool.query(query, values);
+
+        // Fetch updated user
+        const [updatedUsers] = await pool.query(
+            'SELECT id, name, email, phone, photo, role, created_at FROM users WHERE id = ?',
+            [userId]
+        );
+
+        console.log('Updated user:', updatedUsers[0]);
+
+        return sendSuccess(res, {
+            user: updatedUsers[0]
+        }, 'Profile updated successfully');
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        return sendError(res, 'Profile update failed', 500, error.message);
+    }
+};
+
 module.exports = {
     login,
     register,
-    verifyToken
+    verifyToken,
+    updateProfile
 };

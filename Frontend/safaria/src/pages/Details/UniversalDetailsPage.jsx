@@ -204,7 +204,11 @@ const UniversalDetailsPage = ({ type }) => {
         id: id,
         type: itemType,
         name: item?.name || item?.title,
-        image: item?.main_image,
+        description: item?.description,
+        location: item?.location,
+        price: item?.price,
+        main_image: item?.main_image,
+        images: item?.images,
         addedAt: new Date().toISOString()
       };
       favorites.push(favoriteItem);
@@ -271,7 +275,17 @@ const UniversalDetailsPage = ({ type }) => {
   const TypeIcon = itemType === 'artisan' || itemType === 'artisanat' ? Palette : 
                    itemType === 'sejour' ? HomeIcon : Tent;
 
-  const mainImage = item.main_image ? `http://localhost:5000${item.main_image}` : '/logoSAFARIA.png';
+  // Get images array - fallback to main_image if images array is empty
+  const images = item.images && item.images.length > 0 
+    ? item.images.map(img => `http://localhost:5000${img}`)
+    : item.main_image 
+      ? [`http://localhost:5000${item.main_image}`]
+      : ['/logoSAFARIA.png'];
+
+  const mainImage = images[0];
+  
+  // Check if item has 360 images
+  const has360Images = item.has360 || images360.length > 0;
 
   return (
     <div className="bg-sand-50 min-h-screen">
@@ -344,39 +358,42 @@ const UniversalDetailsPage = ({ type }) => {
       <div className="relative bg-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Main Image */}
+            {/* Image Gallery */}
             <div className="space-y-4">
+              {/* Main Gallery Swiper */}
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="relative rounded-2xl overflow-hidden shadow-2xl"
                 style={{ height: '500px' }}
               >
-                {/* Image */}
-                <img 
-                  src={mainImage}
-                  alt={item.name || item.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => { e.target.src = '/logoSAFARIA.png'; }}
-                />
+                <Swiper
+                  modules={[Navigation, Pagination, Thumbs]}
+                  navigation
+                  pagination={{ clickable: true }}
+                  thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+                  className="h-full w-full"
+                >
+                  {images.map((image, index) => (
+                    <SwiperSlide key={index}>
+                      <img 
+                        src={image}
+                        alt={`${item.name || item.title} - Image ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { e.target.src = '/logoSAFARIA.png'; }}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
                 
-                {/* 360° Launch Button - Large & Prominent */}
-                {images360.length > 0 && (
+                {/* 360° Launch Button - Only show if has360Images */}
+                {has360Images && (
                   <button
                     onClick={() => setShow360(true)}
-                    className="absolute inset-0 w-full h-full bg-black/40 hover:bg-black/60 transition-all flex items-center justify-center group"
+                    className="absolute bottom-4 right-4 z-20 bg-chefchaouen-500 hover:bg-chefchaouen-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all hover:scale-105"
                   >
-                    <div className="text-center">
-                      <motion.div
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                        className="bg-chefchaouen-500 hover:bg-chefchaouen-600 text-white p-6 rounded-full shadow-2xl mb-4 mx-auto w-24 h-24 flex items-center justify-center group-hover:scale-110 transition-transform"
-                      >
-                        <Camera className="w-12 h-12" />
-                      </motion.div>
-                      <div className="text-white text-2xl font-bold mb-2">{t(language, 'details.virtual360')}</div>
-                      <div className="text-white/90 text-sm">{t(language, 'details.clickToDiscover')}</div>
-                    </div>
+                    <Camera className="w-5 h-5" />
+                    <span className="font-semibold">{t(language, 'details.view360')}</span>
                   </button>
                 )}
                 
@@ -402,6 +419,30 @@ const UniversalDetailsPage = ({ type }) => {
                   </motion.button>
                 </div>
               </motion.div>
+
+              {/* Thumbnail Gallery - Only show if multiple images */}
+              {images.length > 1 && (
+                <Swiper
+                  modules={[Thumbs]}
+                  onSwiper={setThumbsSwiper}
+                  slidesPerView={4}
+                  spaceBetween={10}
+                  watchSlidesProgress
+                  className="rounded-xl overflow-hidden"
+                  style={{ height: '100px' }}
+                >
+                  {images.map((image, index) => (
+                    <SwiperSlide key={index} className="cursor-pointer">
+                      <img 
+                        src={image}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover rounded-lg hover:opacity-75 transition"
+                        onError={(e) => { e.target.src = '/logoSAFARIA.png'; }}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
             </div>
 
             {/* Details Column */}

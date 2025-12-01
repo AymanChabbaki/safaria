@@ -24,6 +24,7 @@ export const translations = {
       register: "S'inscrire",
       logout: 'Déconnexion',
       profile: 'Profil',
+      favorites: 'Mes Favoris',
       admin: 'Admin',
       dashboard: 'Tableau de bord',
     },
@@ -313,6 +314,75 @@ export const translations = {
       rights: 'Tous droits réservés',
     },
 
+    // Experiences Page
+    experiences: {
+      title: 'Nos Expériences',
+      subtitle: 'Découvrez l\'authenticité du Maroc à travers nos expériences uniques : artisanat local, séjours culturels et aventures dans le désert',
+      searchPlaceholder: 'Rechercher une expérience...',
+      categories: {
+        all: 'Tout',
+        artisan: 'Artisanat Local',
+        sejour: 'Séjours Culturels',
+        caravane: 'Caravanes Désert',
+      },
+      viewDetails: 'Voir les détails',
+      perNight: 'par nuit',
+      reviews: 'avis',
+      noResults: 'Aucune expérience trouvée',
+      noResultsDesc: 'Essayez de modifier vos filtres ou votre recherche',
+      resetFilters: 'Réinitialiser les filtres',
+      loading: 'Chargement des expériences...',
+    },
+
+    // Favorites Page
+    favorites: {
+      title: 'Mes Favoris',
+      subtitle: 'Vos expériences préférées',
+      empty: 'Aucun favori pour le moment',
+      emptyDesc: 'Commencez à explorer et ajoutez vos expériences favorites',
+      explore: 'Explorer les Expériences',
+    },
+
+    // Profile Page
+    profile: {
+      title: 'Mon Profil',
+      subtitle: 'Gérez vos informations personnelles et vos paramètres de sécurité',
+      tabs: {
+        personal: 'Informations Personnelles',
+        security: 'Sécurité',
+      },
+      editProfile: 'Modifier le Profil',
+      memberSince: 'Membre Depuis',
+      status: 'Statut',
+      active: 'Actif',
+      role: 'Rôle',
+      fields: {
+        name: 'Nom',
+        email: 'Email',
+        phone: 'Téléphone',
+        photo: 'Photo de profil',
+        currentPassword: 'Mot de passe actuel',
+        newPassword: 'Nouveau mot de passe',
+        confirmPassword: 'Confirmer le mot de passe',
+      },
+      emailReadonly: 'L\'adresse email ne peut pas être modifiée pour des raisons de sécurité',
+      changePhoto: 'Changer la photo',
+      passwordSecurity: 'Sécurité du Mot de Passe',
+      passwordSecurityDesc: 'Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester sécurisé',
+      passwordStrength: {
+        weak: 'Faible',
+        good: 'Bon',
+        strong: 'Fort',
+      },
+      passwordMatch: 'Les mots de passe correspondent',
+      passwordMismatch: 'Les mots de passe ne correspondent pas',
+      saveChanges: 'Enregistrer les Modifications',
+      cancel: 'Annuler',
+      updating: 'Mise à jour...',
+      updateSuccess: 'Profil mis à jour avec succès',
+      updateError: 'Erreur lors de la mise à jour',
+    },
+
     // Common
     common: {
       back: 'Retour',
@@ -352,6 +422,7 @@ export const translations = {
       register: 'Sign Up',
       logout: 'Logout',
       profile: 'Profile',
+      favorites: 'My Favorites',
       admin: 'Admin',
       dashboard: 'Dashboard',
     },
@@ -615,6 +686,75 @@ export const translations = {
       },
     },
 
+    // Experiences Page
+    experiences: {
+      title: 'Our Experiences',
+      subtitle: 'Discover the authenticity of Morocco through our unique experiences: local crafts, cultural stays and desert adventures',
+      searchPlaceholder: 'Search for an experience...',
+      categories: {
+        all: 'All',
+        artisan: 'Local Handicraft',
+        sejour: 'Cultural Stays',
+        caravane: 'Desert Caravans',
+      },
+      viewDetails: 'View details',
+      perNight: 'per night',
+      reviews: 'reviews',
+      noResults: 'No experiences found',
+      noResultsDesc: 'Try changing your filters or search',
+      resetFilters: 'Reset filters',
+      loading: 'Loading experiences...',
+    },
+
+    // Favorites Page
+    favorites: {
+      title: 'My Favorites',
+      subtitle: 'Your favorite experiences',
+      empty: 'No favorites yet',
+      emptyDesc: 'Start exploring and add your favorite experiences',
+      explore: 'Explore Experiences',
+    },
+
+    // Profile Page
+    profile: {
+      title: 'My Profile',
+      subtitle: 'Manage your personal information and security settings',
+      tabs: {
+        personal: 'Personal Information',
+        security: 'Security',
+      },
+      editProfile: 'Edit Profile',
+      memberSince: 'Member Since',
+      status: 'Status',
+      active: 'Active',
+      role: 'Role',
+      fields: {
+        name: 'Name',
+        email: 'Email',
+        phone: 'Phone',
+        photo: 'Profile photo',
+        currentPassword: 'Current password',
+        newPassword: 'New password',
+        confirmPassword: 'Confirm password',
+      },
+      emailReadonly: 'Email address cannot be changed for security reasons',
+      changePhoto: 'Change photo',
+      passwordSecurity: 'Password Security',
+      passwordSecurityDesc: 'Ensure your account is using a long, random password to stay secure',
+      passwordStrength: {
+        weak: 'Weak',
+        good: 'Good',
+        strong: 'Strong',
+      },
+      passwordMatch: 'Passwords match',
+      passwordMismatch: 'Passwords do not match',
+      saveChanges: 'Save Changes',
+      cancel: 'Cancel',
+      updating: 'Updating...',
+      updateSuccess: 'Profile updated successfully',
+      updateError: 'Error updating profile',
+    },
+
     footer: {
       description: 'Discover authentic Morocco through its artisans, cultural stays and desert caravans.',
       about: 'About',
@@ -669,6 +809,7 @@ export const translations = {
       register: 'التسجيل',
       logout: 'تسجيل الخروج',
       profile: 'الملف الشخصي',
+      favorites: 'المفضلة',
       admin: 'المسؤول',
       dashboard: 'لوحة التحكم',
     },
@@ -930,6 +1071,75 @@ export const translations = {
         contact: 'يمكنك الاتصال بنا على contact@safaria.ma أو على +212 6 00 00 00 00',
         location: 'تقع جميع أنشطتنا في مناطق مختلفة من المغرب. راجع الخريطة لرؤية المواقع.',
       },
+    },
+
+    // Experiences Page
+    experiences: {
+      title: 'تجاربنا',
+      subtitle: 'اكتشف أصالة المغرب من خلال تجاربنا الفريدة: الحرف المحلية والإقامات الثقافية ومغامرات الصحراء',
+      searchPlaceholder: 'البحث عن تجربة...',
+      categories: {
+        all: 'الكل',
+        artisan: 'الحرف المحلية',
+        sejour: 'الإقامات الثقافية',
+        caravane: 'قوافل الصحراء',
+      },
+      viewDetails: 'عرض التفاصيل',
+      perNight: 'لكل ليلة',
+      reviews: 'تقييم',
+      noResults: 'لم يتم العثور على تجارب',
+      noResultsDesc: 'حاول تغيير الفلاتر أو البحث',
+      resetFilters: 'إعادة تعيين الفلاتر',
+      loading: 'جاري تحميل التجارب...',
+    },
+
+    // Favorites Page
+    favorites: {
+      title: 'المفضلة',
+      subtitle: 'تجاربك المفضلة',
+      empty: 'لا توجد مفضلات حتى الآن',
+      emptyDesc: 'ابدأ الاستكشاف وأضف تجاربك المفضلة',
+      explore: 'استكشف التجارب',
+    },
+
+    // Profile Page
+    profile: {
+      title: 'ملفي الشخصي',
+      subtitle: 'إدارة معلوماتك الشخصية وإعدادات الأمان',
+      tabs: {
+        personal: 'المعلومات الشخصية',
+        security: 'الأمان',
+      },
+      editProfile: 'تعديل الملف الشخصي',
+      memberSince: 'عضو منذ',
+      status: 'الحالة',
+      active: 'نشط',
+      role: 'الدور',
+      fields: {
+        name: 'الاسم',
+        email: 'البريد الإلكتروني',
+        phone: 'الهاتف',
+        photo: 'صورة الملف الشخصي',
+        currentPassword: 'كلمة المرور الحالية',
+        newPassword: 'كلمة المرور الجديدة',
+        confirmPassword: 'تأكيد كلمة المرور',
+      },
+      emailReadonly: 'لا يمكن تغيير عنوان البريد الإلكتروني لأسباب أمنية',
+      changePhoto: 'تغيير الصورة',
+      passwordSecurity: 'أمان كلمة المرور',
+      passwordSecurityDesc: 'تأكد من أن حسابك يستخدم كلمة مرور طويلة وعشوائية للبقاء آمناً',
+      passwordStrength: {
+        weak: 'ضعيفة',
+        good: 'جيدة',
+        strong: 'قوية',
+      },
+      passwordMatch: 'كلمات المرور متطابقة',
+      passwordMismatch: 'كلمات المرور غير متطابقة',
+      saveChanges: 'حفظ التغييرات',
+      cancel: 'إلغاء',
+      updating: 'جاري التحديث...',
+      updateSuccess: 'تم تحديث الملف الشخصي بنجاح',
+      updateError: 'خطأ في تحديث الملف الشخصي',
     },
 
     footer: {

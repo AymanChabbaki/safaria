@@ -112,9 +112,16 @@ INSERT INTO caravanes (name, description, category, latitude, longitude, price, 
 -- Admin users for authentication
 -- Password: "admin123" (hashed with bcrypt)
 -- ============================================================
-INSERT INTO users (username, password_hash, role) VALUES
+INSERT INTO users (name, email, password, role) VALUES
 (
-    'admin',
+    'Admin User',
+    'admin@safaria.com',
+    '$2a$10$XQqy2Y8YqQyM6QZH0KqJF.8wN5VYxrYNvdGLUJ0NL7JHzZqZJ0X8G',
+    'admin'
+),
+(
+    'Rajae',
+    'rajae@safaria.com',
     '$2a$10$XQqy2Y8YqQyM6QZH0KqJF.8wN5VYxrYNvdGLUJ0NL7JHzZqZJ0X8G',
     'admin'
 );

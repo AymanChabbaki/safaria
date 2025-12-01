@@ -59,16 +59,30 @@ const getAllCaravanes = async (req, res) => {
             'SELECT * FROM caravanes ORDER BY created_at DESC'
         );
         
-        // Map data to correct language
-        const localizedCaravanes = caravanes.map(caravane => ({
-            ...caravane,
-            name: lang === 'ar' ? (caravane.name_ar || caravane.name) : 
-                  lang === 'en' ? (caravane.name_en || caravane.name) : 
-                  caravane.name,
-            description: lang === 'ar' ? (caravane.description_ar || caravane.description) : 
-                         lang === 'en' ? (caravane.description_en || caravane.description) : 
-                         caravane.description
-        }));
+        // Map data to correct language and parse images
+        const localizedCaravanes = caravanes.map(caravane => {
+            let parsedImages = [];
+            try {
+                if (caravane.images) {
+                    parsedImages = typeof caravane.images === 'string' 
+                        ? JSON.parse(caravane.images) 
+                        : caravane.images;
+                }
+            } catch (e) {
+                parsedImages = caravane.main_image ? [caravane.main_image] : [];
+            }
+            
+            return {
+                ...caravane,
+                images: parsedImages,
+                name: lang === 'ar' ? (caravane.name_ar || caravane.name) : 
+                      lang === 'en' ? (caravane.name_en || caravane.name) : 
+                      caravane.name,
+                description: lang === 'ar' ? (caravane.description_ar || caravane.description) : 
+                             lang === 'en' ? (caravane.description_en || caravane.description) : 
+                             caravane.description
+            };
+        });
         
         return sendSuccess(res, localizedCaravanes, 'Caravanes retrieved successfully');
     } catch (error) {
@@ -102,6 +116,19 @@ const getCaravaneById = async (req, res) => {
             ['caravane', id]
         );
         
+        // Parse images JSON array
+        let parsedImages = [];
+        try {
+            if (caravane[0].images) {
+                parsedImages = typeof caravane[0].images === 'string' 
+                    ? JSON.parse(caravane[0].images) 
+                    : caravane[0].images;
+            }
+        } catch (e) {
+            console.warn('Failed to parse images JSON:', e);
+            parsedImages = caravane[0].main_image ? [caravane[0].main_image] : [];
+        }
+        
         // Localize the data
         const localizedCaravane = {
             ...caravane[0],
@@ -115,7 +142,9 @@ const getCaravaneById = async (req, res) => {
         
         const result = {
             ...localizedCaravane,
-            images_360: images
+            images: parsedImages,
+            images_360: images,
+            has360: images.length > 0
         };
         
         return sendSuccess(res, result, 'Caravane retrieved successfully');

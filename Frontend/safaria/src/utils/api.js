@@ -618,8 +618,33 @@ export const getCurrentUser = () => {
   return userStr ? JSON.parse(userStr) : null;
 };
 
+/**
+ * Update user profile
+ * @param {FormData} formData - Form data with name, phone, photo
+ * @returns {Promise} Updated user data
+ */
+export const updateProfile = async (formData) => {
+  try {
+    const response = await api.put('/api/auth/profile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    
+    // Update user in localStorage
+    if (response.data?.user) {
+      localStorage.setItem('safaria_user', JSON.stringify(response.data.user));
+    }
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    throw error;
+  }
+};
+
 // ============================================================
-// ORGANIZED API EXPORTS
+// EXPORTS
 // ============================================================
 export default {
   // Axios instance
@@ -632,7 +657,8 @@ export default {
     logout,
     verifyToken,
     isAuthenticated,
-    getCurrentUser
+    getCurrentUser,
+    updateProfile
   },
   
   // Artisans

@@ -59,16 +59,30 @@ const getAllSejours = async (req, res) => {
             'SELECT * FROM sejours ORDER BY created_at DESC'
         );
         
-        // Map data to correct language
-        const localizedSejours = sejours.map(sejour => ({
-            ...sejour,
-            name: lang === 'ar' ? (sejour.name_ar || sejour.name) : 
-                  lang === 'en' ? (sejour.name_en || sejour.name) : 
-                  sejour.name,
-            description: lang === 'ar' ? (sejour.description_ar || sejour.description) : 
-                         lang === 'en' ? (sejour.description_en || sejour.description) : 
-                         sejour.description
-        }));
+        // Map data to correct language and parse images
+        const localizedSejours = sejours.map(sejour => {
+            let parsedImages = [];
+            try {
+                if (sejour.images) {
+                    parsedImages = typeof sejour.images === 'string' 
+                        ? JSON.parse(sejour.images) 
+                        : sejour.images;
+                }
+            } catch (e) {
+                parsedImages = sejour.main_image ? [sejour.main_image] : [];
+            }
+            
+            return {
+                ...sejour,
+                images: parsedImages,
+                name: lang === 'ar' ? (sejour.name_ar || sejour.name) : 
+                      lang === 'en' ? (sejour.name_en || sejour.name) : 
+                      sejour.name,
+                description: lang === 'ar' ? (sejour.description_ar || sejour.description) : 
+                             lang === 'en' ? (sejour.description_en || sejour.description) : 
+                             sejour.description
+            };
+        });
         
         return sendSuccess(res, localizedSejours, 'Sejours retrieved successfully');
     } catch (error) {
@@ -102,6 +116,19 @@ const getSejourById = async (req, res) => {
             ['sejour', id]
         );
         
+        // Parse images JSON array
+        let parsedImages = [];
+        try {
+            if (sejour[0].images) {
+                parsedImages = typeof sejour[0].images === 'string' 
+                    ? JSON.parse(sejour[0].images) 
+                    : sejour[0].images;
+            }
+        } catch (e) {
+            console.warn('Failed to parse images JSON:', e);
+            parsedImages = sejour[0].main_image ? [sejour[0].main_image] : [];
+        }
+        
         // Localize the data
         const localizedSejour = {
             ...sejour[0],
@@ -115,7 +142,9 @@ const getSejourById = async (req, res) => {
         
         const result = {
             ...localizedSejour,
-            images_360: images
+            images: parsedImages,
+            images_360: images,
+            has360: images.length > 0
         };
         
         return sendSuccess(res, result, 'Sejour retrieved successfully');
