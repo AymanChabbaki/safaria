@@ -1,59 +1,191 @@
 {
   "fr": {
-    "greeting": "Bonjour ! Comment puis-je vous aider aujourd'hui ?",
+    "greeting": "Bonjour et bienvenue sur SAFARIA ! Je suis votre assistant virtuel expert du tourisme marocain.\n\nJe peux vous aider avec :\n• Itinéraires et destinations au Maroc\n• Artisanat traditionnel marocain\n• Séjours authentiques et caravanes\n• Réservations et paiements\n• Conseils de voyage et culture\n\nChoisissez une catégorie ci-dessous ou posez-moi votre question !",
+    
     "itineraries": {
-      "question": "Comment créer un itinéraire ?",
-      "answer": "Pour créer un itinéraire personnalisé :\n\n1. Explorez la carte interactive pour découvrir nos artisans, séjours et caravanes\n2. Sélectionnez vos destinations préférées\n3. Réservez directement en ligne\n4. Nous vous enverrons un itinéraire détaillé par email\n\nBesoin d'aide ? Contactez-nous : contact@safaria.ma"
+      "question": "Itinéraires personnalisés",
+      "answer": "Créez votre aventure marocaine sur mesure !\n\nCOMMENT PROCÉDER :\n1. Explorez notre carte interactive\n2. Découvrez artisans, riads et caravanes\n3. Ajoutez vos favoris\n4. Réservez en quelques clics\n5. Recevez votre itinéraire détaillé par email\n\nITINÉRAIRES POPULAIRES :\n• Circuit Impérial : Marrakech → Fès → Meknès → Rabat (7 jours)\n• Désert & Kasbahs : Ouarzazate → Merzouga → Todra (5 jours)\n• Nord Authentique : Chefchaouen → Tanger → Tétouan (4 jours)\n• Sud Berbère : Atlas → Vallées → Villages (6 jours)\n\nBesoin d'aide ? contact@safaria.ma"
     },
+    
+    "destinations": {
+      "question": "Destinations populaires",
+      "answer": "DÉCOUVREZ LE MAROC AUTHENTIQUE\n\nVILLES IMPÉRIALES :\n• Marrakech : Médina, Jemaa el-Fna, Jardins Majorelle\n• Fès : Plus grande médina du monde, tanneries\n• Meknès : Bab Mansour, écuries royales\n• Rabat : Hassan Tower, Kasbah des Oudayas\n\nDÉSERT & SUD :\n• Merzouga : Dunes de l'Erg Chebbi, nuit en bivouac\n• Zagora : Vallée du Drâa, palmeraies\n• Ouarzazate : Hollywood du Maroc, kasbahs\n\nMONTAGNES :\n• Atlas : Villages berbères, randonnées\n• Ifrane : Suisse marocaine, cèdres\n• Chefchaouen : Perle bleue du Rif\n\nCÔTES :\n• Essaouira : Plages, médina fortifiée\n• Agadir : Station balnéaire moderne\n• Tanger : Porte de l'Afrique"
+    },
+    
+    "artisanat": {
+      "question": "Artisanat marocain",
+      "answer": "L'ARTISANAT MAROCAIN - PATRIMOINE MILLÉNAIRE\n\nCÉRAMIQUE & POTERIE :\n• Fès : Céramique bleue de Fès, zelliges\n• Safi : Poterie traditionnelle\n• Techniques ancestrales transmises de père en fils\n\nTEXTILE & TISSAGE :\n• Tapis berbères : Beni Ouarain, Azilal, Boucherouite\n• Djellabas et caftans brodés main\n• Coussins et couvertures en laine\n\nTRAVAIL DU BOIS :\n• Marqueterie de Essaouira (thuya)\n• Moucharabiehs sculptés\n• Portes et meubles traditionnels\n\nBIJOUX & MÉTAUX :\n• Argent berbère, colliers, bracelets\n• Lanternes en cuivre martelé\n• Théières et plateaux ciselés\n\nARTISANS SUR SAFARIA :\nRencontrez nos artisans certifiés, visitez leurs ateliers, achetez directement et soutenez l'artisanat local !"
+    },
+    
+    "sejours": {
+      "question": "Séjours authentiques",
+      "answer": "HÉBERGEMENTS AUTHENTIQUES AU MAROC\n\nRIADS TRADITIONNELS :\n• Maisons marocaines avec patio central\n• Architecture traditionnelle préservée\n• Petit-déjeuner sur la terrasse panoramique\n• Hammam privé dans certains établissements\n\nKASBAHS & AUBERGES :\n• Kasbahs en terre restaurées\n• Auberges berbères en montagne\n• Chambres d'hôtes chez l'habitant\n• Expérience culturelle immersive\n\nSERVICES INCLUS :\n• Accueil chaleureux marocain\n• Cuisine traditionnelle authentique\n• Wi-Fi et confort moderne\n• Conseils locaux et excursions\n• Transferts possibles\n\nTARIFS : À partir de 300 DH/nuit\nDisponibles dans toutes les régions\nRéservation sécurisée en ligne"
+    },
+    
+    "caravanes": {
+      "question": "Caravanes & Désert",
+      "answer": "EXPÉDITIONS DANS LE DÉSERT MAROCAIN\n\nCIRCUITS DISPONIBLES :\n\n1. MERZOUGA CLASSIQUE (2 jours/1 nuit)\n• Départ de Merzouga\n• Randonnée chamelière au coucher du soleil\n• Nuit en bivouac luxueux\n• Lever de soleil sur les dunes\n• À partir de 800 DH/pers\n\n2. GRAND TOUR DÉSERT (3 jours/2 nuits)\n• Erg Chebbi + Erg Chigaga\n• Villages nomades berbères\n• Oasis et palmeraies\n• Musique traditionnelle gnaoua\n• À partir de 1500 DH/pers\n\n3. AVENTURE INTÉGRALE (5 jours/4 nuits)\n• Vallée du Dadès + Todra\n• Kasbahs historiques\n• Trek chameliers prolongé\n• Rencontres avec nomades\n• À partir de 3500 DH/pers\n\nINCLUS :\n• Guide berbère expérimenté\n• Tous les repas (cuisine du désert)\n• Tente berbère confortable\n• Dromadaires\n• Thé à la menthe illimité\n• Musique autour du feu"
+    },
+    
+    "culture": {
+      "question": "Culture & Traditions",
+      "answer": "CULTURE MAROCAINE - GUIDE ESSENTIEL\n\nSAVOIR-VIVRE :\n• Salutation : \"Salam Aleikoum\" (paix sur vous)\n• Hospitalité sacrée : thé à la menthe offert\n• Retirer chaussures avant d'entrer dans une maison\n• Main droite pour manger et saluer\n• Photos : demander permission\n\nGASTRONOMIE :\n• Tajine : plat mijoté aux épices\n• Couscous : vendredi tradition familiale\n• Pastilla : feuilleté sucré-salé\n• Harira : soupe traditionnelle\n• Pâtisseries : cornes de gazelle, chebakia\n\nFESTIVITÉS :\n• Ramadan : mois sacré, rythme adapté\n• Aïd el-Fitr : fin du Ramadan\n• Aïd el-Adha : fête du sacrifice\n• Moussems : fêtes locales et pèlerinages\n\nLANGUES :\n• Arabe dialectal (darija)\n• Berbère (amazigh)\n• Français largement parlé\n• Anglais dans zones touristiques\n\nBON À SAVOIR :\n• Monnaie : Dirham marocain (MAD/DH)\n• Pourboire : 10% apprécié\n• Marchandage : tradition dans les souks"
+    },
+    
+    "conseils": {
+      "question": "Conseils pratiques",
+      "answer": "CONSEILS PRATIQUES POUR VOTRE VOYAGE\n\nAVANT DE PARTIR :\n• Passeport valide 6 mois minimum\n• Pas de visa pour séjours < 90 jours (UE, USA, Canada)\n• Assurance voyage recommandée\n• Vaccins : aucun obligatoire, mise à jour conseillée\n\nVALISE IDÉALE :\n• Vêtements légers et respirants\n• Tenue couvrante pour sites religieux\n• Chapeau et lunettes de soleil\n• Crème solaire haute protection\n• Adapter électrique (prises européennes)\n• Médicaments personnels\n\nMEILLEURE PÉRIODE :\n• Printemps (mars-mai) : températures agréables\n• Automne (sept-nov) : idéal pour visiter\n• Été : très chaud, parfait pour la côte\n• Hiver : doux, ski possible dans l'Atlas\n\nBUDGET QUOTIDIEN :\n• Routard : 300-500 DH/jour\n• Confort : 800-1200 DH/jour\n• Luxe : 2000+ DH/jour\n\nCONNECTIVITÉ :\n• Carte SIM locale : Maroc Telecom, Orange, Inwi\n• Wi-Fi : disponible dans la plupart des hébergements\n• Applications utiles : Maps.me, Google Translate\n\nSÉCURITÉ :\n• Maroc = destination sûre\n• Gardez objets de valeur en sécurité\n• Évitez zones isolées la nuit\n• Police touristique disponible 24/7"
+    },
+    
     "payment": {
-      "question": "Méthodes de paiement",
-      "answer": "Nous acceptons plusieurs modes de paiement :\n\n• Cartes bancaires (Visa, Mastercard)\n• Virement bancaire\n• Paiement à la livraison (pour l'artisanat)\n• PayPal\n\nTous les paiements sont sécurisés et cryptés. Vous recevrez une confirmation par email après chaque transaction."
+      "question": "Paiement & Réservation",
+      "answer": "MODES DE PAIEMENT SÉCURISÉS\n\nCARTES BANCAIRES :\n• Visa, Mastercard, American Express\n• Paiement 3D Secure\n• Cryptage SSL 256 bits\n• Aucun frais supplémentaire\n\nAUTRES OPTIONS :\n• Virement bancaire SEPA\n• PayPal (frais 2,9%)\n• Carte prépayée\n• Paiement à la livraison (artisanat uniquement)\n\nPROCESSUS DE RÉSERVATION :\n1. Sélectionnez votre expérience\n2. Choisissez dates et nombre de personnes\n3. Remplissez vos informations\n4. Paiement sécurisé\n5. Confirmation immédiate par email\n6. E-billet et voucher envoyés\n\nTARIFICATION TRANSPARENTE :\n• Prix affichés = prix final TTC\n• Pas de frais cachés\n• Acompte 30% possible pour séjours > 5 jours\n• Paiement en plusieurs fois dès 500 DH\n\nGARANTIE SAFARIA :\n• Paiement 100% sécurisé\n• Meilleur prix garanti\n• Service client réactif\n• Protection des données RGPD"
     },
+    
     "cancellation": {
-      "question": "Politique d'annulation",
-      "answer": "Notre politique d'annulation :\n\n• Annulation gratuite jusqu'à 7 jours avant la date prévue\n• Remboursement partiel (50%) entre 3-7 jours avant\n• Pas de remboursement moins de 3 jours avant\n\nPour annuler, connectez-vous à votre compte et accédez à 'Mes Réservations'."
+      "question": "Annulation & Remboursement",
+      "answer": "POLITIQUE D'ANNULATION FLEXIBLE\n\nCONDITIONS GÉNÉRALES :\n\nANNULATION GRATUITE :\n• Plus de 14 jours avant : remboursement intégral 100%\n• Entre 7-14 jours : remboursement 75%\n• Entre 3-7 jours : remboursement 50%\n• Moins de 3 jours : non remboursable\n\nEXCEPTIONS :\n• Caravanes désert : annulation 21 jours minimum\n• Périodes haute saison (Pâques, été) : conditions strictes\n• Événements spéciaux : politique spécifique\n\nANNULATION JUSTIFIÉE :\n• Maladie grave avec certificat médical : 100%\n• Décès proche famille : 100%\n• Catastrophe naturelle : report ou remboursement\n• Fermeture frontières : report ou remboursement\n\nPROCÉDURE :\n1. Connectez-vous à votre compte SAFARIA\n2. Accédez à \"Mes Réservations\"\n3. Cliquez sur \"Annuler\"\n4. Remplissez le formulaire\n5. Confirmation sous 48h\n6. Remboursement sous 7-10 jours\n\nMODALITÉS DE REMBOURSEMENT :\n• Carte bancaire : 7-10 jours ouvrés\n• Virement : 5-7 jours ouvrés\n• Avoir SAFARIA : immédiat (bonus 10%)\n\nBESOIN D'AIDE ? \nContact : +212 6 00 00 00 00\nEmail : cancellation@safaria.ma"
     },
+    
     "contact": {
       "question": "Nous contacter",
-      "answer": "Nous sommes là pour vous aider !\n\nEmail : contact@safaria.ma\nTéléphone : +212 6 00 00 00 00\nAdresse : Marrakech, Maroc\n\nDisponible du lundi au samedi, 9h-18h"
+      "answer": "SERVICE CLIENT SAFARIA\n\nASSISTANCE DISPONIBLE 7J/7\n\nEMAIL :\n• Général : contact@safaria.ma\n• Réservations : booking@safaria.ma\n• Support : support@safaria.ma\n• Partenariats : partners@safaria.ma\n\nTÉLÉPHONE :\n• Maroc : +212 5 24 00 00 00\n• International : +212 6 00 00 00 00\n• WhatsApp : +212 6 00 00 00 00\n• Urgence 24/7 : +212 6 99 99 99 99\n\nBUREAUX :\nMARRAKECH (Siège) :\nQuartier Guéliz\n40000 Marrakech, Maroc\nLun-Sam : 9h00-19h00\n\nCASABLANCA :\nBoulevard Zerktouni\n20000 Casablanca\nLun-Ven : 9h00-18h00\n\nFÈS :\nMédina, Bab Boujloud\n30000 Fès\nLun-Sam : 10h00-18h00\n\nRÉSEAUX SOCIAUX :\n• Facebook : @SafariaMaroc\n• Instagram : @safaria.morocco\n• Twitter : @SafariaTravel\n• TikTok : @safaria_maroc\n\nTEMPS DE RÉPONSE :\n• Chat en ligne : instantané\n• Email : < 4 heures\n• Téléphone : < 2 minutes\n• WhatsApp : < 30 minutes"
+    },
+    
+    "weather": {
+      "question": "Météo & Climat",
+      "answer": "CLIMAT MAROCAIN - GUIDE MENSUEL\n\nPAR SAISON :\n\nPRINTEMPS (Mars-Mai) :\n• Températures : 18-28°C\n• Idéal pour : visites, randonnées, villes\n• Floraison des jardins\n• Peu de touristes en mars-avril\n\nÉTÉ (Juin-Août) :\n• Côte : 25-30°C, agréable\n• Marrakech : 35-42°C, très chaud\n• Désert : 40-48°C, extrême\n• Meilleur pour : plages, montagnes\n\nAUTOMNE (Sept-Nov) :\n• Températures : 20-30°C\n• MEILLEURE PÉRIODE pour tout\n• Haute saison touristique\n• Réserver à l'avance\n\nHIVER (Déc-Fév) :\n• Sud : 15-22°C, doux\n• Nord : 10-18°C, frais\n• Montagnes : neige, ski possible\n• Tarifs attractifs\n\nPAR RÉGION :\n• Côte Atlantique : tempéré toute l'année\n• Villes impériales : chaud l'été\n• Désert : amplitude thermique forte\n• Montagnes : froid la nuit\n\nRECOMMANDATIONS :\n• Crème solaire indispensable\n• Lunettes de soleil\n• Vêtements respirants\n• Pull pour soirées (même l'été)"
+    },
+    
+    "activities": {
+      "question": "Activités & Excursions",
+      "answer": "ACTIVITÉS INCONTOURNABLES AU MAROC\n\nAVENTURE & NATURE :\n• Randonnée Atlas : Toubkal 4167m\n• Surf à Taghazout & Essaouira\n• Quad dans le désert de Merzouga\n• Ski à Oukaïmeden (déc-mars)\n• Canyoning vallées de l'Atlas\n• VTT montagnes berbères\n\nEXPÉRIENCES AUTHENTIQUES :\n• Méharée dans le Sahara\n• Nuit en bivouac sous les étoiles\n• Cours de cuisine marocaine\n• Atelier poterie à Fès\n• Hammam traditionnel\n• Spectacle fantasia\n\nCULTURE & PATRIMOINE :\n• Visite guidée médinas\n• Souks et marchés berbères\n• Sites UNESCO (9 au Maroc)\n• Musées et palais\n• Festivals locaux\n• Rencontre avec artisans\n\nDÉTENTE & BIEN-ÊTRE :\n• Hammam & spa marocain\n• Yoga retraites\n• Thalassothérapie côte\n• Golf (meilleurs parcours d'Afrique)\n• Plages paradisiaques\n\nEN FAMILLE :\n• Jardins Majorelle Marrakech\n• Vallée des Singes Azrou\n• Aquaparcs\n• Balades à dos d'âne\n• Ateliers pour enfants\n\nTARIFS MOYENS :\n• Excursion journée : 400-800 DH\n• Randonnée guidée : 300-600 DH\n• Cours cuisine : 400-600 DH\n• Hammam : 100-300 DH"
     }
   },
   "en": {
-    "greeting": "Hello! How can I help you today?",
+    "greeting": "Welcome to SAFARIA! I'm your virtual assistant and Moroccan tourism expert.\n\nI can help you with:\n• Itineraries and destinations in Morocco\n• Traditional Moroccan crafts\n• Authentic stays and caravans\n• Bookings and payments\n• Travel tips and culture\n\nChoose a category below or ask me your question!",
+    
     "itineraries": {
-      "question": "How to create an itinerary?",
-      "answer": "To create a personalized itinerary:\n\n1. Explore the interactive map to discover our artisans, stays, and caravans\n2. Select your favorite destinations\n3. Book directly online\n4. We'll send you a detailed itinerary by email\n\nNeed help? Contact us: contact@safaria.ma"
+      "question": "Personalized itineraries",
+      "answer": "Create your custom Moroccan adventure!\n\nHOW TO PROCEED:\n1. Explore our interactive map\n2. Discover artisans, riads and caravans\n3. Add your favorites\n4. Book in a few clicks\n5. Receive detailed itinerary by email\n\nPOPULAR ROUTES:\n• Imperial Circuit: Marrakech → Fez → Meknes → Rabat (7 days)\n• Desert & Kasbahs: Ouarzazate → Merzouga → Todra (5 days)\n• Authentic North: Chefchaouen → Tangier → Tetouan (4 days)\n• Berber South: Atlas → Valleys → Villages (6 days)\n\nNeed help? contact@safaria.ma"
     },
+    
+    "destinations": {
+      "question": "Popular destinations",
+      "answer": "DISCOVER AUTHENTIC MOROCCO\n\nIMPERIAL CITIES:\n• Marrakech: Medina, Jemaa el-Fna, Majorelle Gardens\n• Fez: World's largest medina, tanneries\n• Meknes: Bab Mansour, royal stables\n• Rabat: Hassan Tower, Kasbah of the Oudayas\n\nDESERT & SOUTH:\n• Merzouga: Erg Chebbi dunes, night in camp\n• Zagora: Draa Valley, palm groves\n• Ouarzazate: Hollywood of Morocco, kasbahs\n\nMOUNTAINS:\n• Atlas: Berber villages, hiking\n• Ifrane: Moroccan Switzerland, cedars\n• Chefchaouen: Blue Pearl of the Rif\n\nCOASTS:\n• Essaouira: Beaches, fortified medina\n• Agadir: Modern seaside resort\n• Tangier: Gateway to Africa"
+    },
+    
+    "artisanat": {
+      "question": "Moroccan crafts",
+      "answer": "MOROCCAN CRAFTS - MILLENNIAL HERITAGE\n\nCERAMICS & POTTERY:\n• Fez: Blue Fez ceramics, zellij tiles\n• Safi: Traditional pottery\n• Ancestral techniques passed down generations\n\nTEXTILE & WEAVING:\n• Berber rugs: Beni Ouarain, Azilal, Boucherouite\n• Hand-embroidered djellabas and caftans\n• Wool cushions and blankets\n\nWOODWORK:\n• Essaouira marquetry (thuya)\n• Carved moucharabiehs\n• Traditional doors and furniture\n\nJEWELRY & METALS:\n• Berber silver, necklaces, bracelets\n• Hammered copper lanterns\n• Chiseled teapots and trays\n\nARTISANS ON SAFARIA:\nMeet our certified artisans, visit their workshops, buy directly and support local crafts!"
+    },
+    
+    "sejours": {
+      "question": "Authentic stays",
+      "answer": "AUTHENTIC ACCOMMODATIONS IN MOROCCO\n\nTRADITIONAL RIADS:\n• Moroccan houses with central patio\n• Preserved traditional architecture\n• Breakfast on panoramic terrace\n• Private hammam in some establishments\n\nKASBAHS & INNS:\n• Restored earth kasbahs\n• Berber mountain inns\n• Guest houses with locals\n• Immersive cultural experience\n\nSERVICES INCLUDED:\n• Warm Moroccan welcome\n• Authentic traditional cuisine\n• Wi-Fi and modern comfort\n• Local advice and excursions\n• Transfers available\n\nRATES: From 300 DH/night\nAvailable in all regions\nSecure online booking"
+    },
+    
+    "caravanes": {
+      "question": "Caravans & Desert",
+      "answer": "EXPEDITIONS IN THE MOROCCAN DESERT\n\nAVAILABLE TOURS:\n\n1. CLASSIC MERZOUGA (2 days/1 night)\n• Departure from Merzouga\n• Camel trek at sunset\n• Night in luxury camp\n• Sunrise over dunes\n• From 800 DH/person\n\n2. GRAND DESERT TOUR (3 days/2 nights)\n• Erg Chebbi + Erg Chigaga\n• Berber nomad villages\n• Oases and palm groves\n• Traditional gnaoua music\n• From 1500 DH/person\n\n3. FULL ADVENTURE (5 days/4 nights)\n• Dades Valley + Todra\n• Historic kasbahs\n• Extended camel trek\n• Meet with nomads\n• From 3500 DH/person\n\nINCLUDED:\n• Experienced Berber guide\n• All meals (desert cuisine)\n• Comfortable Berber tent\n• Camels\n• Unlimited mint tea\n• Music around the fire"
+    },
+    
+    "culture": {
+      "question": "Culture & Traditions",
+      "answer": "MOROCCAN CULTURE - ESSENTIAL GUIDE\n\nETIQUETTE:\n• Greeting: \"Salam Aleikoum\" (peace be upon you)\n• Sacred hospitality: mint tea offered\n• Remove shoes before entering home\n• Right hand for eating and greeting\n• Photos: ask permission\n\nGASTRONOMY:\n• Tajine: slow-cooked spiced dish\n• Couscous: Friday family tradition\n• Pastilla: sweet and savory pastry\n• Harira: traditional soup\n• Pastries: gazelle horns, chebakia\n\nFESTIVITIES:\n• Ramadan: sacred month, adapted rhythm\n• Eid al-Fitr: end of Ramadan\n• Eid al-Adha: feast of sacrifice\n• Moussems: local festivals and pilgrimages\n\nLANGUAGES:\n• Dialectal Arabic (darija)\n• Berber (amazigh)\n• French widely spoken\n• English in tourist areas\n\nGOOD TO KNOW:\n• Currency: Moroccan Dirham (MAD/DH)\n• Tip: 10% appreciated\n• Bargaining: tradition in souks"
+    },
+    
+    "conseils": {
+      "question": "Practical tips",
+      "answer": "PRACTICAL TIPS FOR YOUR TRIP\n\nBEFORE DEPARTURE:\n• Valid passport 6 months minimum\n• No visa for stays < 90 days (EU, USA, Canada)\n• Travel insurance recommended\n• Vaccines: none required, update advised\n\nIDEAL LUGGAGE:\n• Light and breathable clothing\n• Covering outfit for religious sites\n• Hat and sunglasses\n• High protection sunscreen\n• Electric adapter (European plugs)\n• Personal medications\n\nBEST SEASON:\n• Spring (Mar-May): pleasant temperatures\n• Fall (Sep-Nov): ideal for visiting\n• Summer: very hot, perfect for coast\n• Winter: mild, skiing possible in Atlas\n\nDAILY BUDGET:\n• Backpacker: 300-500 DH/day\n• Comfort: 800-1200 DH/day\n• Luxury: 2000+ DH/day\n\nCONNECTIVITY:\n• Local SIM: Maroc Telecom, Orange, Inwi\n• Wi-Fi: available in most accommodations\n• Useful apps: Maps.me, Google Translate\n\nSAFETY:\n• Morocco = safe destination\n• Keep valuables secure\n• Avoid isolated areas at night\n• Tourist police available 24/7"
+    },
+    
     "payment": {
-      "question": "Payment Methods",
-      "answer": "We accept several payment methods:\n\n• Credit cards (Visa, Mastercard)\n• Bank transfer\n• Cash on delivery (for handicrafts)\n• PayPal\n\nAll payments are secure and encrypted. You'll receive an email confirmation after each transaction."
+      "question": "Payment & Booking",
+      "answer": "SECURE PAYMENT METHODS\n\nCREDIT CARDS:\n• Visa, Mastercard, American Express\n• 3D Secure payment\n• 256-bit SSL encryption\n• No extra fees\n\nOTHER OPTIONS:\n• SEPA bank transfer\n• PayPal (2.9% fee)\n• Prepaid card\n• Cash on delivery (crafts only)\n\nBOOKING PROCESS:\n1. Select your experience\n2. Choose dates and number of people\n3. Fill in your information\n4. Secure payment\n5. Instant email confirmation\n6. E-ticket and voucher sent\n\nTRANSPARENT PRICING:\n• Displayed prices = final prices incl. tax\n• No hidden fees\n• 30% deposit possible for stays > 5 days\n• Installment payment from 500 DH\n\nSAFARIA GUARANTEE:\n• 100% secure payment\n• Best price guaranteed\n• Responsive customer service\n• GDPR data protection"
     },
+    
     "cancellation": {
-      "question": "Cancellation Policy",
-      "answer": "Our cancellation policy:\n\n• Free cancellation up to 7 days before scheduled date\n• Partial refund (50%) between 3-7 days before\n• No refund less than 3 days before\n\nTo cancel, log into your account and go to 'My Reservations'."
+      "question": "Cancellation & Refund",
+      "answer": "FLEXIBLE CANCELLATION POLICY\n\nGENERAL CONDITIONS:\n\nFREE CANCELLATION:\n• More than 14 days before: 100% refund\n• Between 7-14 days: 75% refund\n• Between 3-7 days: 50% refund\n• Less than 3 days: non-refundable\n\nEXCEPTIONS:\n• Desert caravans: 21 days minimum cancellation\n• High season (Easter, summer): strict conditions\n• Special events: specific policy\n\nJUSTIFIED CANCELLATION:\n• Serious illness with medical certificate: 100%\n• Death of close family: 100%\n• Natural disaster: postponement or refund\n• Border closure: postponement or refund\n\nPROCEDURE:\n1. Log into your SAFARIA account\n2. Go to \"My Reservations\"\n3. Click \"Cancel\"\n4. Fill out form\n5. Confirmation within 48h\n6. Refund within 7-10 days\n\nREFUND TERMS:\n• Credit card: 7-10 business days\n• Transfer: 5-7 business days\n• SAFARIA credit: immediate (10% bonus)\n\nNEED HELP?\nContact: +212 6 00 00 00 00\nEmail: cancellation@safaria.ma"
     },
+    
     "contact": {
-      "question": "Contact Us",
-      "answer": "We're here to help!\n\nEmail: contact@safaria.ma\nPhone: +212 6 00 00 00 00\nAddress: Marrakech, Morocco\n\nAvailable Monday to Saturday, 9am-6pm"
+      "question": "Contact us",
+      "answer": "SAFARIA CUSTOMER SERVICE\n\nASSISTANCE AVAILABLE 7/7\n\nEMAIL:\n• General: contact@safaria.ma\n• Bookings: booking@safaria.ma\n• Support: support@safaria.ma\n• Partnerships: partners@safaria.ma\n\nPHONE:\n• Morocco: +212 5 24 00 00 00\n• International: +212 6 00 00 00 00\n• WhatsApp: +212 6 00 00 00 00\n• Emergency 24/7: +212 6 99 99 99 99\n\nOFFICES:\nMARRAKECH (Headquarters):\nGueliz District\n40000 Marrakech, Morocco\nMon-Sat: 9am-7pm\n\nCASABLANCA:\nBoulevard Zerktouni\n20000 Casablanca\nMon-Fri: 9am-6pm\n\nFEZ:\nMedina, Bab Boujloud\n30000 Fez\nMon-Sat: 10am-6pm\n\nSOCIAL MEDIA:\n• Facebook: @SafariaMaroc\n• Instagram: @safaria.morocco\n• Twitter: @SafariaTravel\n• TikTok: @safaria_maroc\n\nRESPONSE TIME:\n• Online chat: instant\n• Email: < 4 hours\n• Phone: < 2 minutes\n• WhatsApp: < 30 minutes"
+    },
+    
+    "weather": {
+      "question": "Weather & Climate",
+      "answer": "MOROCCAN CLIMATE - MONTHLY GUIDE\n\nBY SEASON:\n\nSPRING (Mar-May):\n• Temperatures: 18-28°C\n• Ideal for: visits, hiking, cities\n• Garden blooming\n• Few tourists in Mar-Apr\n\nSUMMER (Jun-Aug):\n• Coast: 25-30°C, pleasant\n• Marrakech: 35-42°C, very hot\n• Desert: 40-48°C, extreme\n• Best for: beaches, mountains\n\nFALL (Sep-Nov):\n• Temperatures: 20-30°C\n• BEST PERIOD for everything\n• High tourist season\n• Book in advance\n\nWINTER (Dec-Feb):\n• South: 15-22°C, mild\n• North: 10-18°C, cool\n• Mountains: snow, skiing possible\n• Attractive rates\n\nBY REGION:\n• Atlantic Coast: temperate year-round\n• Imperial cities: hot in summer\n• Desert: strong temperature amplitude\n• Mountains: cold at night\n\nRECOMMENDATIONS:\n• Sunscreen essential\n• Sunglasses\n• Breathable clothing\n• Sweater for evenings (even summer)"
+    },
+    
+    "activities": {
+      "question": "Activities & Excursions",
+      "answer": "MUST-DO ACTIVITIES IN MOROCCO\n\nADVENTURE & NATURE:\n• Atlas hiking: Toubkal 4167m\n• Surfing in Taghazout & Essaouira\n• Quad in Merzouga desert\n• Skiing in Oukaimeden (Dec-Mar)\n• Canyoning Atlas valleys\n• Mountain biking Berber mountains\n\nAUTHENTIC EXPERIENCES:\n• Camel trek in Sahara\n• Night in camp under stars\n• Moroccan cooking class\n• Pottery workshop in Fez\n• Traditional hammam\n• Fantasia show\n\nCULTURE & HERITAGE:\n• Guided medina tours\n• Souks and Berber markets\n• UNESCO sites (9 in Morocco)\n• Museums and palaces\n• Local festivals\n• Meet with artisans\n\nRELAXATION & WELLNESS:\n• Hammam & Moroccan spa\n• Yoga retreats\n• Thalassotherapy coast\n• Golf (best courses in Africa)\n• Paradise beaches\n\nFAMILY:\n• Majorelle Gardens Marrakech\n• Monkey Valley Azrou\n• Water parks\n• Donkey rides\n• Children's workshops\n\nAVERAGE RATES:\n• Day excursion: 400-800 DH\n• Guided hike: 300-600 DH\n• Cooking class: 400-600 DH\n• Hammam: 100-300 DH"
     }
   },
   "ar": {
-    "greeting": "مرحبا! كيف يمكنني مساعدتك اليوم؟",
+    "greeting": "مرحباً بك في سفاريا! أنا مساعدك الافتراضي وخبير السياحة المغربية.\n\nيمكنني مساعدتك في:\n• برامج رحلات ووجهات في المغرب\n• الحرف التقليدية المغربية\n• إقامات أصيلة وقوافل صحراوية\n• الحجوزات والمدفوعات\n• نصائح السفر والثقافة\n\nاختر فئة أدناه أو اطرح سؤالك!",
+    
     "itineraries": {
-      "question": "كيفية إنشاء مسار رحلة؟",
-      "answer": "لإنشاء مسار رحلة مخصص:\n\n1. استكشف الخريطة التفاعلية لاكتشاف حرفيينا وإقاماتنا وقوافلنا\n2. اختر وجهاتك المفضلة\n3. احجز مباشرة عبر الإنترنت\n4. سنرسل لك مساراً تفصيلياً عبر البريد الإلكتروني\n\nتحتاج مساعدة؟ اتصل بنا: contact@safaria.ma"
+      "question": "برامج رحلات مخصصة",
+      "answer": "أنشئ مغامرتك المغربية حسب الطلب!\n\nكيفية المتابعة:\n1. استكشف خريطتنا التفاعلية\n2. اكتشف الحرفيين والرياضات والقوافل\n3. أضف المفضلة لديك\n4. احجز بنقرات قليلة\n5. استلم برنامجك التفصيلي عبر البريد الإلكتروني\n\nمسارات شعبية:\n• جولة المدن الإمبراطورية: مراكش ← فاس ← مكناس ← الرباط (7 أيام)\n• الصحراء والقصبات: ورزازات ← مرزوكة ← تودرا (5 أيام)\n• الشمال الأصيل: شفشاون ← طنجة ← تطوان (4 أيام)\n• الجنوب الأمازيغي: الأطلس ← الوديان ← القرى (6 أيام)\n\nتحتاج مساعدة؟ contact@safaria.ma"
     },
+    
+    "destinations": {
+      "question": "وجهات شعبية",
+      "answer": "اكتشف المغرب الأصيل\n\nالمدن الإمبراطورية:\n• مراكش: المدينة القديمة، ساحة جامع الفنا، حدائق ماجوريل\n• فاس: أكبر مدينة قديمة في العالم، المدابغ\n• مكناس: باب المنصور، الإسطبلات الملكية\n• الرباط: صومعة حسان، قصبة الوداية\n\nالصحراء والجنوب:\n• مرزوكة: كثبان عرق الشبي، ليلة في المخيم\n• زاكورة: وادي درعة، واحات النخيل\n• ورزازات: هوليوود المغرب، القصبات\n\nالجبال:\n• الأطلس: قرى أمازيغية، مشي لمسافات طويلة\n• إفران: سويسرا المغرب، أشجار الأرز\n• شفشاون: اللؤلؤة الزرقاء للريف\n\nالسواحل:\n• الصويرة: شواطئ، مدينة محصنة\n• أكادير: منتجع ساحلي حديث\n• طنجة: بوابة أفريقيا"
+    },
+    
+    "artisanat": {
+      "question": "الحرف المغربية",
+      "answer": "الحرف التقليدية المغربية - تراث ألفي\n\nالسيراميك والفخار:\n• فاس: سيراميك فاس الأزرق، الزليج\n• آسفي: فخار تقليدي\n• تقنيات أجدادية تنتقل عبر الأجيال\n\nالنسيج والحياكة:\n• سجاد أمازيغي: بني وارين، أزيلال، بوشرويط\n• جلابيات وقفاطين مطرزة يدوياً\n• وسائد وبطانيات صوفية\n\nالنجارة:\n• تطعيم خشبي من الصويرة (العرعار)\n• مشربيات منحوتة\n• أبواب وأثاث تقليدي\n\nالمجوهرات والمعادن:\n• فضة أمازيغية، قلائد، أساور\n• فوانيس نحاسية مطروقة\n• براريد وصواني منقوشة\n\nالحرفيون على سفاريا:\nتعرف على حرفيينا المعتمدين، قم بزيارة ورشهم، اشتر مباشرة ودعم الحرف المحلية!"
+    },
+    
+    "sejours": {
+      "question": "إقامات أصيلة",
+      "answer": "إقامات أصيلة في المغرب\n\nرياضات تقليدية:\n• منازل مغربية بفناء مركزي\n• هندسة معمارية تقليدية محفوظة\n• إفطار على تراس بانورامي\n• حمام خاص في بعض المنشآت\n\nقصبات ونُزُل:\n• قصبات ترابية مرممة\n• نزل أمازيغية في الجبال\n• بيوت ضيافة عند السكان المحليين\n• تجربة ثقافية غامرة\n\nالخدمات المشمولة:\n• استقبال مغربي دافئ\n• مطبخ تقليدي أصيل\n• واي فاي وراحة حديثة\n• نصائح محلية ورحلات\n• نقل متاح\n\nالأسعار: ابتداءً من 300 درهم/ليلة\nمتاح في جميع المناطق\nحجز آمن عبر الإنترنت"
+    },
+    
+    "caravanes": {
+      "question": "قوافل وصحراء",
+      "answer": "رحلات استكشافية في الصحراء المغربية\n\nالجولات المتاحة:\n\n1. مرزوكة الكلاسيكية (يومان/ليلة واحدة)\n• المغادرة من مرزوكة\n• رحلة على الجمال عند الغروب\n• ليلة في مخيم فاخر\n• شروق الشمس على الكثبان\n• ابتداءً من 800 درهم/شخص\n\n2. جولة الصحراء الكبرى (3 أيام/ليلتان)\n• عرق الشبي + عرق شكاكة\n• قرى البدو الأمازيغية\n• واحات وبساتين نخيل\n• موسيقى كناوة تقليدية\n• ابتداءً من 1500 درهم/شخص\n\n3. المغامرة الكاملة (5 أيام/4 ليال)\n• وادي دادس + تودرا\n• قصبات تاريخية\n• رحلة جمال ممتدة\n• لقاءات مع البدو\n• ابتداءً من 3500 درهم/شخص\n\nمشمول:\n• دليل أمازيغي متمرس\n• جميع الوجبات (مطبخ الصحراء)\n• خيمة أمازيغية مريحة\n• جمال\n• شاي بالنعناع غير محدود\n• موسيقى حول النار"
+    },
+    
+    "culture": {
+      "question": "الثقافة والتقاليد",
+      "answer": "الثقافة المغربية - دليل أساسي\n\nآداب السلوك:\n• التحية: \"السلام عليكم\" (السلام عليكم)\n• الضيافة المقدسة: شاي بالنعناع مقدم\n• خلع الأحذية قبل دخول المنزل\n• اليد اليمنى للأكل والتحية\n• الصور: اطلب الإذن\n\nفن الطهي:\n• الطاجين: طبق مطهو ببطء بالتوابل\n• الكسكس: تقليد عائلي يوم الجمعة\n• البسطيلة: معجنات حلوة ومالحة\n• الحريرة: حساء تقليدي\n• حلويات: قرون الغزال، الشباكية\n\nالاحتفالات:\n• رمضان: شهر مقدس، إيقاع متكيف\n• عيد الفطر: نهاية رمضان\n• عيد الأضحى: عيد الأضحية\n• المواسم: احتفالات محلية وحج\n\nاللغات:\n• العربية الدارجة\n• الأمازيغية\n• الفرنسية منتشرة على نطاق واسع\n• الإنجليزية في المناطق السياحية\n\nجيد أن تعرف:\n• العملة: الدرهم المغربي (MAD/DH)\n• البقشيش: 10٪ مقدّر\n• المساومة: تقليد في الأسواق"
+    },
+    
+    "conseils": {
+      "question": "نصائح عملية",
+      "answer": "نصائح عملية لرحلتك\n\nقبل المغادرة:\n• جواز سفر ساري المفعول 6 أشهر على الأقل\n• لا تأشيرة للإقامات < 90 يومًا (الاتحاد الأوروبي، الولايات المتحدة، كندا)\n• تأمين السفر موصى به\n• اللقاحات: لا إلزامي، التحديث موصى به\n\nحقيبة مثالية:\n• ملابس خفيفة وقابلة للتنفس\n• زي محتشم للمواقع الدينية\n• قبعة ونظارات شمسية\n• واقي شمسي عالي الحماية\n• محول كهربائي (مقابس أوروبية)\n• أدوية شخصية\n\nأفضل موسم:\n• الربيع (مارس-مايو): درجات حرارة لطيفة\n• الخريف (سبتمبر-نوفمبر): مثالي للزيارة\n• الصيف: حار جداً، مثالي للساحل\n• الشتاء: معتدل، التزلج ممكن في الأطلس\n\nالميزانية اليومية:\n• رحّال: 300-500 درهم/يوم\n• راحة: 800-1200 درهم/يوم\n• فاخر: 2000+ درهم/يوم\n\nالاتصال:\n• بطاقة SIM محلية: اتصالات المغرب، أورنج، إنوي\n• واي فاي: متاح في معظم أماكن الإقامة\n• تطبيقات مفيدة: Maps.me، Google Translate\n\nالأمان:\n• المغرب = وجهة آمنة\n• احتفظ بالأشياء الثمينة آمنة\n• تجنب المناطق المعزولة ليلاً\n• الشرطة السياحية متاحة 24/7"
+    },
+    
     "payment": {
-      "question": "طرق الدفع",
-      "answer": "نقبل عدة طرق للدفع:\n\n• البطاقات البنكية (فيزا، ماستركارد)\n• التحويل البنكي\n• الدفع عند التسليم (للحرف اليدوية)\n• باي بال\n\nجميع المدفوعات آمنة ومشفرة. ستتلقى تأكيداً عبر البريد الإلكتروني بعد كل معاملة."
+      "question": "الدفع والحجز",
+      "answer": "طرق دفع آمنة\n\nالبطاقات البنكية:\n• فيزا، ماستركارد، أمريكان إكسبريس\n• دفع 3D Secure\n• تشفير SSL 256 بت\n• بدون رسوم إضافية\n\nخيارات أخرى:\n• تحويل بنكي SEPA\n• باي بال (رسوم 2.9٪)\n• بطاقة مدفوعة مسبقاً\n• الدفع عند التسليم (الحرف فقط)\n\nعملية الحجز:\n1. اختر تجربتك\n2. اختر التواريخ وعدد الأشخاص\n3. املأ معلوماتك\n4. الدفع الآمن\n5. تأكيد فوري عبر البريد الإلكتروني\n6. إرسال التذكرة الإلكترونية والقسيمة\n\nتسعير شفاف:\n• الأسعار المعروضة = الأسعار النهائية شاملة الضريبة\n• لا رسوم مخفية\n• دفعة مقدمة 30٪ ممكنة للإقامات > 5 أيام\n• الدفع بالتقسيط من 500 درهم\n\nضمان سفاريا:\n• دفع آمن 100٪\n• أفضل سعر مضمون\n• خدمة عملاء سريعة الاستجابة\n• حماية البيانات RGPD"
     },
+    
     "cancellation": {
-      "question": "سياسة الإلغاء",
-      "answer": "سياسة الإلغاء لدينا:\n\n• إلغاء مجاني حتى 7 أيام قبل التاريخ المحدد\n• استرداد جزئي (50٪) بين 3-7 أيام قبل\n• لا يوجد استرداد قبل أقل من 3 أيام\n\nللإلغاء، قم بتسجيل الدخول إلى حسابك وانتقل إلى 'حجوزاتي'."
+      "question": "الإلغاء والاسترداد",
+      "answer": "سياسة إلغاء مرنة\n\nالشروط العامة:\n\nإلغاء مجاني:\n• أكثر من 14 يومًا قبل: استرداد كامل 100٪\n• بين 7-14 يومًا: استرداد 75٪\n• بين 3-7 أيام: استرداد 50٪\n• أقل من 3 أيام: غير قابل للاسترداد\n\nاستثناءات:\n• قوافل الصحراء: إلغاء 21 يومًا كحد أدنى\n• موسم الذروة (عيد الفصح، الصيف): شروط صارمة\n• أحداث خاصة: سياسة محددة\n\nإلغاء مبرر:\n• مرض خطير مع شهادة طبية: 100٪\n• وفاة قريب من العائلة: 100٪\n• كارثة طبيعية: تأجيل أو استرداد\n• إغلاق الحدود: تأجيل أو استرداد\n\nالإجراء:\n1. سجل الدخول إلى حساب سفاريا الخاص بك\n2. انتقل إلى \"حجوزاتي\"\n3. انقر على \"إلغاء\"\n4. املأ النموذج\n5. تأكيد خلال 48 ساعة\n6. الاسترداد خلال 7-10 أيام\n\nشروط الاسترداد:\n• البطاقة البنكية: 7-10 أيام عمل\n• التحويل: 5-7 أيام عمل\n• رصيد سفاريا: فوري (مكافأة 10٪)\n\nتحتاج مساعدة؟\nاتصال: +212 6 00 00 00 00\nالبريد الإلكتروني: cancellation@safaria.ma"
     },
+    
     "contact": {
       "question": "اتصل بنا",
-      "answer": "نحن هنا لمساعدتك!\n\nالبريد الإلكتروني: contact@safaria.ma\nالهاتف: +212 6 00 00 00 00\nالعنوان: مراكش، المغرب\n\nمتاح من الاثنين إلى السبت، 9 صباحاً - 6 مساءً"
+      "answer": "خدمة عملاء سفاريا\n\nمساعدة متاحة 7/7\n\nالبريد الإلكتروني:\n• عام: contact@safaria.ma\n• الحجوزات: booking@safaria.ma\n• الدعم: support@safaria.ma\n• الشراكات: partners@safaria.ma\n\nالهاتف:\n• المغرب: +212 5 24 00 00 00\n• دولي: +212 6 00 00 00 00\n• واتساب: +212 6 00 00 00 00\n• طوارئ 24/7: +212 6 99 99 99 99\n\nالمكاتب:\nمراكش (المقر الرئيسي):\nحي كليز\n40000 مراكش، المغرب\nالاثنين-السبت: 9 صباحاً - 7 مساءً\n\nالدار البيضاء:\nشارع زرقطوني\n20000 الدار البيضاء\nالاثنين-الجمعة: 9 صباحاً - 6 مساءً\n\nفاس:\nالمدينة القديمة، باب بوجلود\n30000 فاس\nالاثنين-السبت: 10 صباحاً - 6 مساءً\n\nوسائل التواصل الاجتماعي:\n• فيسبوك: @SafariaMaroc\n• إنستغرام: @safaria.morocco\n• تويتر: @SafariaTravel\n• تيك توك: @safaria_maroc\n\nوقت الاستجابة:\n• الدردشة المباشرة: فوري\n• البريد الإلكتروني: < 4 ساعات\n• الهاتف: < دقيقتان\n• واتساب: < 30 دقيقة"
+    },
+    
+    "weather": {
+      "question": "الطقس والمناخ",
+      "answer": "المناخ المغربي - دليل شهري\n\nحسب الموسم:\n\nالربيع (مارس-مايو):\n• درجات الحرارة: 18-28 درجة مئوية\n• مثالي لـ: الزيارات، المشي، المدن\n• ازدهار الحدائق\n• سياح قليلون في مارس-أبريل\n\nالصيف (يونيو-أغسطس):\n• الساحل: 25-30 درجة مئوية، لطيف\n• مراكش: 35-42 درجة مئوية، حار جداً\n• الصحراء: 40-48 درجة مئوية، شديد الحرارة\n• الأفضل لـ: الشواطئ، الجبال\n\nالخريف (سبتمبر-نوفمبر):\n• درجات الحرارة: 20-30 درجة مئوية\n• أفضل فترة لكل شيء\n• موسم سياحي مرتفع\n• احجز مسبقاً\n\nالشتاء (ديسمبر-فبراير):\n• الجنوب: 15-22 درجة مئوية، معتدل\n• الشمال: 10-18 درجة مئوية، بارد\n• الجبال: ثلج، التزلج ممكن\n• أسعار جذابة\n\nحسب المنطقة:\n• الساحل الأطلسي: معتدل طوال العام\n• المدن الإمبراطورية: حار في الصيف\n• الصحراء: سعة حرارية قوية\n• الجبال: بارد في الليل\n\nتوصيات:\n• واقي شمسي ضروري\n• نظارات شمسية\n• ملابس قابلة للتنفس\n• سترة للمساء (حتى الصيف)"
+    },
+    
+    "activities": {
+      "question": "الأنشطة والرحلات",
+      "answer": "الأنشطة التي يجب القيام بها في المغرب\n\nالمغامرة والطبيعة:\n• المشي لمسافات طويلة في الأطلس: توبقال 4167 م\n• ركوب الأمواج في تغازوت والصويرة\n• دراجة نارية رباعية في صحراء مرزوكة\n• التزلج في أوكيمدن (ديسمبر-مارس)\n• التجديف في وديان الأطلس\n• ركوب الدراجات الجبلية في الجبال الأمازيغية\n\nتجارب أصيلة:\n• رحلة جمال في الصحراء\n• ليلة في مخيم تحت النجوم\n• دروس الطبخ المغربي\n• ورشة فخار في فاس\n• حمام تقليدي\n• عرض الفانتازيا\n\nالثقافة والتراث:\n• جولات مرشدة في المدينة القديمة\n• الأسواق والأسواق الأمازيغية\n• مواقع اليونسكو (9 في المغرب)\n• المتاحف والقصور\n• المهرجانات المحلية\n• لقاء مع الحرفيين\n\nالاسترخاء والعافية:\n• حمام وسبا مغربي\n• معتكفات اليوغا\n• علاج بمياه البحر على الساحل\n• الغولف (أفضل الملاعب في أفريقيا)\n• شواطئ جنة\n\nعائلي:\n• حدائق ماجوريل مراكش\n• وادي القرود أزرو\n• المنتزهات المائية\n• ركوب الحمير\n• ورش عمل للأطفال\n\nمتوسط الأسعار:\n• رحلة ليوم واحد: 400-800 درهم\n• مشي مرشد: 300-600 درهم\n• درس طبخ: 400-600 درهم\n• حمام: 100-300 درهم"
     }
   }
 }

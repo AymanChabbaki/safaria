@@ -32,17 +32,51 @@ const ChatWidget = () => {
     }
   };
 
+  const handleCategoryClick = (category) => {
+    setCurrentCategory(category);
+  };
+
+  const handleBackToMain = () => {
+    setCurrentCategory('main');
+  };
+
   const handleReset = () => {
     setMessages([]);
     setShowFAQ(true);
+    setCurrentCategory('main');
   };
 
-  const faqButtons = [
-    { key: 'itineraries', Icon: MapPin, color: 'chefchaouen' },
-    { key: 'payment', Icon: CreditCard, color: 'oasis' },
-    { key: 'cancellation', Icon: RefreshCw, color: 'desert' },
-    { key: 'contact', Icon: Phone, color: 'morocco-red' }
+  const [currentCategory, setCurrentCategory] = useState('main');
+
+  const mainCategories = [
+    { key: 'travel', label: 'Voyage & Itinéraires', color: 'chefchaouen' },
+    { key: 'experiences', label: 'Expériences', color: 'oasis' },
+    { key: 'practical', label: 'Infos Pratiques', color: 'desert' },
+    { key: 'booking', label: 'Réservation & Contact', color: 'morocco-red' }
   ];
+
+  const subCategories = {
+    travel: [
+      { key: 'itineraries', label: 'Itinéraires personnalisés' },
+      { key: 'destinations', label: 'Destinations populaires' },
+      { key: 'weather', label: 'Météo & Climat' }
+    ],
+    experiences: [
+      { key: 'artisanat', label: 'Artisanat marocain' },
+      { key: 'sejours', label: 'Séjours authentiques' },
+      { key: 'caravanes', label: 'Caravanes & Désert' },
+      { key: 'activities', label: 'Activités & Excursions' }
+    ],
+    practical: [
+      { key: 'culture', label: 'Culture & Traditions' },
+      { key: 'conseils', label: 'Conseils pratiques' }
+    ],
+    booking: [
+      { key: 'payment', label: 'Paiement & Réservation' },
+      { key: 'cancellation', label: 'Annulation' },
+      { key: 'contact', label: 'Nous contacter' }
+    ]
+  };
 
   return (
     <>
@@ -138,25 +172,45 @@ const ChatWidget = () => {
 
             {/* FAQ Buttons */}
             {showFAQ && (
-              <div className="p-4 bg-white border-t border-sand-200">
-                <p className="text-sm font-semibold text-gray-700 mb-3">
-                  Questions fréquentes :
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {faqButtons.map(btn => {
-                    const Icon = btn.Icon;
-                    return (
-                      <button
-                        key={btn.key}
-                        onClick={() => handleFAQClick(btn.key)}
-                        className={`p-3 bg-gradient-to-br from-${btn.color}-50 to-${btn.color}-100 hover:from-${btn.color}-100 hover:to-${btn.color}-200 text-${btn.color}-700 rounded-lg text-left text-sm font-medium transition-all hover:shadow-md flex items-start gap-2`}
-                      >
-                        <Icon className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                        <span>{responses[btn.key]?.question}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+              <div className="p-4 bg-white border-t border-sand-200 max-h-64 overflow-y-auto">
+                {currentCategory === 'main' ? (
+                  <>
+                    <p className="text-sm font-semibold text-gray-700 mb-3">
+                      Choisissez une catégorie :
+                    </p>
+                    <div className="grid grid-cols-1 gap-2">
+                      {mainCategories.map(cat => (
+                        <button
+                          key={cat.key}
+                          onClick={() => handleCategoryClick(cat.key)}
+                          className={`p-3 bg-gradient-to-br from-${cat.color}-50 to-${cat.color}-100 hover:from-${cat.color}-100 hover:to-${cat.color}-200 text-${cat.color}-700 rounded-lg text-left text-sm font-medium transition-all hover:shadow-md`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={handleBackToMain}
+                      className="text-xs text-gray-600 hover:text-gray-900 mb-3 flex items-center gap-1"
+                    >
+                      ← Retour aux catégories
+                    </button>
+                    <div className="grid grid-cols-1 gap-2">
+                      {subCategories[currentCategory]?.map(item => (
+                        <button
+                          key={item.key}
+                          onClick={() => handleFAQClick(item.key)}
+                          className="p-3 bg-sand-50 hover:bg-sand-100 text-gray-700 rounded-lg text-left text-sm font-medium transition-all hover:shadow-sm"
+                        >
+                          {item.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
