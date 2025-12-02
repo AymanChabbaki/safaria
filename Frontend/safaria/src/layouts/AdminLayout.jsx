@@ -69,12 +69,12 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
+      {/* Desktop Sidebar */}
       <motion.aside
         initial={false}
         animate={{ width: sidebarOpen ? 260 : 70 }}
-        className="bg-white border-r border-gray-200 shadow-sm flex flex-col h-screen overflow-hidden"
+        className="hidden md:flex bg-white border-r border-gray-200 shadow-sm flex-col h-screen overflow-hidden"
       >
         {/* Header */}
         <div className="h-16 px-4 flex items-center justify-between border-b border-gray-200 flex-shrink-0">
@@ -106,9 +106,17 @@ const AdminLayout = () => {
         {sidebarOpen && (
           <div className="px-4 py-3 border-b border-gray-200 flex-shrink-0">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-morocco-red to-desert-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                {user?.name?.charAt(0) || 'A'}
-              </div>
+              {user?.photo ? (
+                <img 
+                  src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000${user.photo}`}
+                  alt={user.name}
+                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                />
+              ) : (
+                <div className="w-10 h-10 bg-gradient-to-br from-morocco-red to-desert-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  {user?.name?.charAt(0) || 'A'}
+                </div>
+              )}
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-sm text-gray-800 truncate">{user?.name || 'Admin'}</p>
                 <p className="text-xs text-gray-500 truncate">{user?.email}</p>
@@ -189,9 +197,72 @@ const AdminLayout = () => {
         </div>
       </motion.aside>
 
+      {/* Mobile Top Header */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 shadow-sm z-30 flex items-center justify-between px-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-morocco-red to-desert-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm">S</span>
+          </div>
+          <div>
+            <h2 className="text-sm font-bold text-gray-800">SAFARIA</h2>
+            <p className="text-xs text-gray-500">Admin</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => navigate('/admin/profile')}
+            className="p-1 hover:ring-2 hover:ring-morocco-red rounded-full transition"
+            title="Profile"
+          >
+            {user?.photo ? (
+              <img 
+                src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000${user.photo}`}
+                alt={user.name}
+                className="w-9 h-9 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-9 h-9 bg-gradient-to-br from-morocco-red to-desert-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                {user?.name?.charAt(0) || 'A'}
+              </div>
+            )}
+          </button>
+          <button
+            onClick={handleLogout}
+            className="p-2 hover:bg-red-50 rounded-lg transition text-red-600"
+            title="Logout"
+          >
+            <FaSignOutAlt size={20} />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-gray-200 shadow-lg z-30">
+        <div className="grid grid-cols-5 h-full">
+          {menuItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.exact}
+              className={({ isActive }) => `
+                flex flex-col items-center justify-center space-y-1 transition-all
+                ${isActive ? 'text-morocco-red' : 'text-gray-500'}
+              `}
+            >
+              {({ isActive }) => (
+                <>
+                  <item.icon className={`text-xl ${isActive ? 'scale-110' : ''} transition-transform`} />
+                  <span className="text-xs font-medium truncate px-1">{item.label}</span>
+                </>
+              )}
+            </NavLink>
+          ))}
+        </div>
+      </div>
+
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-gray-50">
-        <div className="p-6">
+      <main className="flex-1 overflow-y-auto bg-gray-50 md:pb-0 pb-16 md:pt-0 pt-16">
+        <div className="p-4 md:p-6">
           <Outlet />
         </div>
       </main>

@@ -21,8 +21,8 @@ router.get('/', getAllSejours);
 router.get('/:id', getSejourById);
 
 // Protected routes (require authentication)
-router.post('/', upload.single('main_image'), handleUploadError, createSejour);
-router.put('/:id', upload.single('main_image'), handleUploadError, updateSejour);
+router.post('/', upload.fields([{ name: 'main_image', maxCount: 1 }, { name: 'images', maxCount: 10 }, { name: 'images360', maxCount: 10 }]), handleUploadError, createSejour);
+router.put('/:id', upload.fields([{ name: 'main_image', maxCount: 1 }, { name: 'images', maxCount: 10 }, { name: 'images360', maxCount: 10 }]), handleUploadError, updateSejour);
 router.delete('/:id', deleteSejour);
 
 module.exports = router;

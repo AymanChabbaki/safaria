@@ -44,16 +44,18 @@ const ArtisanatDetailsPage = () => {
     fetchArtisan();
   }, [id]);
 
+  const images360 = artisan?.images360 ? (typeof artisan.images360 === 'string' ? JSON.parse(artisan.images360) : artisan.images360) : [];
+
   useEffect(() => {
-    if (show360 && artisan?.photos?.[0]) {
+    if (show360 && images360[0]) {
       const viewer = new Viewer({
         container: document.querySelector('#viewer-360'),
-        panorama: `http://localhost:5000${artisan.photos[0]}`,
+        panorama: `http://localhost:5000${images360[0]}`,
         navbar: ['zoom', 'fullscreen']
       });
       return () => viewer.destroy();
     }
-  }, [show360, artisan]);
+  }, [show360, images360]);
 
   if (loading) {
     return (
@@ -71,7 +73,7 @@ const ArtisanatDetailsPage = () => {
     );
   }
 
-  const photos = artisan.photos || [];
+  const photos = artisan.images ? (typeof artisan.images === 'string' ? JSON.parse(artisan.images) : artisan.images) : [];
 
   return (
     <div className="bg-sand-50 min-h-screen">
@@ -125,12 +127,14 @@ const ArtisanatDetailsPage = () => {
             )}
 
             {/* 360° Viewer Toggle */}
-            <button
-              onClick={() => setShow360(!show360)}
-              className="w-full py-3 bg-chefchaouen-500 hover:bg-chefchaouen-600 text-white font-semibold rounded-xl transition"
-            >
-              {show360 ? '📷 Voir Photos' : '🔄 Vue 360°'}
-            </button>
+            {images360.length > 0 && (
+              <button
+                onClick={() => setShow360(!show360)}
+                className="w-full py-3 bg-chefchaouen-500 hover:bg-chefchaouen-600 text-white font-semibold rounded-xl transition"
+              >
+                {show360 ? '📷 Voir Photos' : '🔄 Vue 360°'}
+              </button>
+            )}
 
             {show360 && (
               <motion.div

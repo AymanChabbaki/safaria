@@ -21,8 +21,8 @@ router.get('/', getAllArtisans);
 router.get('/:id', getArtisanById);
 
 // Protected routes (require authentication)
-router.post('/', upload.single('main_image'), handleUploadError, createArtisan);
-router.put('/:id', upload.single('main_image'), handleUploadError, updateArtisan);
+router.post('/', upload.fields([{ name: 'main_image', maxCount: 1 }, { name: 'images', maxCount: 10 }, { name: 'images360', maxCount: 10 }]), handleUploadError, createArtisan);
+router.put('/:id', upload.fields([{ name: 'main_image', maxCount: 1 }, { name: 'images', maxCount: 10 }, { name: 'images360', maxCount: 10 }]), handleUploadError, updateArtisan);
 router.delete('/:id', deleteArtisan);
 
 module.exports = router;

@@ -16,21 +16,22 @@ const { sendSuccess, sendError, sendNotFound } = require('../utils/responseHelpe
  */
 const createArtisan = async (req, res) => {
     try {
-        const { name, description, latitude, longitude, price } = req.body;
+        const { name_fr, name_en, name_ar, description_fr, description_en, description_ar, latitude, longitude, price } = req.body;
         
         // Validation
-        if (!name || !description || !latitude || !longitude || !price) {
-            return sendError(res, 'All fields are required: name, description, latitude, longitude, price', 400);
+        if (!name_fr || !name_en || !name_ar || !description_fr || !description_en || !description_ar || !latitude || !longitude || !price) {
+            return sendError(res, 'All fields are required: name_fr, name_en, name_ar, description_fr, description_en, description_ar, latitude, longitude, price', 400);
         }
         
-        // Get uploaded image path
-        const main_image = req.file ? `/uploads/artisans/${req.file.filename}` : null;
+        // Get uploaded files
+        const main_image = req.files && req.files['main_image'] ? `/uploads/artisans/${req.files['main_image'][0].filename}` : null;
+        const images = req.files && req.files['images'] ? JSON.stringify(req.files['images'].map(f => `/uploads/artisans/${f.filename}`)) : null;
         
         // Insert into database
         const [result] = await pool.query(
-            `INSERT INTO artisans (name, description, category, latitude, longitude, price, main_image) 
-             VALUES (?, ?, 'artisanat', ?, ?, ?, ?)`,
-            [name, description, latitude, longitude, price, main_image]
+            `INSERT INTO artisans (name_fr, name_en, name_ar, description_fr, description_en, description_ar, category, latitude, longitude, price, main_image, images) 
+             VALUES (?, ?, ?, ?, ?, ?, 'artisanat', ?, ?, ?, ?, ?)`,
+            [name_fr, name_en, name_ar, description_fr, description_en, description_ar, latitude, longitude, price, main_image, images]
         );
         
         // Fetch created artisan
@@ -162,7 +163,7 @@ const getArtisanById = async (req, res) => {
 const updateArtisan = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, latitude, longitude, price } = req.body;
+        const { name_fr, name_en, name_ar, description_fr, description_en, description_ar, latitude, longitude, price } = req.body;
         
         // Check if artisan exists
         const [existing] = await pool.query('SELECT * FROM artisans WHERE id = ?', [id]);
@@ -171,23 +172,43 @@ const updateArtisan = async (req, res) => {
             return sendNotFound(res, 'Artisan');
         }
         
-        // Get uploaded image path if new image is provided
-        const main_image = req.file 
-            ? `/uploads/artisans/${req.file.filename}` 
+        // Get uploaded files if new files are provided
+        const main_image = req.files && req.files['main_image'] 
+            ? `/uploads/artisans/${req.files['main_image'][0].filename}` 
             : existing[0].main_image;
+        
+        // Handle gallery images - replace with existing images (from frontend) + new uploads
+        const existingImages = req.body.existing_images ? JSON.parse(req.body.existing_images) : [];
+        const newImages = req.files && req.files['images'] 
+            ? req.files['images'].map(f => `/uploads/artisans/${f.filename}`) 
+            : [];
+        const images = JSON.stringify([...existingImages, ...newImages]);
+        
+        // Handle 360 images - replace with existing images (from frontend) + new uploads
+        const existing360Images = req.body.existing_images360 ? JSON.parse(req.body.existing_images360) : [];
+        const new360Images = req.files && req.files['images360'] 
+            ? req.files['images360'].map(f => `/uploads/artisans/${f.filename}`) 
+            : [];
+        const images360 = JSON.stringify([...existing360Images, ...new360Images]);
         
         // Update artisan
         await pool.query(
             `UPDATE artisans 
-             SET name = ?, description = ?, latitude = ?, longitude = ?, price = ?, main_image = ?
+             SET name_fr = ?, name_en = ?, name_ar = ?, description_fr = ?, description_en = ?, description_ar = ?, latitude = ?, longitude = ?, price = ?, main_image = ?, images = ?, images360 = ?
              WHERE id = ?`,
             [
-                name || existing[0].name,
-                description || existing[0].description,
+                name_fr || existing[0].name_fr,
+                name_en || existing[0].name_en,
+                name_ar || existing[0].name_ar,
+                description_fr || existing[0].description_fr,
+                description_en || existing[0].description_en,
+                description_ar || existing[0].description_ar,
                 latitude || existing[0].latitude,
                 longitude || existing[0].longitude,
                 price || existing[0].price,
                 main_image,
+                images,
+                images360,
                 id
             ]
         );

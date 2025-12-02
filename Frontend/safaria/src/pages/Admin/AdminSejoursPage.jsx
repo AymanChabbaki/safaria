@@ -19,8 +19,12 @@ const AdminSejoursPage = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedSejour, setSelectedSejour] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
+    name_fr: '',
+    name_en: '',
+    name_ar: '',
+    description_fr: '',
+    description_en: '',
+    description_ar: '',
     latitude: '',
     longitude: '',
     price: '',
@@ -47,8 +51,12 @@ const AdminSejoursPage = () => {
 
   const handleAdd = () => {
     setFormData({
-      name: '',
-      description: '',
+      name_fr: '',
+      name_en: '',
+      name_ar: '',
+      description_fr: '',
+      description_en: '',
+      description_ar: '',
       latitude: '',
       longitude: '',
       price: '',
@@ -61,15 +69,40 @@ const AdminSejoursPage = () => {
 
   const handleEdit = (sejour) => {
     setSelectedSejour(sejour);
+    
+    // Parse images
+    let parsedImages = [];
+    if (sejour.images) {
+      try {
+        parsedImages = typeof sejour.images === 'string' ? JSON.parse(sejour.images) : sejour.images;
+      } catch (e) {
+        console.error('Error parsing images:', e);
+      }
+    }
+    
+    // Parse images360
+    let parsedImages360 = [];
+    if (sejour.images360) {
+      try {
+        parsedImages360 = typeof sejour.images360 === 'string' ? JSON.parse(sejour.images360) : sejour.images360;
+      } catch (e) {
+        console.error('Error parsing images360:', e);
+      }
+    }
+    
     setFormData({
-      name: sejour.name || '',
-      description: sejour.description || '',
+      name_fr: sejour.name_fr || '',
+      name_en: sejour.name_en || '',
+      name_ar: sejour.name_ar || '',
+      description_fr: sejour.description_fr || '',
+      description_en: sejour.description_en || '',
+      description_ar: sejour.description_ar || '',
       latitude: sejour.latitude || '',
       longitude: sejour.longitude || '',
       price: sejour.price || '',
       main_image: sejour.main_image || '',
-      images: sejour.images || [],
-      images360: sejour.images360 || []
+      images: parsedImages,
+      images360: parsedImages360
     });
     setShowEditModal(true);
   };
@@ -94,7 +127,15 @@ const AdminSejoursPage = () => {
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
     try {
-      await api.sejours.create(formData);
+      const data = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'images' || key === 'images360') {
+          formData[key].forEach(file => data.append(key, file));
+        } else if (formData[key] !== null && formData[key] !== undefined) {
+          data.append(key, formData[key]);
+        }
+      });
+      await api.sejours.create(data);
       setShowAddModal(false);
       fetchSejours();
     } catch (error) {
@@ -106,7 +147,25 @@ const AdminSejoursPage = () => {
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
     try {
-      await api.sejours.update(selectedSejour.id, formData);
+      const data = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'images' || key === 'images360') {
+          if (Array.isArray(formData[key])) {
+            // Send existing image URLs (strings) as JSON
+            const existingImages = formData[key].filter(item => typeof item === 'string');
+            if (existingImages.length > 0) {
+              data.append(`existing_${key}`, JSON.stringify(existingImages));
+            }
+            // Send new image files
+            formData[key].forEach(file => {
+              if (file instanceof File) data.append(key, file);
+            });
+          }
+        } else if (formData[key] !== null && formData[key] !== undefined) {
+          data.append(key, formData[key]);
+        }
+      });
+      await api.sejours.update(selectedSejour.id, data);
       setShowEditModal(false);
       fetchSejours();
     } catch (error) {
@@ -166,8 +225,8 @@ const AdminSejoursPage = () => {
                   className="hover:bg-sand-50 transition"
                 >
                   <td className="px-6 py-4 text-gray-600">#{sejour.id}</td>
-                  <td className="px-6 py-4 font-medium text-gray-800">{sejour.name}</td>
-                  <td className="px-6 py-4 text-gray-600 max-w-md truncate">{sejour.description}</td>
+                  <td className="px-6 py-4 font-medium text-gray-800">{sejour.name_fr || sejour.name}</td>
+                  <td className="px-6 py-4 text-gray-600 max-w-md truncate">{sejour.description_fr || sejour.description}</td>
                   <td className="px-6 py-4 text-gray-600">{sejour.price} DH</td>
                   <td className="px-6 py-4">
                     <div className="flex space-x-2">
@@ -239,25 +298,83 @@ const AdminSejoursPage = () => {
 
               <form onSubmit={handleSubmitAdd} className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Nom</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Nom (Multilingual)</label>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇫🇷 Français</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name_fr}
+                        onChange={(e) => setFormData({ ...formData, name_fr: e.target.value })}
+                        placeholder="Nom en français"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name_en}
+                        onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
+                        placeholder="Name in English"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇲🇦 العربية</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name_ar}
+                        onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
+                        placeholder="الاسم بالعربية"
+                        dir="rtl"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent text-right"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                  <textarea
-                    required
-                    rows={4}
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description (Multilingual)</label>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇫🇷 Français</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.description_fr}
+                        onChange={(e) => setFormData({ ...formData, description_fr: e.target.value })}
+                        placeholder="Description en français"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.description_en}
+                        onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
+                        placeholder="Description in English"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇲🇦 العربية</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.description_ar}
+                        onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
+                        placeholder="الوصف بالعربية"
+                        dir="rtl"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent text-right"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -306,8 +423,7 @@ const AdminSejoursPage = () => {
                     accept="image/*"
                     onChange={(e) => {
                       const files = Array.from(e.target.files);
-                      console.log('Selected gallery images:', files);
-                      // Handle file upload logic here
+                      setFormData({ ...formData, images: files });
                     }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-morocco-red/10 file:text-morocco-red hover:file:bg-morocco-red/20"
                   />
@@ -322,8 +438,7 @@ const AdminSejoursPage = () => {
                     accept="image/*"
                     onChange={(e) => {
                       const files = Array.from(e.target.files);
-                      console.log('Selected 360 images:', files);
-                      // Handle file upload logic here
+                      setFormData({ ...formData, images360: files });
                     }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-morocco-red focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-morocco-red/10 file:text-morocco-red hover:file:bg-morocco-red/20"
                   />
@@ -383,25 +498,83 @@ const AdminSejoursPage = () => {
 
               <form onSubmit={handleSubmitEdit} className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Nom</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Nom (Multilingual)</label>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇫🇷 Français</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name_fr}
+                        onChange={(e) => setFormData({ ...formData, name_fr: e.target.value })}
+                        placeholder="Nom en français"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name_en}
+                        onChange={(e) => setFormData({ ...formData, name_en: e.target.value })}
+                        placeholder="Name in English"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇲🇦 العربية</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name_ar}
+                        onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
+                        placeholder="الاسم بالعربية"
+                        dir="rtl"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent text-right"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                  <textarea
-                    required
-                    rows={4}
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description (Multilingual)</label>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇫🇷 Français</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.description_fr}
+                        onChange={(e) => setFormData({ ...formData, description_fr: e.target.value })}
+                        placeholder="Description en français"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇬🇧 English</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.description_en}
+                        onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
+                        placeholder="Description in English"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">🇲🇦 العربية</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.description_ar}
+                        onChange={(e) => setFormData({ ...formData, description_ar: e.target.value })}
+                        placeholder="الوصف بالعربية"
+                        dir="rtl"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent text-right"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -474,8 +647,7 @@ const AdminSejoursPage = () => {
                     accept="image/*"
                     onChange={(e) => {
                       const files = Array.from(e.target.files);
-                      console.log('Selected gallery images:', files);
-                      // Handle file upload logic here
+                      setFormData({ ...formData, images: [...formData.images, ...files] });
                     }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-chefchaouen-100 file:text-chefchaouen-700 hover:file:bg-chefchaouen-200"
                   />
@@ -514,8 +686,7 @@ const AdminSejoursPage = () => {
                     accept="image/*"
                     onChange={(e) => {
                       const files = Array.from(e.target.files);
-                      console.log('Selected 360 images:', files);
-                      // Handle file upload logic here
+                      setFormData({ ...formData, images360: [...formData.images360, ...files] });
                     }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-chefchaouen-600 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-chefchaouen-100 file:text-chefchaouen-700 hover:file:bg-chefchaouen-200"
                   />
@@ -578,33 +749,60 @@ const AdminSejoursPage = () => {
                   <div className="w-full h-64 rounded-lg overflow-hidden">
                     <img
                       src={`http://localhost:5000${selectedSejour.main_image}`}
-                      alt={selectedSejour.name}
+                      alt={selectedSejour.name_fr || selectedSejour.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
                 )}
 
                 {/* Image Gallery */}
-                {selectedSejour.images && selectedSejour.images.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-700 mb-3">Galerie d'images</h4>
-                    <div className="grid grid-cols-3 gap-3">
-                      {selectedSejour.images.map((img, idx) => (
-                        <div key={idx} className="aspect-square rounded-lg overflow-hidden">
-                          <img
-                            src={`http://localhost:5000${img}`}
-                            alt={`${selectedSejour.name} ${idx + 1}`}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ))}
+                {selectedSejour.images && (() => {
+                  const images = typeof selectedSejour.images === 'string' ? JSON.parse(selectedSejour.images) : selectedSejour.images;
+                  return images.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">Galerie d'images</h4>
+                      <div className="grid grid-cols-3 gap-3">
+                        {images.map((img, idx) => (
+                          <div key={idx} className="aspect-square rounded-lg overflow-hidden">
+                            <img
+                              src={`http://localhost:5000${img}`}
+                              alt={`${selectedSejour.name_fr || selectedSejour.name} ${idx + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
+
+                {/* 360 Images Buttons */}
+                {selectedSejour.images360 && (() => {
+                  const images360 = typeof selectedSejour.images360 === 'string' ? JSON.parse(selectedSejour.images360) : selectedSejour.images360;
+                  return images360.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-3">Images 360°</h4>
+                      <div className="flex flex-wrap gap-3">
+                        {images360.map((img, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => window.open(`http://localhost:5000${img}`, '_blank')}
+                            className="flex items-center gap-2 px-4 py-2 bg-chefchaouen-600 text-white rounded-lg hover:bg-chefchaouen-700 transition"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                            </svg>
+                            Vue 360° {idx + 1}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 <div>
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{selectedSejour.name}</h3>
-                  <p className="text-gray-600">{selectedSejour.description}</p>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">{selectedSejour.name_fr || selectedSejour.name}</h3>
+                  <p className="text-gray-600">{selectedSejour.description_fr || selectedSejour.description}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">

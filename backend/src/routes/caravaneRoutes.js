@@ -21,8 +21,8 @@ router.get('/', getAllCaravanes);
 router.get('/:id', getCaravaneById);
 
 // Protected routes (require authentication)
-router.post('/', upload.single('main_image'), handleUploadError, createCaravane);
-router.put('/:id', upload.single('main_image'), handleUploadError, updateCaravane);
+router.post('/', upload.fields([{ name: 'main_image', maxCount: 1 }, { name: 'images', maxCount: 10 }, { name: 'images360', maxCount: 10 }]), handleUploadError, createCaravane);
+router.put('/:id', upload.fields([{ name: 'main_image', maxCount: 1 }, { name: 'images', maxCount: 10 }, { name: 'images360', maxCount: 10 }]), handleUploadError, updateCaravane);
 router.delete('/:id', deleteCaravane);
 
 module.exports = router;

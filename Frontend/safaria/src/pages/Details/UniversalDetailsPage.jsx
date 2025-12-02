@@ -89,23 +89,25 @@ const UniversalDetailsPage = ({ type }) => {
         }
         
         // Backend returns { success, message, data }, extract the data field
-        setItem(response.data?.data || response.data);
+        const itemData = response.data?.data || response.data;
+        setItem(itemData);
         
-        // Fetch 360° images - normalize type name for database
-        try {
-          // Database uses 'artisanat' but route uses 'artisan'
-          const dbItemType = (itemType === 'artisan' || itemType === 'artisanat') ? 'artisanat' : itemType;
-          
-          const images360Response = await fetch(
-            `http://localhost:5000/api/images360?itemType=${dbItemType}&itemId=${id}`
-          );
-          const images360Data = await images360Response.json();
-          console.log('360° images response:', images360Data);
-          if (images360Data.success && images360Data.data.length > 0) {
-            setImages360(images360Data.data);
+        // Parse 360° images from the images360 column in the main table
+        if (itemData?.images360) {
+          try {
+            const parsed360 = typeof itemData.images360 === 'string' 
+              ? JSON.parse(itemData.images360) 
+              : itemData.images360;
+            
+            if (Array.isArray(parsed360) && parsed360.length > 0) {
+              // Convert array of URLs to the format expected by the viewer
+              const formatted360 = parsed360.map(url => ({ imageUrl: url }));
+              setImages360(formatted360);
+              console.log('360° images loaded from database:', formatted360);
+            }
+          } catch (err) {
+            console.error('Error parsing 360° images:', err);
           }
-        } catch (err) {
-          console.error('Error fetching 360° images:', err);
         }
         
       } catch (error) {

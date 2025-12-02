@@ -15,6 +15,7 @@ export const translations = {
     nav: {
       home: 'Accueil',
       map: 'Carte',
+      experiences: 'Expériences',
       artisanat: 'Artisanat',
       sejours: 'Séjours',
       caravanes: 'Caravanes',
@@ -27,6 +28,7 @@ export const translations = {
       favorites: 'Mes Favoris',
       admin: 'Admin',
       dashboard: 'Tableau de bord',
+      language: 'Langue',
     },
 
     // Home Page
@@ -68,6 +70,15 @@ export const translations = {
       },
       gallery: {
         title: 'Moments Magiques',
+      },
+      featuredPlaces: {
+        title: 'Lieux Incontournables',
+        subtitle: 'Découvrez les meilleures expériences que le Maroc a à offrir',
+        artisan: 'Artisan',
+        sejour: 'Séjour',
+        caravane: 'Aventure',
+        viewDetails: 'Voir Détails',
+        seeMore: 'Voir Plus d\'Expériences',
       },
       finalCta: {
         title: 'Prêt Pour Votre Aventure Marocaine?',
@@ -413,6 +424,7 @@ export const translations = {
     nav: {
       home: 'Home',
       map: 'Map',
+      experiences: 'Experiences',
       artisanat: 'Handicraft',
       sejours: 'Stays',
       caravanes: 'Caravans',
@@ -425,6 +437,7 @@ export const translations = {
       favorites: 'My Favorites',
       admin: 'Admin',
       dashboard: 'Dashboard',
+      language: 'Language',
     },
 
     home: {
@@ -465,6 +478,15 @@ export const translations = {
       },
       gallery: {
         title: 'Magical Moments',
+      },
+      featuredPlaces: {
+        title: 'Featured Places',
+        subtitle: 'Discover the best experiences Morocco has to offer',
+        artisan: 'Artisan',
+        sejour: 'Stay',
+        caravane: 'Adventure',
+        viewDetails: 'View Details',
+        seeMore: 'See More Experiences',
       },
       finalCta: {
         title: 'Ready For Your Moroccan Adventure?',
@@ -800,6 +822,7 @@ export const translations = {
     nav: {
       home: 'الرئيسية',
       map: 'الخريطة',
+      experiences: 'التجارب',
       artisanat: 'الحرف اليدوية',
       sejours: 'الإقامات',
       caravanes: 'القوافل',
@@ -812,6 +835,7 @@ export const translations = {
       favorites: 'المفضلة',
       admin: 'المسؤول',
       dashboard: 'لوحة التحكم',
+      language: 'اللغة',
     },
 
     home: {
@@ -852,6 +876,15 @@ export const translations = {
       },
       gallery: {
         title: 'لحظات سحرية',
+      },
+      featuredPlaces: {
+        title: 'أماكن مميزة',
+        subtitle: 'اكتشف أفضل التجارب التي يقدمها المغرب',
+        artisan: 'حرفي',
+        sejour: 'إقامة',
+        caravane: 'مغامرة',
+        viewDetails: 'عرض التفاصيل',
+        seeMore: 'المزيد من التجارب',
       },
       finalCta: {
         title: 'هل أنت مستعد لمغامرتك المغربية؟',

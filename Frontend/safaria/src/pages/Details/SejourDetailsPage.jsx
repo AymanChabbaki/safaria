@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { Viewer } from '@photo-sphere-viewer/core';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaBed, FaWifi, FaParking, FaUtensils, FaCalendarAlt, FaSpinner } from 'react-icons/fa';
 import useAppStore from "../../store/useAppStore";
@@ -19,6 +20,7 @@ import api from "../../utils/api";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import '@photo-sphere-viewer/core/index.css';
 
 const SejourDetailsPage = () => {
   const { id } = useParams();
@@ -26,6 +28,7 @@ const SejourDetailsPage = () => {
   const { language } = useAppStore();
   const [sejour, setSejour] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [show360, setShow360] = useState(false);
 
   useEffect(() => {
     const fetchSejour = async () => {
@@ -40,6 +43,19 @@ const SejourDetailsPage = () => {
     };
     fetchSejour();
   }, [id]);
+
+  const images360 = sejour?.images360 ? (typeof sejour.images360 === 'string' ? JSON.parse(sejour.images360) : sejour.images360) : [];
+
+  useEffect(() => {
+    if (show360 && images360[0]) {
+      const viewer = new Viewer({
+        container: document.querySelector('#viewer-360-sejour'),
+        panorama: `http://localhost:5000${images360[0]}`,
+        navbar: ['zoom', 'fullscreen']
+      });
+      return () => viewer.destroy();
+    }
+  }, [show360, images360]);
 
   if (loading) {
     return (
@@ -57,7 +73,7 @@ const SejourDetailsPage = () => {
     );
   }
 
-  const photos = sejour.photos || [];
+  const photos = sejour.images ? (typeof sejour.images === 'string' ? JSON.parse(sejour.images) : sejour.images) : [];
   const amenities = [
     { icon: FaBed, label: 'Chambres confortables' },
     { icon: FaWifi, label: 'WiFi gratuit' },
@@ -113,6 +129,26 @@ const SejourDetailsPage = () => {
                     </SwiperSlide>
                   ))}
                 </Swiper>
+              </motion.div>
+            )}
+
+            {/* 360° Viewer Toggle */}
+            {images360.length > 0 && (
+              <button
+                onClick={() => setShow360(!show360)}
+                className="w-full py-3 bg-chefchaouen-500 hover:bg-chefchaouen-600 text-white font-semibold rounded-xl transition"
+              >
+                {show360 ? '📷 Voir Photos' : '🔄 Vue 360°'}
+              </button>
+            )}
+
+            {show360 && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 500 }}
+                className="bg-white rounded-2xl shadow-xl overflow-hidden"
+              >
+                <div id="viewer-360-sejour" className="w-full h-full"></div>
               </motion.div>
             )}
 

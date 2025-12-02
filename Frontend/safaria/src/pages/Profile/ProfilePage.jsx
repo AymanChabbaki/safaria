@@ -236,18 +236,22 @@ const ProfilePage = () => {
                       )}
                     </div>
                     
-                    {/* Camera Button */}
-                    {isEditing && (
-                      <motion.button
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="absolute bottom-0 right-0 p-2.5 bg-chefchaouen-600 rounded-full shadow-lg hover:bg-chefchaouen-700 transition"
-                      >
-                        <Camera className="w-5 h-5 text-white" />
-                      </motion.button>
-                    )}
+                    {/* Camera Button - Always visible */}
+                    <motion.button
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      type="button"
+                      onClick={() => {
+                        if (!isEditing) {
+                          setIsEditing(true);
+                        }
+                        fileInputRef.current?.click();
+                      }}
+                      className="absolute bottom-0 right-0 p-2.5 bg-chefchaouen-600 rounded-full shadow-lg hover:bg-chefchaouen-700 transition-all hover:scale-110 z-10"
+                      title="Change profile photo"
+                    >
+                      <Camera className="w-5 h-5 text-white" />
+                    </motion.button>
                     
                     <input
                       ref={fileInputRef}

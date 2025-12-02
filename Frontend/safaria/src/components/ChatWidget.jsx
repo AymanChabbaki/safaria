@@ -83,15 +83,48 @@ const ChatWidget = () => {
       {/* Chat Bubble Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-2 right-2 z-[9999] w-24 h-24 shadow-2xl flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
+        className="fixed bottom-6 right-6 z-[9999] w-20 h-20 bg-gradient-to-br from-desert-400 to-desert-600 rounded-full shadow-2xl flex items-center justify-center hover:shadow-desert-500/50 transition-all"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
       >
-        <img 
-          src="/logoSAFARIA.png" 
-          alt="SAFARIA" 
-          className="w-full h-full object-contain drop-shadow-2xl"
-        />
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.div
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X className="w-8 h-8 text-white" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="logo"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-14 h-14 flex items-center justify-center"
+            >
+              <img 
+                src="/logoSAFARIA.png" 
+                alt="SAFARIA" 
+                className="w-70 h-50 object-contain"
+                
+              />
+              {/* Notification Badge */}
+              <motion.div
+                className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.button>
 
       {/* Chat Window */}
