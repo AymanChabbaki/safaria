@@ -2,45 +2,47 @@
  * ============================================================
  * SAFARIA Platform - File Upload Middleware
  * ============================================================
- * Multer configuration for handling image uploads
+ * Multer configuration for handling image uploads with Cloudinary
  * Supports different storage paths and file validation
  * ============================================================
  */
 
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const {
+    profileStorage,
+    artisanStorage,
+    sejourStorage,
+    caravaneStorage,
+    image360Storage,
+} = require('../config/cloudinary');
 
-// Ensure upload directories exist
-const ensureDirectoryExists = (dirPath) => {
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
+// Helper to determine storage based on route
+const getStorage = (req) => {
+    const route = req.baseUrl || req.url;
+    
+    if (route.includes('/auth') || route.includes('/profile')) {
+        return profileStorage;
+    } else if (route.includes('/artisan')) {
+        return artisanStorage;
+    } else if (route.includes('/sejour')) {
+        return sejourStorage;
+    } else if (route.includes('/caravane')) {
+        return caravaneStorage;
+    } else if (route.includes('/360')) {
+        return image360Storage;
     }
+    
+    return artisanStorage; // Default
 };
 
-// Configure storage for different upload types
+// Configure storage - dynamically determined per request
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        let uploadPath = 'src/uploads/';
-        
-        // Determine upload path based on route
-        if (req.baseUrl.includes('/artisans')) {
-            uploadPath += 'artisans/';
-        } else if (req.baseUrl.includes('/sejours')) {
-            uploadPath += 'sejours/';
-        } else if (req.baseUrl.includes('/caravanes')) {
-            uploadPath += 'caravanes/';
-        } else if (req.baseUrl.includes('/360')) {
-            uploadPath += '360/';
-        } else if (req.baseUrl.includes('/auth')) {
-            uploadPath += 'profiles/';
-        }
-        
-        ensureDirectoryExists(uploadPath);
-        cb(null, uploadPath);
+        // This won't be used with Cloudinary, but keeping for fallback
+        cb(null, 'src/uploads/temp/');
     },
     filename: (req, file, cb) => {
-        // Generate unique filename: timestamp-randomstring-originalname
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const ext = path.extname(file.originalname);
         const nameWithoutExt = path.basename(file.originalname, ext);
@@ -64,7 +66,27 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-// Upload middleware configuration
+// Create Cloudinary upload middleware
+const createCloudinaryUpload = (fieldName, maxCount = 1) => {
+    return (req, res, next) => {
+        const cloudinaryStorage = getStorage(req);
+        const cloudinaryUpload = multer({ 
+            storage: cloudinaryStorage,
+            limits: {
+                fileSize: 10 * 1024 * 1024 // 10MB max file size for Cloudinary
+            },
+            fileFilter: fileFilter
+        });
+        
+        if (maxCount === 1) {
+            cloudinaryUpload.single(fieldName)(req, res, next);
+        } else {
+            cloudinaryUpload.array(fieldName, maxCount)(req, res, next);
+        }
+    };
+};
+
+// Standard upload middleware (fallback to local storage if needed)
 const upload = multer({
     storage: storage,
     limits: {
@@ -80,7 +102,7 @@ const handleUploadError = (err, req, res, next) => {
         if (err.code === 'LIMIT_FILE_SIZE') {
             return res.status(400).json({
                 success: false,
-                message: 'File too large. Maximum size is 5MB.'
+                message: 'File too large. Maximum size is 10MB.'
             });
         }
         return res.status(400).json({
@@ -99,5 +121,9 @@ const handleUploadError = (err, req, res, next) => {
 
 module.exports = {
     upload,
-    handleUploadError
+    createCloudinaryUpload,
+    handleUploadError,
+    // Convenient exports for different upload types
+    singleUpload: (fieldName) => createCloudinaryUpload(fieldName, 1),
+    multipleUpload: (fieldName, maxCount) => createCloudinaryUpload(fieldName, maxCount),
 };

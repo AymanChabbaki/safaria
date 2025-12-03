@@ -4,7 +4,7 @@
   "description": "SAFARIA Platform - Backend API with Node.js, Express, and MySQL",
   "main": "src/server.js",
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "scripts": {
     "start": "node src/server.js",
@@ -31,6 +31,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.15.3",
     "nodemon": "^3.1.11",
-    "pdfkit": "^0.17.2"
+    "pdfkit": "^0.17.2",
+    "streamifier": "^0.1.1"
   }
 }
