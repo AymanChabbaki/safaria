@@ -17,13 +17,11 @@ const HOST = process.env.HOST || '0.0.0.0';
 // Start server
 const startServer = async () => {
     try {
-        // Test database connection
-        console.log(' Testing database connection...');
-        const isConnected = await testConnection();
-        
-        if (!isConnected) {
-            console.error(' Failed to connect to database. Server not started.');
-            process.exit(1);
+        // Note: Skipping initial DB connection test for serverless environment
+        // Database connections are established per-request in serverless functions
+        if (process.env.NODE_ENV !== 'production') {
+            console.log(' Testing database connection...');
+            await testConnection();
         }
         
         // Start Express server
