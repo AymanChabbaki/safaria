@@ -19,8 +19,8 @@ if (process.env.DATABASE_URL) {
     dbConfig = {
         host: url.hostname,
         port: url.port || 3306,
-        user: url.username,
-        password: url.password,
+        user: decodeURIComponent(url.username),
+        password: decodeURIComponent(url.password),
         database: url.pathname.substring(1), // Remove leading '/'
         waitForConnections: true,
         connectionLimit: 10,
@@ -29,6 +29,11 @@ if (process.env.DATABASE_URL) {
         keepAliveInitialDelay: 0,
         charset: 'utf8mb4'
     };
+    
+    console.log('📡 Using DATABASE_URL connection');
+    console.log(`🔗 Host: ${dbConfig.host}`);
+    console.log(`👤 User: ${dbConfig.user}`);
+    console.log(`🗄️  Database: ${dbConfig.database}`);
 } else {
     // Use individual environment variables
     dbConfig = {
