@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useAuthStore from '../store/useAuthStore';
 import useAppStore from '../store/useAppStore';
 import { t, languages } from '../utils/i18n';
+import { getImageUrl } from '../utils/imageHelper';
 
 const Navbar = () => {
   const navigate = useNavigate();

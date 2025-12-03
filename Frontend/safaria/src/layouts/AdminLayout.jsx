@@ -9,6 +9,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { getImageUrl } from '../utils/imageHelper';
 import { 
   FaBars, 
   FaTimes, 

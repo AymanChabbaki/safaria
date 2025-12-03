@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import useAppStore from '../../store/useAppStore';
 import { t } from '../../utils/i18n';
 import api from '../../utils/api';
+import { getImageUrl } from '../../utils/imageHelper';
 import 'leaflet/dist/leaflet.css';
 
 // Custom marker icons using colored SAFARIA logo

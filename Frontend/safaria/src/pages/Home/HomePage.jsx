@@ -14,6 +14,7 @@ import PageContainer from '../../components/PageContainer';
 import useAppStore from '../../store/useAppStore';
 import { t } from '../../utils/i18n';
 import api from '../../utils/api';
+import { getImageUrl } from '../../utils/imageHelper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
