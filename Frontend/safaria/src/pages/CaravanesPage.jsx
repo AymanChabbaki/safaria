@@ -117,14 +117,12 @@ const CaravanesPage = () => {
                 </div>
               </div>
             ) : (
-              <video
-                controls
-                autoPlay
-                className="w-full h-full object-cover"
-                src="https://drive.google.com/uc?export=download&id=1C6knXo98oAO8ytIQxtW7_xFl-YHlw4Xs"
-              >
-                Your browser does not support the video tag.
-              </video>
+              <iframe
+                className="w-full h-full"
+                src="https://drive.google.com/file/d/YOUR_CARAVANES_VIDEO_ID/preview"
+                allow="autoplay"
+                allowFullScreen
+              ></iframe>
             )}
           </div>
         </motion.div>

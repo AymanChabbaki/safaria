@@ -117,14 +117,12 @@ const ArtisanatPage = () => {
                 </div>
               </div>
             ) : (
-              <video
-                controls
-                autoPlay
-                className="w-full h-full object-cover"
-                src="https://drive.google.com/uc?export=download&id=1Qel7dVWfvVbF3WAmyKT35jr3vlWP_jgG"
-              >
-                Your browser does not support the video tag.
-              </video>
+              <iframe
+                className="w-full h-full"
+                src="https://drive.google.com/file/d/YOUR_ARTISANAT_VIDEO_ID/preview"
+                allow="autoplay"
+                allowFullScreen
+              ></iframe>
             )}
           </div>
         </motion.div>

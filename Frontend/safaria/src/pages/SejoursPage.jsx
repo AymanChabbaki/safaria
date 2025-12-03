@@ -117,14 +117,12 @@ const SejoursPage = () => {
                 </div>
               </div>
             ) : (
-              <video
-                controls
-                autoPlay
-                className="w-full h-full object-cover"
-                src="https://drive.google.com/uc?export=download&id=1hxKzy6WydmoRG-vZW4jpinjtojmdRRC7"
-              >
-                Your browser does not support the video tag.
-              </video>
+              <iframe
+                className="w-full h-full"
+                src="https://drive.google.com/file/d/1hxKzy6WydmoRG-vZW4jpinjtojmdRRC7/preview"
+                allow="autoplay"
+                allowFullScreen
+              ></iframe>
             )}
           </div>
         </motion.div>
