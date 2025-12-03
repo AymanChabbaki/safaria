@@ -17,30 +17,6 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showMusicButton, setShowMusicButton] = useState(true);
 
-  useEffect(() => {
-    // Try to autoplay after first user interaction
-    const handleFirstInteraction = () => {
-      if (audioRef.current && !isPlaying) {
-        audioRef.current.volume = 0.15;
-        audioRef.current.play()
-          .then(() => {
-            setIsPlaying(true);
-            setTimeout(() => setShowMusicButton(false), 3000);
-          })
-          .catch(() => {
-            setShowMusicButton(true);
-          });
-      }
-      document.removeEventListener('click', handleFirstInteraction);
-    };
-    
-    document.addEventListener('click', handleFirstInteraction);
-    
-    return () => {
-      document.removeEventListener('click', handleFirstInteraction);
-    };
-  }, [isPlaying]);
-
   const toggleMusic = (e) => {
     e.stopPropagation();
     if (audioRef.current) {
@@ -73,7 +49,7 @@ function App() {
       <button
         onClick={toggleMusic}
         onMouseEnter={() => setShowMusicButton(true)}
-        className={`fixed bottom-6 left-6 z-50 backdrop-blur-md bg-white/10 border border-white/20 text-white p-3 rounded-xl shadow-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 ${
+        className={`fixed bottom-6 left-6 z-50 bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 rounded-full shadow-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 hover:scale-105 ${
           showMusicButton ? 'opacity-100' : 'opacity-40 hover:opacity-100'
         }`}
         title={isPlaying ? 'Pause Music' : 'Play Music'}
