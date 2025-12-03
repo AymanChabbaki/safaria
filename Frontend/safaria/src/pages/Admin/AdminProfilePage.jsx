@@ -20,6 +20,7 @@ import {
 } from 'react-icons/fa';
 import useAuthStore from '../../store/useAuthStore';
 import api from '../../utils/api';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const AdminProfilePage = () => {
   const { user, updateUser } = useAuthStore();

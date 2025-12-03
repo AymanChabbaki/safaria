@@ -16,6 +16,7 @@ import { FaMapMarkerAlt, FaUsers, FaClock, FaCalendarAlt, FaHiking, FaSpinner } 
 import useAppStore from "../../store/useAppStore";
 import { t } from "../../utils/i18n";
 import api from "../../utils/api";
+import { getImageUrl } from '../../utils/imageHelper';
 
 import 'swiper/css';
 import 'swiper/css/navigation';

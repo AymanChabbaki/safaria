@@ -16,6 +16,7 @@ import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaShoppingCart, FaSpinner } from '
 import useAppStore from "../../store/useAppStore";
 import { t } from "../../utils/i18n";
 import api from "../../utils/api";
+import { getImageUrl } from '../../utils/imageHelper';
 
 import 'swiper/css';
 import 'swiper/css/navigation';

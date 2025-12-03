@@ -5,6 +5,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import useAppStore from '../../store/useAppStore';
 import { t } from '../../utils/i18n';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const FavoritesPage = () => {
   const { language } = useAppStore();

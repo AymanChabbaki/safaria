@@ -13,6 +13,7 @@ import useAuthStore from '../../store/useAuthStore';
 import useAppStore from '../../store/useAppStore';
 import { t } from '../../utils/i18n';
 import api from '../../utils/api';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuthStore();

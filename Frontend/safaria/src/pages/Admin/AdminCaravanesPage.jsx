@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Loader2, Tent, X, Eye, MapPin, DollarSign } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../utils/api';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const AdminCaravanesPage = () => {
   const [caravanes, setCaravanes] = useState([]);

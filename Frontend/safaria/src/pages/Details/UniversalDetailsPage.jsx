@@ -21,6 +21,7 @@ import useAppStore from "../../store/useAppStore";
 import { t } from "../../utils/i18n";
 import api from "../../utils/api";
 import { getCity } from "../../utils/cityExtractor";
+import { getImageUrl } from '../../utils/imageHelper';
 
 import 'swiper/css';
 import 'swiper/css/navigation';

@@ -20,6 +20,7 @@ import useAuthStore from "../../store/useAuthStore";
 import { t } from "../../utils/i18n";
 import api from "../../utils/api";
 import { getCity } from '../../utils/cityExtractor';
+import { getImageUrl } from '../../utils/imageHelper';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
