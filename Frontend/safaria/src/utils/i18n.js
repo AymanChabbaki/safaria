@@ -414,6 +414,130 @@ export const translations = {
       night: 'nuit',
       person: 'personne',
       day: 'jour',
+      share: 'Partager',
+    },
+
+    // Artisanat Page
+    artisanat: {
+      title: 'Artisanat Marocain',
+      subtitle: 'Découvrez l\'art ancestral et les savoir-faire traditionnels du Maroc',
+      videoTitle: 'L\'Art de l\'Artisanat Marocain',
+      videoDesc: 'Plongez dans l\'univers fascinant des artisans marocains',
+      descriptionTitle: 'Une Tradition Millénaire',
+      descriptionText: 'L\'artisanat marocain est un héritage culturel précieux transmis de génération en génération. Chaque pièce raconte une histoire unique, façonnée par des mains expertes qui perpétuent des techniques ancestrales. Des tapis berbères aux poteries de Fès, en passant par les cuirs de Marrakech, découvrez l\'authenticité et la richesse de notre patrimoine artisanal.',
+      whyChoose: 'Pourquoi Choisir Notre Artisanat?',
+      features: {
+        authentic: {
+          title: 'Authenticité Garantie',
+          desc: 'Chaque pièce est créée par des artisans locaux selon des méthodes traditionnelles',
+        },
+        local: {
+          title: 'Artisans Locaux',
+          desc: 'Rencontrez directement les artisans dans leurs ateliers et découvrez leur savoir-faire',
+        },
+        quality: {
+          title: 'Qualité Premium',
+          desc: 'Des produits d\'exception fabriqués avec des matériaux nobles et durables',
+        },
+        passion: {
+          title: 'Fait avec Passion',
+          desc: 'Chaque création est le fruit d\'un travail minutieux et d\'une passion transmise',
+        },
+      },
+      experienceHighlights: 'Points Forts de l\'Expérience',
+      highlights: {
+        item1: 'Visite guidée des ateliers traditionnels',
+        item2: 'Démonstration des techniques ancestrales',
+        item3: 'Rencontre avec les maîtres artisans',
+        item4: 'Atelier pratique pour créer votre propre pièce',
+        item5: 'Histoire et culture de chaque métier',
+        item6: 'Possibilité d\'achat direct auprès des artisans',
+      },
+      ctaTitle: 'Prêt à Découvrir l\'Artisanat Marocain?',
+      ctaSubtitle: 'Explorez notre sélection d\'artisans et réservez votre visite dès aujourd\'hui',
+      exploreArtisans: 'Explorer les Artisans',
+    },
+
+    // Sejours Page
+    sejours: {
+      title: 'Séjours Culturels',
+      subtitle: 'Vivez une expérience immersive au cœur de la culture marocaine',
+      videoTitle: 'L\'Hospitalité Marocaine',
+      videoDesc: 'Découvrez nos hébergements traditionnels et l\'authenticité de l\'accueil marocain',
+      descriptionTitle: 'Une Immersion Culturelle Unique',
+      descriptionText: 'Nos séjours culturels vous offrent bien plus qu\'un simple hébergement. Vivez au rythme des traditions marocaines, partagez des moments authentiques avec vos hôtes, et découvrez la vraie essence de l\'hospitalité marocaine. Des riads traditionnels aux maisons d\'hôtes berbères, chaque séjour est une porte ouverte sur la richesse culturelle du Maroc.',
+      whyChoose: 'Pourquoi Choisir Nos Séjours?',
+      features: {
+        authentic: {
+          title: 'Hébergements Authentiques',
+          desc: 'Riads, kasbahs et maisons traditionnelles restaurées avec soin',
+        },
+        hospitality: {
+          title: 'Hospitalité Chaleureuse',
+          desc: 'Accueil familial et partage de moments conviviaux avec vos hôtes',
+        },
+        comfort: {
+          title: 'Confort Moderne',
+          desc: 'Équipements contemporains dans un cadre traditionnel préservé',
+        },
+        safety: {
+          title: 'Sécurité Garantie',
+          desc: 'Hébergements sélectionnés et vérifiés pour votre tranquillité',
+        },
+      },
+      experienceHighlights: 'Points Forts du Séjour',
+      highlights: {
+        item1: 'Architecture traditionnelle préservée',
+        item2: 'Cuisine marocaine authentique préparée sur place',
+        item3: 'Activités culturelles et ateliers traditionnels',
+        item4: 'Découverte des environs avec un guide local',
+        item5: 'Ambiance chaleureuse et conviviale',
+        item6: 'Expérience de vie à la marocaine',
+      },
+      ctaTitle: 'Prêt pour un Séjour Culturel Inoubliable?',
+      ctaSubtitle: 'Réservez votre hébergement traditionnel et vivez le Maroc autrement',
+      exploreStays: 'Explorer les Séjours',
+    },
+
+    // Caravanes Page
+    caravanes: {
+      title: 'Caravanes dans le Désert',
+      subtitle: 'Partez à l\'aventure dans les dunes du Sahara pour une expérience magique',
+      videoTitle: 'L\'Aventure Saharienne',
+      videoDesc: 'Vivez l\'expérience unique d\'une nuit sous les étoiles dans le désert',
+      descriptionTitle: 'Une Aventure Inoubliable',
+      descriptionText: 'Embarquez pour une aventure extraordinaire au cœur du Sahara. Nos caravanes vous emmènent à la découverte des paysages grandioses du désert, entre dunes dorées et ciels étoilés. Profitez d\'une expérience authentique en compagnie de guides nomades, et vivez des moments magiques autour du feu sous un ciel constellé d\'étoiles.',
+      whyChoose: 'Pourquoi Choisir Nos Caravanes?',
+      features: {
+        adventure: {
+          title: 'Aventure Authentique',
+          desc: 'Balade à dos de dromadaire et immersion dans la vie nomade',
+        },
+        overnight: {
+          title: 'Nuit sous les Étoiles',
+          desc: 'Bivouac traditionnel et nuit inoubliable dans le désert',
+        },
+        landscape: {
+          title: 'Paysages Époustouflants',
+          desc: 'Découvrez les plus belles dunes et oasis du Sahara',
+        },
+        guided: {
+          title: 'Guides Expérimentés',
+          desc: 'Accompagnement par des guides nomades connaissant le désert',
+        },
+      },
+      experienceHighlights: 'Points Forts de l\'Aventure',
+      highlights: {
+        item1: 'Balade à dos de dromadaire au coucher du soleil',
+        item2: 'Bivouac en camp traditionnel berbère',
+        item3: 'Nuit sous les étoiles dans le désert',
+        item4: 'Cuisine traditionnelle préparée au feu de bois',
+        item5: 'Musique et contes berbères autour du feu',
+        item6: 'Lever de soleil sur les dunes du Sahara',
+      },
+      ctaTitle: 'Prêt pour l\'Aventure Saharienne?',
+      ctaSubtitle: 'Réservez votre caravane et vivez une expérience unique dans le désert',
+      exploreCaravans: 'Explorer les Caravanes',
     },
   },
 
@@ -812,6 +936,130 @@ export const translations = {
       night: 'night',
       person: 'person',
       day: 'day',
+      share: 'Share',
+    },
+
+    // Artisanat Page
+    artisanat: {
+      title: 'Moroccan Handicraft',
+      subtitle: 'Discover the ancestral art and traditional craftsmanship of Morocco',
+      videoTitle: 'The Art of Moroccan Crafts',
+      videoDesc: 'Dive into the fascinating world of Moroccan artisans',
+      descriptionTitle: 'A Millennial Tradition',
+      descriptionText: 'Moroccan craftsmanship is a precious cultural heritage passed down from generation to generation. Each piece tells a unique story, shaped by expert hands perpetuating ancestral techniques. From Berber carpets to Fez pottery and Marrakech leather goods, discover the authenticity and richness of our artisanal heritage.',
+      whyChoose: 'Why Choose Our Crafts?',
+      features: {
+        authentic: {
+          title: 'Guaranteed Authenticity',
+          desc: 'Each piece is created by local artisans using traditional methods',
+        },
+        local: {
+          title: 'Local Artisans',
+          desc: 'Meet artisans directly in their workshops and discover their know-how',
+        },
+        quality: {
+          title: 'Premium Quality',
+          desc: 'Exceptional products made with noble and durable materials',
+        },
+        passion: {
+          title: 'Made with Passion',
+          desc: 'Each creation is the result of meticulous work and transmitted passion',
+        },
+      },
+      experienceHighlights: 'Experience Highlights',
+      highlights: {
+        item1: 'Guided tour of traditional workshops',
+        item2: 'Demonstration of ancestral techniques',
+        item3: 'Meeting with master craftsmen',
+        item4: 'Practical workshop to create your own piece',
+        item5: 'History and culture of each craft',
+        item6: 'Direct purchase from artisans',
+      },
+      ctaTitle: 'Ready to Discover Moroccan Crafts?',
+      ctaSubtitle: 'Explore our selection of artisans and book your visit today',
+      exploreArtisans: 'Explore Artisans',
+    },
+
+    // Sejours Page
+    sejours: {
+      title: 'Cultural Stays',
+      subtitle: 'Live an immersive experience at the heart of Moroccan culture',
+      videoTitle: 'Moroccan Hospitality',
+      videoDesc: 'Discover our traditional accommodations and authentic Moroccan welcome',
+      descriptionTitle: 'A Unique Cultural Immersion',
+      descriptionText: 'Our cultural stays offer much more than simple accommodation. Live to the rhythm of Moroccan traditions, share authentic moments with your hosts, and discover the true essence of Moroccan hospitality. From traditional riads to Berber guesthouses, each stay is a gateway to Morocco\'s cultural richness.',
+      whyChoose: 'Why Choose Our Stays?',
+      features: {
+        authentic: {
+          title: 'Authentic Accommodations',
+          desc: 'Riads, kasbahs and traditional houses carefully restored',
+        },
+        hospitality: {
+          title: 'Warm Hospitality',
+          desc: 'Family welcome and sharing convivial moments with your hosts',
+        },
+        comfort: {
+          title: 'Modern Comfort',
+          desc: 'Contemporary amenities in a preserved traditional setting',
+        },
+        safety: {
+          title: 'Guaranteed Safety',
+          desc: 'Selected and verified accommodations for your peace of mind',
+        },
+      },
+      experienceHighlights: 'Stay Highlights',
+      highlights: {
+        item1: 'Preserved traditional architecture',
+        item2: 'Authentic Moroccan cuisine prepared on site',
+        item3: 'Cultural activities and traditional workshops',
+        item4: 'Local area discovery with a local guide',
+        item5: 'Warm and friendly atmosphere',
+        item6: 'Moroccan lifestyle experience',
+      },
+      ctaTitle: 'Ready for an Unforgettable Cultural Stay?',
+      ctaSubtitle: 'Book your traditional accommodation and experience Morocco differently',
+      exploreStays: 'Explore Stays',
+    },
+
+    // Caravanes Page
+    caravanes: {
+      title: 'Desert Caravans',
+      subtitle: 'Embark on an adventure in the Sahara dunes for a magical experience',
+      videoTitle: 'The Saharan Adventure',
+      videoDesc: 'Experience the unique feeling of a night under the stars in the desert',
+      descriptionTitle: 'An Unforgettable Adventure',
+      descriptionText: 'Embark on an extraordinary adventure in the heart of the Sahara. Our caravans take you to discover the grandiose desert landscapes, between golden dunes and starry skies. Enjoy an authentic experience with nomadic guides, and live magical moments around the fire under a star-studded sky.',
+      whyChoose: 'Why Choose Our Caravans?',
+      features: {
+        adventure: {
+          title: 'Authentic Adventure',
+          desc: 'Camel ride and immersion in nomadic life',
+        },
+        overnight: {
+          title: 'Night Under the Stars',
+          desc: 'Traditional bivouac and unforgettable night in the desert',
+        },
+        landscape: {
+          title: 'Breathtaking Landscapes',
+          desc: 'Discover the most beautiful dunes and oases of the Sahara',
+        },
+        guided: {
+          title: 'Experienced Guides',
+          desc: 'Accompanied by nomadic guides who know the desert',
+        },
+      },
+      experienceHighlights: 'Adventure Highlights',
+      highlights: {
+        item1: 'Camel ride at sunset',
+        item2: 'Bivouac in traditional Berber camp',
+        item3: 'Night under the stars in the desert',
+        item4: 'Traditional cuisine prepared over wood fire',
+        item5: 'Berber music and tales around the fire',
+        item6: 'Sunrise over the Sahara dunes',
+      },
+      ctaTitle: 'Ready for the Saharan Adventure?',
+      ctaSubtitle: 'Book your caravan and live a unique desert experience',
+      exploreCaravans: 'Explore Caravans',
     },
   },
 
@@ -1210,6 +1458,130 @@ export const translations = {
       night: 'ليلة',
       person: 'شخص',
       day: 'يوم',
+      share: 'مشاركة',
+    },
+
+    // Artisanat Page
+    artisanat: {
+      title: 'الحرف اليدوية المغربية',
+      subtitle: 'اكتشف الفن الأصيل والحرف التقليدية المغربية',
+      videoTitle: 'فن الحرف اليدوية المغربية',
+      videoDesc: 'اغمر نفسك في عالم الحرفيين المغاربة الرائع',
+      descriptionTitle: 'تقليد عريق',
+      descriptionText: 'الحرف اليدوية المغربية هي تراث ثقافي ثمين ينتقل من جيل إلى جيل. كل قطعة تحكي قصة فريدة، صنعتها أيدٍ ماهرة تحافظ على التقنيات التقليدية. من السجاد البربري إلى فخار فاس ومنتجات جلد مراكش، اكتشف أصالة وثراء تراثنا الحرفي.',
+      whyChoose: 'لماذا تختار حرفنا؟',
+      features: {
+        authentic: {
+          title: 'الأصالة المضمونة',
+          desc: 'كل قطعة مصنوعة من قبل حرفيين محليين باستخدام الطرق التقليدية',
+        },
+        local: {
+          title: 'حرفيون محليون',
+          desc: 'التقِ بالحرفيين مباشرة في ورشهم واكتشف مهاراتهم',
+        },
+        quality: {
+          title: 'جودة ممتازة',
+          desc: 'منتجات استثنائية مصنوعة من مواد نبيلة ودائمة',
+        },
+        passion: {
+          title: 'مصنوع بشغف',
+          desc: 'كل إبداع هو نتيجة عمل دقيق وشغف منقول',
+        },
+      },
+      experienceHighlights: 'أبرز التجربة',
+      highlights: {
+        item1: 'جولة إرشادية في الورش التقليدية',
+        item2: 'عرض للتقنيات التقليدية',
+        item3: 'لقاء مع الحرفيين الخبراء',
+        item4: 'ورشة عملية لإنشاء قطعتك الخاصة',
+        item5: 'تاريخ وثقافة كل حرفة',
+        item6: 'إمكانية الشراء مباشرة من الحرفيين',
+      },
+      ctaTitle: 'هل أنت مستعد لاكتشاف الحرف المغربية؟',
+      ctaSubtitle: 'استكشف مجموعتنا من الحرفيين واحجز زيارتك اليوم',
+      exploreArtisans: 'استكشف الحرفيين',
+    },
+
+    // Sejours Page
+    sejours: {
+      title: 'إقامات ثقافية',
+      subtitle: 'عش تجربة غامرة في قلب الثقافة المغربية',
+      videoTitle: 'الضيافة المغربية',
+      videoDesc: 'اكتشف أماكن الإقامة التقليدية وأصالة الترحيب المغربي',
+      descriptionTitle: 'انغماس ثقافي فريد',
+      descriptionText: 'توفر إقاماتنا الثقافية أكثر بكثير من مجرد إقامة بسيطة. عش على إيقاع التقاليد المغربية، وشارك لحظات حقيقية مع مضيفيك، واكتشف الجوهر الحقيقي للضيافة المغربية. من الرياضات التقليدية إلى بيوت الضيافة البربرية، كل إقامة هي بوابة لثراء الثقافة المغربية.',
+      whyChoose: 'لماذا تختار إقاماتنا؟',
+      features: {
+        authentic: {
+          title: 'أماكن إقامة أصيلة',
+          desc: 'رياضات وقصبات ومنازل تقليدية تم ترميمها بعناية',
+        },
+        hospitality: {
+          title: 'ضيافة حارة',
+          desc: 'ترحيب عائلي ومشاركة لحظات ودية مع مضيفيك',
+        },
+        comfort: {
+          title: 'راحة عصرية',
+          desc: 'وسائل الراحة المعاصرة في بيئة تقليدية محفوظة',
+        },
+        safety: {
+          title: 'الأمان المضمون',
+          desc: 'أماكن إقامة مختارة ومتحقق منها لراحة بالك',
+        },
+      },
+      experienceHighlights: 'أبرز الإقامة',
+      highlights: {
+        item1: 'هندسة معمارية تقليدية محفوظة',
+        item2: 'مطبخ مغربي أصيل محضر في الموقع',
+        item3: 'أنشطة ثقافية وورش تقليدية',
+        item4: 'اكتشاف المنطقة المحلية مع دليل محلي',
+        item5: 'جو دافئ وودي',
+        item6: 'تجربة حياة مغربية',
+      },
+      ctaTitle: 'هل أنت مستعد لإقامة ثقافية لا تُنسى؟',
+      ctaSubtitle: 'احجز إقامتك التقليدية واختبر المغرب بطريقة مختلفة',
+      exploreStays: 'استكشف الإقامات',
+    },
+
+    // Caravanes Page
+    caravanes: {
+      title: 'قوافل الصحراء',
+      subtitle: 'انطلق في مغامرة في كثبان الصحراء لتجربة سحرية',
+      videoTitle: 'مغامرة الصحراء',
+      videoDesc: 'عش التجربة الفريدة لليلة تحت النجوم في الصحراء',
+      descriptionTitle: 'مغامرة لا تُنسى',
+      descriptionText: 'انطلق في مغامرة استثنائية في قلب الصحراء. تأخذك قوافلنا لاكتشاف المناظر الصحراوية الرائعة، بين الكثبان الذهبية والسماء المرصعة بالنجوم. استمتع بتجربة أصيلة برفقة مرشدين بدو، وعش لحظات سحرية حول النار تحت سماء مليئة بالنجوم.',
+      whyChoose: 'لماذا تختار قوافلنا؟',
+      features: {
+        adventure: {
+          title: 'مغامرة حقيقية',
+          desc: 'ركوب الجمال والانغماس في الحياة البدوية',
+        },
+        overnight: {
+          title: 'ليلة تحت النجوم',
+          desc: 'مخيم تقليدي وليلة لا تُنسى في الصحراء',
+        },
+        landscape: {
+          title: 'مناظر خلابة',
+          desc: 'اكتشف أجمل الكثبان والواحات في الصحراء',
+        },
+        guided: {
+          title: 'مرشدون ذوو خبرة',
+          desc: 'مرافقة من قبل مرشدين بدو يعرفون الصحراء',
+        },
+      },
+      experienceHighlights: 'أبرز المغامرة',
+      highlights: {
+        item1: 'ركوب الجمال عند غروب الشمس',
+        item2: 'مخيم في مخيم بربري تقليدي',
+        item3: 'ليلة تحت النجوم في الصحراء',
+        item4: 'مطبخ تقليدي محضر على نار الحطب',
+        item5: 'موسيقى وقصص بربرية حول النار',
+        item6: 'شروق الشمس على كثبان الصحراء',
+      },
+      ctaTitle: 'هل أنت مستعد لمغامرة الصحراء؟',
+      ctaSubtitle: 'احجز قافلتك وعش تجربة فريدة في الصحراء',
+      exploreCaravans: 'استكشف القوافل',
     },
   },
 };

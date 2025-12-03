@@ -17,6 +17,9 @@ import AdminLayout from './layouts/AdminLayout';
 import HomePage from './pages/Home/HomePage';
 import MapPage from './pages/Map/MapPage';
 import ExperiencesPage from './pages/Experiences/ExperiencesPage';
+import ArtisanatPage from './pages/ArtisanatPage';
+import SejoursPage from './pages/SejoursPage';
+import CaravanesPage from './pages/CaravanesPage';
 import UniversalDetailsPage from './pages/Details/UniversalDetailsPage';
 import ReservationPage from './pages/Reservation/ReservationPage';
 import PaymentPage from './pages/Payment/PaymentPage';
@@ -97,6 +100,18 @@ export const router = createBrowserRouter([
       {
         path: 'experiences',
         element: <ExperiencesPage />,
+      },
+      {
+        path: 'artisanat',
+        element: <ArtisanatPage />,
+      },
+      {
+        path: 'sejours',
+        element: <SejoursPage />,
+      },
+      {
+        path: 'caravanes',
+        element: <CaravanesPage />,
       },
       
       // ============================================================

@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
 import { MapPin, Palette, Home as HomeIcon, Tent, Users, Star, Globe, Heart, TrendingUp, Award, ArrowRight } from 'lucide-react';
@@ -21,6 +21,7 @@ import './HomePage.css';
 
 const HomePage = () => {
   const { language } = useAppStore();
+  const navigate = useNavigate();
   const [heroTextIndex, setHeroTextIndex] = useState(0);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
 
@@ -249,7 +250,8 @@ const HomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              onClick={() => navigate('/artisanat')}
+              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
             >
               <div className="flex justify-center mb-6">
                 <div className="bg-gradient-to-br from-morocco-red to-red-600 p-4 rounded-full">
@@ -262,12 +264,9 @@ const HomePage = () => {
               <p className="text-gray-600 text-center mb-6 leading-relaxed">
                 {t(language, 'home.localCraftsDesc') || 'Rencontrez des artisans passionnés et découvrez l\'artisanat marocain authentique.'}
               </p>
-              <Link 
-                to="/experiences?category=artisan" 
-                className="block text-center text-morocco-red hover:text-red-700 font-semibold transition-colors"
-              >
+              <div className="block text-center text-morocco-red hover:text-red-700 font-semibold transition-colors">
                 {t(language, 'home.discover') || 'Découvrir'} →
-              </Link>
+              </div>
             </motion.div>
             
             <motion.div 
@@ -275,7 +274,8 @@ const HomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              onClick={() => navigate('/sejours')}
+              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
             >
               <div className="flex justify-center mb-6">
                 <div className="bg-gradient-to-br from-chefchaouen-500 to-chefchaouen-600 p-4 rounded-full">
@@ -288,12 +288,9 @@ const HomePage = () => {
               <p className="text-gray-600 text-center mb-6 leading-relaxed">
                 {t(language, 'home.culturalStaysDesc') || 'Vivez une immersion totale dans la culture marocaine avec nos hébergements traditionnels.'}
               </p>
-              <Link 
-                to="/experiences?category=sejour" 
-                className="block text-center text-chefchaouen-600 hover:text-chefchaouen-700 font-semibold transition-colors"
-              >
+              <div className="block text-center text-chefchaouen-600 hover:text-chefchaouen-700 font-semibold transition-colors">
                 {t(language, 'home.explore') || 'Explorer'} →
-              </Link>
+              </div>
             </motion.div>
             
             <motion.div 
@@ -301,7 +298,8 @@ const HomePage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+              onClick={() => navigate('/caravanes')}
+              className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
             >
               <div className="flex justify-center mb-6">
                 <div className="bg-gradient-to-br from-desert-500 to-sand-600 p-4 rounded-full">
@@ -314,12 +312,9 @@ const HomePage = () => {
               <p className="text-gray-600 text-center mb-6 leading-relaxed">
                 {t(language, 'home.desertCaravansDesc') || 'Partez à l\'aventure dans le désert du Sahara pour une expérience inoubliable.'}
               </p>
-              <Link 
-                to="/experiences?category=caravane" 
-                className="block text-center text-desert-600 hover:text-desert-700 font-semibold transition-colors"
-              >
+              <div className="block text-center text-desert-600 hover:text-desert-700 font-semibold transition-colors">
                 {t(language, 'home.book') || 'Réserver'} →
-              </Link>
+              </div>
             </motion.div>
           </div>
         </section>
