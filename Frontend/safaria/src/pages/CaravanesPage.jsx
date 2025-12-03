@@ -245,3 +245,4 @@ const CaravanesPage = () => {
 };
 
 export default CaravanesPage;
+

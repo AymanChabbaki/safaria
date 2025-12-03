@@ -139,7 +139,7 @@ const UniversalDetailsPage = ({ type }) => {
           viewer360Ref.current = null;
         }
 
-        const imageUrl = `http://localhost:5000${images360[0].imageUrl}`;
+        const imageUrl = getImageUrl(images360[0].imageUrl);
         console.log('Initializing 360° viewer with:', {
           imageUrl,
           container: viewerContainerRef.current,
@@ -279,9 +279,9 @@ const UniversalDetailsPage = ({ type }) => {
 
   // Get images array - fallback to main_image if images array is empty
   const images = item.images && item.images.length > 0 
-    ? item.images.map(img => `http://localhost:5000${img}`)
+    ? item.images.map(img => getImageUrl(img))
     : item.main_image 
-      ? [`http://localhost:5000${item.main_image}`]
+      ? [getImageUrl(item.main_image)]
       : ['/logoSAFARIA.png'];
 
   const mainImage = images[0];
@@ -648,3 +648,4 @@ const UniversalDetailsPage = ({ type }) => {
 };
 
 export default UniversalDetailsPage;
+

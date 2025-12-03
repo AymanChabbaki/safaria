@@ -145,7 +145,7 @@ const Navbar = () => {
                 >
                   {user?.photo ? (
                     <img 
-                      src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000${user.photo}`}
+                      src={user.photo.startsWith('http') ? user.photo : getImageUrl(user.photo)}
                       alt={user.name} 
                       className="w-8 h-8 rounded-full object-cover border-2 border-white"
                     />
@@ -446,3 +446,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

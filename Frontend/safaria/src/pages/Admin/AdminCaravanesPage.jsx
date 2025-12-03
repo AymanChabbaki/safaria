@@ -622,7 +622,7 @@ const AdminCaravanesPage = () => {
                       {formData.images.map((img, idx) => (
                         <div key={idx} className="relative group">
                           <img
-                            src={`http://localhost:5000${img}`}
+                            src={getImageUrl(img)}
                             alt={`Image ${idx + 1}`}
                             className="w-full h-20 object-cover rounded-lg"
                           />
@@ -661,7 +661,7 @@ const AdminCaravanesPage = () => {
                       {formData.images360.map((img, idx) => (
                         <div key={idx} className="relative group">
                           <img
-                            src={`http://localhost:5000${img}`}
+                            src={getImageUrl(img)}
                             alt={`360 ${idx + 1}`}
                             className="w-full h-20 object-cover rounded-lg"
                           />
@@ -748,7 +748,7 @@ const AdminCaravanesPage = () => {
                 {selectedCaravane.main_image && (
                   <div className="w-full h-64 rounded-lg overflow-hidden">
                     <img
-                      src={`http://localhost:5000${selectedCaravane.main_image}`}
+                      src={getImageUrl(selectedCaravane.main_image)}
                       alt={selectedCaravane.name_fr || selectedCaravane.name}
                       className="w-full h-full object-cover"
                     />
@@ -765,7 +765,7 @@ const AdminCaravanesPage = () => {
                         {images.map((img, idx) => (
                           <div key={idx} className="aspect-square rounded-lg overflow-hidden">
                             <img
-                              src={`http://localhost:5000${img}`}
+                              src={getImageUrl(img)}
                               alt={`${selectedCaravane.name_fr || selectedCaravane.name} ${idx + 1}`}
                               className="w-full h-full object-cover"
                             />
@@ -786,7 +786,7 @@ const AdminCaravanesPage = () => {
                         {images360.map((img, idx) => (
                           <button
                             key={idx}
-                            onClick={() => window.open(`http://localhost:5000${img}`, '_blank')}
+                            onClick={() => window.open(getImageUrl(img), '_blank')}
                             className="flex items-center gap-2 px-4 py-2 bg-chefchaouen-600 text-white rounded-lg hover:bg-chefchaouen-700 transition"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

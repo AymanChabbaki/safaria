@@ -245,3 +245,4 @@ const ArtisanatPage = () => {
 };
 
 export default ArtisanatPage;
+

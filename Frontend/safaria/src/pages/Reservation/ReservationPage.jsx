@@ -125,7 +125,7 @@ const ReservationPage = () => {
           itemId: formData.itemId,
           itemName: formData.itemName,
           itemPrice: formData.itemPrice,
-          itemImage: itemDetails?.main_image ? `http://localhost:5000${itemDetails.main_image}` : null,
+          itemImage: itemDetails?.main_image ? getImageUrl(itemDetails.main_image) : null,
           checkIn: formData.startDate.toISOString().split('T')[0], // Backend expects YYYY-MM-DD
           checkOut: formData.endDate.toISOString().split('T')[0], // Backend expects YYYY-MM-DD
           startDate: formData.startDate.toLocaleDateString(), // For display
@@ -213,7 +213,7 @@ const ReservationPage = () => {
                 <div className="flex items-start gap-4">
                   {itemDetails.main_image && (
                     <img 
-                      src={`http://localhost:5000${itemDetails.main_image}`}
+                      src={getImageUrl(itemDetails.main_image)}
                       alt={formData.itemName}
                       className="w-24 h-24 object-cover rounded-xl"
                     />
@@ -444,3 +444,4 @@ const ReservationPage = () => {
 };
 
 export default ReservationPage;
+

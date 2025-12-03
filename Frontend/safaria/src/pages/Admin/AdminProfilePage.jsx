@@ -191,7 +191,7 @@ const AdminProfilePage = () => {
               <div className="relative">
                 {previewUrl ? (
                   <img 
-                    src={previewUrl.startsWith('http') ? previewUrl : `http://localhost:5000${previewUrl}`}
+                    src={previewUrl.startsWith('http') ? previewUrl : getImageUrl(previewUrl)}
                     alt="Profile" 
                     className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                   />
@@ -450,3 +450,4 @@ const AdminProfilePage = () => {
 };
 
 export default AdminProfilePage;
+

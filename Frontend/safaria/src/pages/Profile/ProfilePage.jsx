@@ -225,7 +225,7 @@ const ProfilePage = () => {
                     <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-xl bg-white">
                       {previewUrl ? (
                         <img 
-                          src={previewUrl.startsWith('http') ? previewUrl : `http://localhost:5000${previewUrl}`}
+                          src={previewUrl.startsWith('http') ? previewUrl : getImageUrl(previewUrl)}
                           alt="Profile" 
                           className="w-full h-full object-cover"
                         />
@@ -665,3 +665,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+

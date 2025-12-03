@@ -50,7 +50,7 @@ const ArtisanatDetailsPage = () => {
     if (show360 && images360[0]) {
       const viewer = new Viewer({
         container: document.querySelector('#viewer-360'),
-        panorama: `http://localhost:5000${images360[0]}`,
+        panorama: getImageUrl(images360[0]),
         navbar: ['zoom', 'fullscreen']
       });
       return () => viewer.destroy();
@@ -116,7 +116,7 @@ const ArtisanatDetailsPage = () => {
                   {photos.map((photo, idx) => (
                     <SwiperSlide key={idx}>
                       <img
-                        src={`http://localhost:5000${photo}`}
+                        src={getImageUrl(photo)}
                         alt={`${artisan.name} ${idx + 1}`}
                         className="w-full h-full object-cover"
                       />
@@ -234,3 +234,4 @@ const ArtisanatDetailsPage = () => {
 };
 
 export default ArtisanatDetailsPage;
+

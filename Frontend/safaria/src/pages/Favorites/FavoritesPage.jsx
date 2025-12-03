@@ -106,9 +106,9 @@ const FavoritesPage = () => {
                   <img
                     src={
                       item.images?.[0]
-                        ? `http://localhost:5000${item.images[0]}`
+                        ? getImageUrl(item.images[0])
                         : item.main_image
-                        ? `http://localhost:5000${item.main_image}`
+                        ? getImageUrl(item.main_image)
                         : 'https://via.placeholder.com/400x300?text=No+Image'
                     }
                     alt={item.name}
@@ -180,3 +180,4 @@ const FavoritesPage = () => {
 };
 
 export default FavoritesPage;
+

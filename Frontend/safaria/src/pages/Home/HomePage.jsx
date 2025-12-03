@@ -459,7 +459,7 @@ const HomePage = () => {
                 >
                   <div className="relative h-64 overflow-hidden bg-gray-200">
                     <img 
-                      src={`http://localhost:5000${place.images?.[0] || '/uploads/placeholder.jpg'}`}
+                      src={getImageUrl(place.images?.[0])}
                       alt={place.name_fr || place.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -569,3 +569,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

@@ -108,7 +108,7 @@ const AdminLayout = () => {
             <div className="flex items-center space-x-3">
               {user?.photo ? (
                 <img 
-                  src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000${user.photo}`}
+                  src={user.photo.startsWith('http') ? user.photo : getImageUrl(user.photo)}
                   alt={user.name}
                   className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                 />
@@ -216,7 +216,7 @@ const AdminLayout = () => {
           >
             {user?.photo ? (
               <img 
-                src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000${user.photo}`}
+                src={user.photo.startsWith('http') ? user.photo : getImageUrl(user.photo)}
                 alt={user.name}
                 className="w-9 h-9 rounded-full object-cover"
               />
@@ -271,3 +271,4 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+

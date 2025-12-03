@@ -1617,3 +1617,4 @@ export const languages = [
 ];
 
 export const defaultLanguage = 'fr';
+

@@ -107,3 +107,4 @@ export default {
   getCity,
   MOROCCAN_CITIES,
 };
+

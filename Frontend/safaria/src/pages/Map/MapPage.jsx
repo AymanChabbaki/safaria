@@ -313,9 +313,9 @@ const MapPage = () => {
                   <img 
                     src={
                       marker.data.images && marker.data.images.length > 0
-                        ? `http://localhost:5000${marker.data.images[0]}`
+                        ? getImageUrl(marker.data.images[0])
                         : marker.data.main_image
-                          ? `http://localhost:5000${marker.data.main_image}`
+                          ? getImageUrl(marker.data.main_image)
                           : marker.data.image || '/logoSAFARIA.png'
                     }
                     alt={marker.data.name || marker.data.title}
@@ -444,3 +444,4 @@ const MapPage = () => {
 };
 
 export default MapPage;
+

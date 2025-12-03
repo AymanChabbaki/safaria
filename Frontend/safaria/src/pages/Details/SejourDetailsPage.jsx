@@ -50,7 +50,7 @@ const SejourDetailsPage = () => {
     if (show360 && images360[0]) {
       const viewer = new Viewer({
         container: document.querySelector('#viewer-360-sejour'),
-        panorama: `http://localhost:5000${images360[0]}`,
+        panorama: getImageUrl(images360[0]),
         navbar: ['zoom', 'fullscreen']
       });
       return () => viewer.destroy();
@@ -122,7 +122,7 @@ const SejourDetailsPage = () => {
                   {photos.map((photo, idx) => (
                     <SwiperSlide key={idx}>
                       <img
-                        src={`http://localhost:5000${photo}`}
+                        src={getImageUrl(photo)}
                         alt={`${sejour.title} ${idx + 1}`}
                         className="w-full h-full object-cover"
                       />
@@ -223,3 +223,4 @@ const SejourDetailsPage = () => {
 };
 
 export default SejourDetailsPage;
+

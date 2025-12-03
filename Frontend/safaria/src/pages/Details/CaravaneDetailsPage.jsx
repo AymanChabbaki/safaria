@@ -50,7 +50,7 @@ const CaravaneDetailsPage = () => {
     if (show360 && images360[0]) {
       const viewer = new Viewer({
         container: document.querySelector('#viewer-360-caravane'),
-        panorama: `http://localhost:5000${images360[0]}`,
+        panorama: getImageUrl(images360[0]),
         navbar: ['zoom', 'fullscreen']
       });
       return () => viewer.destroy();
@@ -122,7 +122,7 @@ const CaravaneDetailsPage = () => {
                   {photos.map((photo, idx) => (
                     <SwiperSlide key={idx}>
                       <img
-                        src={`http://localhost:5000${photo}`}
+                        src={getImageUrl(photo)}
                         alt={`${caravane.title} ${idx + 1}`}
                         className="w-full h-full object-cover"
                       />
@@ -242,3 +242,4 @@ const CaravaneDetailsPage = () => {
 };
 
 export default CaravaneDetailsPage;
+

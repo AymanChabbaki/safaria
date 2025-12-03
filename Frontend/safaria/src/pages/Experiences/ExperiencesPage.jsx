@@ -18,6 +18,7 @@ import useAppStore from '../../store/useAppStore';
 import { t } from '../../utils/i18n';
 import api from '../../utils/api';
 import { getCity } from '../../utils/cityExtractor';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const ExperiencesPage = () => {
   const { language } = useAppStore();
@@ -154,7 +155,7 @@ const ExperiencesPage = () => {
         {/* Image */}
         <div className="relative h-56 overflow-hidden">
           <img
-            src={`http://localhost:5000${item.images?.[0] || '/uploads/placeholder.jpg'}`}
+            src={getImageUrl(item.images?.[0])}
             alt={item.name}
             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
           />
@@ -389,3 +390,4 @@ const ExperiencesPage = () => {
 };
 
 export default ExperiencesPage;
+
