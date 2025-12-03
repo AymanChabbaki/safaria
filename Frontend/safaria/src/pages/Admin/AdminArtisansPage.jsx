@@ -847,3 +847,4 @@ const AdminArtisansPage = () => {
 };
 
 export default AdminArtisansPage;
+

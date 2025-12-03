@@ -235,3 +235,4 @@ const ArtisanatDetailsPage = () => {
 
 export default ArtisanatDetailsPage;
 
+

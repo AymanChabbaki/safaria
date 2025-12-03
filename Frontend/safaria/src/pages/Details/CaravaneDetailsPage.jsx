@@ -243,3 +243,4 @@ const CaravaneDetailsPage = () => {
 
 export default CaravaneDetailsPage;
 
+

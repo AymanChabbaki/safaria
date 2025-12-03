@@ -649,3 +649,4 @@ const UniversalDetailsPage = ({ type }) => {
 
 export default UniversalDetailsPage;
 
+
