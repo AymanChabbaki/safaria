@@ -10,21 +10,44 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
+// Parse DATABASE_URL if provided (AlwaysData format)
+let dbConfig;
+
+if (process.env.DATABASE_URL) {
+    // Parse URL format: mysql://user:password@host:port/database
+    const url = new URL(process.env.DATABASE_URL);
+    dbConfig = {
+        host: url.hostname,
+        port: url.port || 3306,
+        user: url.username,
+        password: url.password,
+        database: url.pathname.substring(1), // Remove leading '/'
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        enableKeepAlive: true,
+        keepAliveInitialDelay: 0,
+        charset: 'utf8mb4'
+    };
+} else {
+    // Use individual environment variables
+    dbConfig = {
+        host: process.env.DB_HOST || 'localhost',
+        port: process.env.DB_PORT || 3306,
+        user: process.env.DB_USER || 'root',
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME || 'safaria_db',
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        enableKeepAlive: true,
+        keepAliveInitialDelay: 0,
+        charset: 'utf8mb4'
+    };
+}
+
 // Create connection pool for better performance
-// Pool automatically manages connections and reuses them
-const pool = mysql.createPool({
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 3306,
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME || 'safaria_db',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-    charset: 'utf8mb4'
-});
+const pool = mysql.createPool(dbConfig);
 
 // Get promise-based wrapper for async/await support
 const promisePool = pool.promise();
