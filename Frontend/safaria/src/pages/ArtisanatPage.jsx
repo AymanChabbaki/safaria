@@ -121,7 +121,7 @@ const ArtisanatPage = () => {
                 controls
                 autoPlay
                 className="w-full h-full object-cover"
-                src="/artisanat-video.mp4"
+                src="https://drive.google.com/uc?export=download&id=1Qel7dVWfvVbF3WAmyKT35jr3vlWP_jgG"
               >
                 Your browser does not support the video tag.
               </video>
