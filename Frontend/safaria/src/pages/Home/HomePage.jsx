@@ -370,7 +370,7 @@ const HomePage = () => {
             className="relative bg-white rounded-2xl shadow-2xl p-8 overflow-hidden"
           >
             <img 
-              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200" 
+              src="/cartt.jpeg" 
               alt="Morocco Map"
               className="w-full h-96 object-cover rounded-xl"
             />

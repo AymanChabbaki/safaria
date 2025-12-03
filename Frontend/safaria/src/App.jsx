@@ -41,15 +41,20 @@ function App() {
     };
   }, [isPlaying]);
 
-  const toggleMusic = () => {
+  const toggleMusic = (e) => {
+    e.stopPropagation();
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
+        setShowMusicButton(true);
       } else {
         audioRef.current.volume = 0.15;
-        audioRef.current.play();
-        setIsPlaying(true);
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(() => {
+          setIsPlaying(false);
+        });
       }
     }
   };
@@ -68,15 +73,15 @@ function App() {
       <button
         onClick={toggleMusic}
         onMouseEnter={() => setShowMusicButton(true)}
-        className={`fixed bottom-6 left-6 z-50 bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 hover:scale-110 ${
-          showMusicButton ? 'opacity-100' : 'opacity-30 hover:opacity-100'
+        className={`fixed bottom-6 left-6 z-50 backdrop-blur-md bg-white/10 border border-white/20 text-white p-3 rounded-xl shadow-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 ${
+          showMusicButton ? 'opacity-100' : 'opacity-40 hover:opacity-100'
         }`}
         title={isPlaying ? 'Pause Music' : 'Play Music'}
       >
         {isPlaying ? (
-          <Volume2 className="w-6 h-6" />
+          <Volume2 className="w-5 h-5" />
         ) : (
-          <VolumeX className="w-6 h-6" />
+          <VolumeX className="w-5 h-5" />
         )}
       </button>
 
