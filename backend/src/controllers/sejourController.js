@@ -23,9 +23,9 @@ const createSejour = async (req, res) => {
             return sendError(res, 'All fields are required: name_fr, name_en, name_ar, description_fr, description_en, description_ar, latitude, longitude, price', 400);
         }
         
-        // Get uploaded files
-        const main_image = req.files && req.files['main_image'] ? `/uploads/sejours/${req.files['main_image'][0].filename}` : null;
-        const images = req.files && req.files['images'] ? JSON.stringify(req.files['images'].map(f => `/uploads/sejours/${f.filename}`)) : null;
+        // Get uploaded files from Cloudinary
+        const main_image = req.files && req.files['main_image'] ? req.files['main_image'][0].path : null;
+        const images = req.files && req.files['images'] ? JSON.stringify(req.files['images'].map(f => f.path)) : null;
         
         // Insert into database
         const [result] = await pool.query(
@@ -172,22 +172,22 @@ const updateSejour = async (req, res) => {
             return sendNotFound(res, 'Sejour');
         }
         
-        // Get uploaded files if new files are provided
+        // Get uploaded files from Cloudinary if new files are provided
         const main_image = req.files && req.files['main_image'] 
-            ? `/uploads/sejours/${req.files['main_image'][0].filename}` 
+            ? req.files['main_image'][0].path 
             : existing[0].main_image;
         
         // Handle gallery images - replace with existing images (from frontend) + new uploads
         const existingImages = req.body.existing_images ? JSON.parse(req.body.existing_images) : [];
         const newImages = req.files && req.files['images'] 
-            ? req.files['images'].map(f => `/uploads/sejours/${f.filename}`) 
+            ? req.files['images'].map(f => f.path) 
             : [];
         const images = JSON.stringify([...existingImages, ...newImages]);
         
         // Handle 360 images - replace with existing images (from frontend) + new uploads
         const existing360Images = req.body.existing_images360 ? JSON.parse(req.body.existing_images360) : [];
         const new360Images = req.files && req.files['images360'] 
-            ? req.files['images360'].map(f => `/uploads/sejours/${f.filename}`) 
+            ? req.files['images360'].map(f => f.path) 
             : [];
         const images360 = JSON.stringify([...existing360Images, ...new360Images]);
         

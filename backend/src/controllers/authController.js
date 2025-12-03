@@ -220,9 +220,9 @@ const updateProfile = async (req, res) => {
             }
         }
 
-        // Handle photo upload if exists
+        // Handle photo upload from Cloudinary if exists
         if (req.file) {
-            photoPath = `/uploads/profiles/${req.file.filename}`;
+            photoPath = req.file.path;
         }
 
         // Build update query dynamically

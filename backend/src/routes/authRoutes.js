@@ -7,7 +7,7 @@
 const express = require('express');
 const router = express.Router();
 const { authenticateToken } = require('../middleware/auth');
-const { upload } = require('../middleware/upload');
+const { createCloudinaryUpload } = require('../middleware/upload');
 const {
     login,
     register,
@@ -21,6 +21,6 @@ router.post('/register', register);
 
 // Protected routes
 router.get('/verify', authenticateToken, verifyToken);
-router.put('/profile', authenticateToken, upload.single('photo'), updateProfile);
+router.put('/profile', authenticateToken, createCloudinaryUpload('photo', 1), updateProfile);
 
 module.exports = router;
