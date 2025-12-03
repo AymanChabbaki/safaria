@@ -6,24 +6,53 @@
  * ============================================================
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
+import { Volume2, VolumeX } from 'lucide-react';
 import './App.css';
 
 function App() {
   const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showMusicButton, setShowMusicButton] = useState(true);
 
   useEffect(() => {
-    // Play background music with low volume
+    // Try to autoplay after first user interaction
+    const handleFirstInteraction = () => {
+      if (audioRef.current && !isPlaying) {
+        audioRef.current.volume = 0.15;
+        audioRef.current.play()
+          .then(() => {
+            setIsPlaying(true);
+            setTimeout(() => setShowMusicButton(false), 3000);
+          })
+          .catch(() => {
+            setShowMusicButton(true);
+          });
+      }
+      document.removeEventListener('click', handleFirstInteraction);
+    };
+    
+    document.addEventListener('click', handleFirstInteraction);
+    
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+    };
+  }, [isPlaying]);
+
+  const toggleMusic = () => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.15; // 15% volume - gentle background music
-      audioRef.current.play().catch(error => {
-        // Auto-play might be blocked by browser, user will need to interact first
-        console.log('Background music autoplay prevented:', error);
-      });
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.volume = 0.15;
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
     }
-  }, []);
+  };
 
   return (
     <>
@@ -34,6 +63,23 @@ function App() {
         preload="auto"
         src="https://res.cloudinary.com/dzefefwb2/video/upload/v1764778883/moroccan-music_pw9duw.mp3"
       />
+
+      {/* Music Control Button */}
+      <button
+        onClick={toggleMusic}
+        onMouseEnter={() => setShowMusicButton(true)}
+        className={`fixed bottom-6 right-6 z-50 bg-gradient-to-r from-orange-500 to-orange-600 text-white p-4 rounded-full shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 hover:scale-110 ${
+          showMusicButton ? 'opacity-100' : 'opacity-30 hover:opacity-100'
+        }`}
+        title={isPlaying ? 'Pause Music' : 'Play Music'}
+      >
+        {isPlaying ? (
+          <Volume2 className="w-6 h-6" />
+        ) : (
+          <VolumeX className="w-6 h-6" />
+        )}
+      </button>
+
       <RouterProvider router={router} />
     </>
   );
