@@ -32,7 +32,7 @@ function App() {
         ref={audioRef}
         loop
         preload="auto"
-        src="/moroccan-music.mp3"
+        src="https://res.cloudinary.com/dzefefwb2/video/upload/v1764778883/moroccan-music_pw9duw.mp3"
       />
       <RouterProvider router={router} />
     </>
