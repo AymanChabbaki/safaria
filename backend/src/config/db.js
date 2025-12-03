@@ -33,6 +33,7 @@ if (process.env.DATABASE_URL) {
     console.log('📡 Using DATABASE_URL connection');
     console.log(`🔗 Host: ${dbConfig.host}`);
     console.log(`👤 User: ${dbConfig.user}`);
+    console.log(`🔑 Password length: ${dbConfig.password.length} chars`);
     console.log(`🗄️  Database: ${dbConfig.database}`);
 } else {
     // Use individual environment variables
