@@ -96,34 +96,12 @@ const SejoursPage = () => {
           className="mb-16"
         >
           <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-900">
-            {!isPlaying ? (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-600/20 to-blue-400/20">
-                <motion.button
-                  onClick={() => setIsPlaying(true)}
-                  className="bg-white text-blue-600 rounded-full p-6 shadow-xl hover:scale-110 transition-transform"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Play className="w-12 h-12 ml-1" />
-                </motion.button>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="text-white text-2xl font-bold mb-2">
-                    {t(language, 'sejours.videoTitle')}
-                  </h3>
-                  <p className="text-white/80">
-                    {t(language, 'sejours.videoDesc')}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <iframe
-                className="w-full h-full"
-                src="https://drive.google.com/file/d/1hxKzy6WydmoRG-vZW4jpinjtojmdRRC7/preview"
-                allow="autoplay"
-                allowFullScreen
-              ></iframe>
-            )}
+            <iframe
+              className="w-full h-full"
+              src="https://drive.google.com/file/d/1hxKzy6WydmoRG-vZW4jpinjtojmdRRC7/preview"
+              allow="autoplay"
+              allowFullScreen
+            ></iframe>
           </div>
         </motion.div>
 
