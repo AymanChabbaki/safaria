@@ -438,13 +438,28 @@ const getReceipt = async (req, res) => {
             return sendNotFound(res, 'Receipt');
         }
         
-        const publicId = payment[0].receipt_pdf_path;
+        let publicId = payment[0].receipt_pdf_path;
         
         try {
+            console.log('Fetching receipt with public_id:', publicId);
+            
+            // Remove .pdf extension if present (Cloudinary public_id shouldn't include extension)
+            if (publicId.endsWith('.pdf')) {
+                publicId = publicId.replace('.pdf', '');
+            }
+            
             // Use Cloudinary API to fetch the authenticated resource directly
             const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
             const apiKey = process.env.CLOUDINARY_API_KEY;
             const apiSecret = process.env.CLOUDINARY_API_SECRET;
+            
+            console.log('Cloud name:', cloudName);
+            console.log('API key:', apiKey ? 'Present' : 'Missing');
+            console.log('API secret:', apiSecret ? 'Present' : 'Missing');
+            
+            if (!cloudName || !apiKey || !apiSecret) {
+                throw new Error('Cloudinary credentials not configured');
+            }
             
             // Build authenticated download URL using Cloudinary API
             const timestamp = Math.floor(Date.now() / 1000);
@@ -461,10 +476,15 @@ const getReceipt = async (req, res) => {
                 `signature=${signature}&` +
                 `api_key=${apiKey}`;
             
+            console.log('Attempting download from:', downloadUrl);
+            
             // Fetch PDF using authenticated API URL
             const response = await axios.get(downloadUrl, {
-                responseType: 'arraybuffer'
+                responseType: 'arraybuffer',
+                maxRedirects: 5
             });
+            
+            console.log('Download successful, size:', response.data.length);
             
             // Set headers for PDF download
             res.setHeader('Content-Type', 'application/pdf');
@@ -474,8 +494,10 @@ const getReceipt = async (req, res) => {
             // Send PDF buffer
             return res.send(response.data);
         } catch (error) {
-            console.error('Error fetching PDF from Cloudinary:', error);
-            console.error('Public ID:', publicId);
+            console.error('Error fetching PDF from Cloudinary:', error.message);
+            console.error('Error response:', error.response?.data);
+            console.error('Error status:', error.response?.status);
+            console.error('Public ID used:', publicId);
             return sendError(res, 'Failed to fetch receipt PDF', 500, error.message);
         }
         

@@ -4,7 +4,7 @@
   "description": "SAFARIA Platform - Backend API with Node.js, Express, and MySQL",
   "main": "src/server.js",
   "engines": {
-    "node": "24.x"
+    "node": "20.x"
   },
   "scripts": {
     "start": "node src/server.js",
@@ -21,7 +21,7 @@
   "author": "SAFARIA Team",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.9",
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
