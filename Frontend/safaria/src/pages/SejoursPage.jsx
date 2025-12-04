@@ -98,7 +98,7 @@ const SejoursPage = () => {
           <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-900">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/UbKBvK73v8k?rel=0"
+              src="https://www.youtube.com/embed/bujX0Ay5cuc?rel=0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>

@@ -98,7 +98,7 @@ const ArtisanatPage = () => {
           <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl bg-gray-900">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/BPXmgDtUa6E?rel=0"
+              src="https://www.youtube.com/embed/lkiTJ9zsugM?rel=0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
