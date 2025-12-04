@@ -109,9 +109,11 @@ export const createArtisan = async (formData) => {
  */
 export const updateArtisan = async (id, formData) => {
   try {
-    const response = await api.put(`/api/artisans/${id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const headers = formData instanceof FormData 
+      ? { 'Content-Type': 'multipart/form-data' }
+      : { 'Content-Type': 'application/json' };
+    
+    const response = await api.put(`/api/artisans/${id}`, formData, { headers });
     return response.data;
   } catch (error) {
     console.error(`Error updating artisan ${id}:`, error);
@@ -194,9 +196,12 @@ export const createSejour = async (formData) => {
  */
 export const updateSejour = async (id, formData) => {
   try {
-    const response = await api.put(`/api/sejours/${id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // Use appropriate content type based on data type
+    const headers = formData instanceof FormData 
+      ? { 'Content-Type': 'multipart/form-data' }
+      : { 'Content-Type': 'application/json' };
+    
+    const response = await api.put(`/api/sejours/${id}`, formData, { headers });
     return response.data;
   } catch (error) {
     console.error(`Error updating sejour ${id}:`, error);
@@ -279,9 +284,11 @@ export const createCaravane = async (formData) => {
  */
 export const updateCaravane = async (id, formData) => {
   try {
-    const response = await api.put(`/api/caravanes/${id}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    const headers = formData instanceof FormData 
+      ? { 'Content-Type': 'multipart/form-data' }
+      : { 'Content-Type': 'application/json' };
+    
+    const response = await api.put(`/api/caravanes/${id}`, formData, { headers });
     return response.data;
   } catch (error) {
     console.error(`Error updating caravane ${id}:`, error);
