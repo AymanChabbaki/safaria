@@ -6,7 +6,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { createCloudinaryUpload, handleUploadError } = require('../middleware/upload');
+const { createCloudinaryMultiFieldUpload, handleUploadError } = require('../middleware/upload');
 const { authenticateToken } = require('../middleware/auth');
 const {
     createArtisan,
@@ -16,13 +16,20 @@ const {
     deleteArtisan
 } = require('../controllers/artisanController');
 
+// Define multi-field upload configuration
+const uploadFields = createCloudinaryMultiFieldUpload([
+    { name: 'main_image', maxCount: 1 },
+    { name: 'images', maxCount: 10 },
+    { name: 'images360', maxCount: 10 }
+]);
+
 // Public routes
 router.get('/', getAllArtisans);
 router.get('/:id', getArtisanById);
 
 // Protected routes (require authentication) - Using Cloudinary
-router.post('/', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), createCloudinaryUpload('images360', 10), handleUploadError, createArtisan);
-router.put('/:id', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), createCloudinaryUpload('images360', 10), handleUploadError, updateArtisan);
+router.post('/', uploadFields, handleUploadError, createArtisan);
+router.put('/:id', uploadFields, handleUploadError, updateArtisan);
 router.delete('/:id', deleteArtisan);
 
 module.exports = router;

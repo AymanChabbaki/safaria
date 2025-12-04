@@ -119,9 +119,27 @@ const handleUploadError = (err, req, res, next) => {
     next();
 };
 
+// New function to handle multiple fields simultaneously
+const createCloudinaryMultiFieldUpload = (fields) => {
+    return (req, res, next) => {
+        const cloudinaryStorage = getStorage(req);
+        
+        const cloudinaryUpload = multer({
+            storage: cloudinaryStorage,
+            limits: {
+                fileSize: 10 * 1024 * 1024 // 10MB max file size
+            },
+            fileFilter: fileFilter
+        });
+
+        cloudinaryUpload.fields(fields)(req, res, next);
+    };
+};
+
 module.exports = {
     upload,
     createCloudinaryUpload,
+    createCloudinaryMultiFieldUpload,
     handleUploadError,
     // Convenient exports for different upload types
     singleUpload: (fieldName) => createCloudinaryUpload(fieldName, 1),
