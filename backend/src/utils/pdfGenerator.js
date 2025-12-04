@@ -205,12 +205,19 @@ const uploadReceiptToCloudinary = (pdfBuffer, receiptNumber) => {
                 folder: 'safaria/receipts',
                 public_id: `receipt_${receiptNumber}_${Date.now()}`,
                 format: 'pdf',
-                type: 'authenticated' // Use authenticated type which allows signed URLs
+                type: 'upload' // Use standard upload type for public access
             },
             (error, result) => {
                 if (error) {
+                    console.error('Cloudinary upload error:', error);
                     reject(error);
                 } else {
+                    console.log('Cloudinary upload success!');
+                    console.log('- URL:', result.secure_url);
+                    console.log('- Public ID:', result.public_id);
+                    console.log('- Format:', result.format);
+                    console.log('- Resource type:', result.resource_type);
+                    
                     // Return the public_id so we can generate signed URLs later
                     resolve({
                         url: result.secure_url,

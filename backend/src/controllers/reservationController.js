@@ -443,37 +443,18 @@ const getReceipt = async (req, res) => {
         try {
             console.log('Fetching receipt with public_id:', publicId);
             
-            // Use Cloudinary API to fetch the authenticated resource directly
             const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-            const apiKey = process.env.CLOUDINARY_API_KEY;
-            const apiSecret = process.env.CLOUDINARY_API_SECRET;
             
-            console.log('Cloud name:', cloudName);
-            console.log('API key:', apiKey ? 'Present' : 'Missing');
-            console.log('API secret:', apiSecret ? 'Present' : 'Missing');
-            
-            if (!cloudName || !apiKey || !apiSecret) {
-                throw new Error('Cloudinary credentials not configured');
+            if (!cloudName) {
+                throw new Error('Cloudinary cloud name not configured');
             }
             
-            // Build authenticated download URL using Cloudinary API
-            const timestamp = Math.floor(Date.now() / 1000);
-            const crypto = require('crypto');
-            
-            // Generate signature for authenticated download
-            const stringToSign = `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
-            const signature = crypto.createHash('sha1').update(stringToSign).digest('hex');
-            
-            // Build API download URL
-            const downloadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/raw/download?` +
-                `public_id=${encodeURIComponent(publicId)}&` +
-                `timestamp=${timestamp}&` +
-                `signature=${signature}&` +
-                `api_key=${apiKey}`;
+            // Build public Cloudinary URL for the PDF
+            const downloadUrl = `https://res.cloudinary.com/${cloudName}/raw/upload/${publicId}`;
             
             console.log('Attempting download from:', downloadUrl);
             
-            // Fetch PDF using authenticated API URL
+            // Fetch PDF from public Cloudinary URL
             const response = await axios.get(downloadUrl, {
                 responseType: 'arraybuffer',
                 maxRedirects: 5
