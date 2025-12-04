@@ -381,7 +381,8 @@ const processPayment = async (req, res) => {
         
         // Generate PDF buffer and upload to Cloudinary
         const pdfBuffer = await generateReceipt(receiptData);
-        const receiptCloudinaryUrl = await uploadReceiptToCloudinary(pdfBuffer, receiptNumber);
+        const receiptData_cloudinary = await uploadReceiptToCloudinary(pdfBuffer, receiptNumber);
+        const receiptCloudinaryPublicId = receiptData_cloudinary.publicId;
         
         // Insert payment record (ONLY store last 4 digits, NO full card details)
         await connection.query(
@@ -393,7 +394,7 @@ const processPayment = async (req, res) => {
             [
                 reservationId, transactionId, receiptNumber,
                 cardLastFour, cardHolder, billingAddress || null,
-                total, receiptCloudinaryUrl
+                total, receiptCloudinaryPublicId
             ]
         );
         
@@ -437,53 +438,35 @@ const getReceipt = async (req, res) => {
             return sendNotFound(res, 'Receipt');
         }
         
-        const receiptUrl = payment[0].receipt_pdf_path;
+        const publicId = payment[0].receipt_pdf_path;
         
-        // If it's a Cloudinary URL, use authenticated download
-        if (receiptUrl.startsWith('http') && receiptUrl.includes('cloudinary.com')) {
-            try {
-                // Extract public_id from Cloudinary URL
-                // URL format: https://res.cloudinary.com/dzefefwb2/raw/upload/v1234/safaria/receipts/receipt_xxx.pdf
-                const urlParts = receiptUrl.split('/upload/');
-                if (urlParts.length < 2) {
-                    throw new Error('Invalid Cloudinary URL format');
-                }
-                
-                // Get the part after /upload/ and remove version
-                const pathAfterUpload = urlParts[1];
-                const publicIdWithExt = pathAfterUpload.replace(/^v\d+\//, ''); // Remove version prefix
-                const publicId = publicIdWithExt.replace('.pdf', ''); // Remove extension
-                
-                // Generate authenticated URL with 1 hour expiry
-                const authenticatedUrl = cloudinary.url(publicId, {
-                    resource_type: 'raw',
-                    type: 'upload',
-                    sign_url: true,
-                    secure: true,
-                    expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
-                });
-                
-                // Fetch PDF using authenticated URL
-                const response = await axios.get(authenticatedUrl, {
-                    responseType: 'arraybuffer'
-                });
-                
-                // Set headers for PDF download
-                res.setHeader('Content-Type', 'application/pdf');
-                res.setHeader('Content-Disposition', `attachment; filename="${payment[0].receipt_number}.pdf"`);
-                res.setHeader('Content-Length', response.data.length);
-                
-                // Send PDF buffer
-                return res.send(response.data);
-            } catch (error) {
-                console.error('Error fetching PDF from Cloudinary:', error);
-                console.error('Receipt URL:', receiptUrl);
-                return sendError(res, 'Failed to fetch receipt PDF', 500);
-            }
+        try {
+            // Generate signed URL with 1 hour expiry
+            const signedUrl = cloudinary.url(publicId, {
+                resource_type: 'raw',
+                type: 'authenticated',
+                sign_url: true,
+                secure: true,
+                expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
+            });
+            
+            // Fetch PDF using signed URL
+            const response = await axios.get(signedUrl, {
+                responseType: 'arraybuffer'
+            });
+            
+            // Set headers for PDF download
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', `attachment; filename="${payment[0].receipt_number}.pdf"`);
+            res.setHeader('Content-Length', response.data.length);
+            
+            // Send PDF buffer
+            return res.send(response.data);
+        } catch (error) {
+            console.error('Error fetching PDF from Cloudinary:', error);
+            console.error('Public ID:', publicId);
+            return sendError(res, 'Failed to fetch receipt PDF', 500, error.message);
         }
-        
-        // Fallback: legacy local file path (shouldn't happen on Vercel)
-        return sendError(res, 'Receipt URL is invalid', 404);
         
     } catch (error) {
         console.error('Error fetching receipt:', error);

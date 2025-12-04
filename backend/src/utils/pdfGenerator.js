@@ -205,14 +205,17 @@ const uploadReceiptToCloudinary = (pdfBuffer, receiptNumber) => {
                 folder: 'safaria/receipts',
                 public_id: `receipt_${receiptNumber}_${Date.now()}`,
                 format: 'pdf',
-                access_mode: 'public', // Make PDF publicly accessible
-                type: 'upload' // Ensure it's a regular upload (not authenticated)
+                type: 'authenticated' // Use authenticated type which allows signed URLs
             },
             (error, result) => {
                 if (error) {
                     reject(error);
                 } else {
-                    resolve(result.secure_url);
+                    // Return the public_id so we can generate signed URLs later
+                    resolve({
+                        url: result.secure_url,
+                        publicId: result.public_id
+                    });
                 }
             }
         );
