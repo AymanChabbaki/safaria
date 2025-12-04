@@ -205,7 +205,7 @@ const uploadReceiptToCloudinary = (pdfBuffer, receiptNumber) => {
                 folder: 'safaria/receipts',
                 public_id: `receipt_${receiptNumber}_${Date.now()}`,
                 format: 'pdf',
-                type: 'upload' // Use standard upload type for public access
+                type: 'upload'
             },
             (error, result) => {
                 if (error) {
@@ -217,8 +217,9 @@ const uploadReceiptToCloudinary = (pdfBuffer, receiptNumber) => {
                     console.log('- Public ID:', result.public_id);
                     console.log('- Format:', result.format);
                     console.log('- Resource type:', result.resource_type);
+                    console.log('- Access control:', result.access_control);
                     
-                    // Return the public_id so we can generate signed URLs later
+                    // Return the URL for direct access
                     resolve({
                         url: result.secure_url,
                         publicId: result.public_id
