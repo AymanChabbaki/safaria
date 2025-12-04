@@ -441,17 +441,28 @@ const getReceipt = async (req, res) => {
         const publicId = payment[0].receipt_pdf_path;
         
         try {
-            // Generate signed URL with 1 hour expiry
-            const signedUrl = cloudinary.url(publicId, {
-                resource_type: 'raw',
-                type: 'authenticated',
-                sign_url: true,
-                secure: true,
-                expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
-            });
+            // Use Cloudinary API to fetch the authenticated resource directly
+            const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+            const apiKey = process.env.CLOUDINARY_API_KEY;
+            const apiSecret = process.env.CLOUDINARY_API_SECRET;
             
-            // Fetch PDF using signed URL
-            const response = await axios.get(signedUrl, {
+            // Build authenticated download URL using Cloudinary API
+            const timestamp = Math.floor(Date.now() / 1000);
+            const crypto = require('crypto');
+            
+            // Generate signature for authenticated download
+            const stringToSign = `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
+            const signature = crypto.createHash('sha1').update(stringToSign).digest('hex');
+            
+            // Build API download URL
+            const downloadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/raw/download?` +
+                `public_id=${encodeURIComponent(publicId)}&` +
+                `timestamp=${timestamp}&` +
+                `signature=${signature}&` +
+                `api_key=${apiKey}`;
+            
+            // Fetch PDF using authenticated API URL
+            const response = await axios.get(downloadUrl, {
                 responseType: 'arraybuffer'
             });
             
