@@ -88,7 +88,8 @@ const PaymentPage = () => {
       setTimeout(() => {
         try {
           // Open receipt in new tab (Cloudinary PDF URL)
-          const receiptUrl = `${import.meta.env.VITE_API_BASE_URL}/api/reservations/${response.data.reservationId}/receipt`;
+          const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const receiptUrl = `${API_BASE_URL}/api/reservations/${response.data.reservationId}/receipt`;
           window.open(receiptUrl, '_blank');
         } catch (error) {
           console.error('Error opening receipt:', error);
