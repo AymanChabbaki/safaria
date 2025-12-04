@@ -12,6 +12,7 @@ const { generateReceipt, uploadReceiptToCloudinary, generateReceiptNumber, gener
 const path = require('path');
 const fs = require('fs').promises;
 const axios = require('axios');
+const cloudinary = require('cloudinary').v2;
 
 /**
  * Helper function to normalize itemType values
@@ -438,11 +439,32 @@ const getReceipt = async (req, res) => {
         
         const receiptUrl = payment[0].receipt_pdf_path;
         
-        // If it's a Cloudinary URL, fetch and serve it
-        if (receiptUrl.startsWith('http')) {
+        // If it's a Cloudinary URL, use authenticated download
+        if (receiptUrl.startsWith('http') && receiptUrl.includes('cloudinary.com')) {
             try {
-                // Fetch PDF from Cloudinary
-                const response = await axios.get(receiptUrl, {
+                // Extract public_id from Cloudinary URL
+                // URL format: https://res.cloudinary.com/dzefefwb2/raw/upload/v1234/safaria/receipts/receipt_xxx.pdf
+                const urlParts = receiptUrl.split('/upload/');
+                if (urlParts.length < 2) {
+                    throw new Error('Invalid Cloudinary URL format');
+                }
+                
+                // Get the part after /upload/ and remove version
+                const pathAfterUpload = urlParts[1];
+                const publicIdWithExt = pathAfterUpload.replace(/^v\d+\//, ''); // Remove version prefix
+                const publicId = publicIdWithExt.replace('.pdf', ''); // Remove extension
+                
+                // Generate authenticated URL with 1 hour expiry
+                const authenticatedUrl = cloudinary.url(publicId, {
+                    resource_type: 'raw',
+                    type: 'upload',
+                    sign_url: true,
+                    secure: true,
+                    expires_at: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
+                });
+                
+                // Fetch PDF using authenticated URL
+                const response = await axios.get(authenticatedUrl, {
                     responseType: 'arraybuffer'
                 });
                 
@@ -455,6 +477,7 @@ const getReceipt = async (req, res) => {
                 return res.send(response.data);
             } catch (error) {
                 console.error('Error fetching PDF from Cloudinary:', error);
+                console.error('Receipt URL:', receiptUrl);
                 return sendError(res, 'Failed to fetch receipt PDF', 500);
             }
         }
