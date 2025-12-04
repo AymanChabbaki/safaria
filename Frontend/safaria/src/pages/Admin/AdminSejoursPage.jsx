@@ -11,6 +11,7 @@ import { Plus, Edit, Trash2, Loader2, Home as HomeIcon, X, Eye, MapPin, DollarSi
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../utils/api';
 import { getImageUrl } from '../../utils/imageHelper';
+import { compressImages } from '../../utils/imageCompressor';
 
 const AdminSejoursPage = () => {
   const [sejours, setSejours] = useState([]);
@@ -128,10 +129,27 @@ const AdminSejoursPage = () => {
   const handleSubmitAdd = async (e) => {
     e.preventDefault();
     try {
+      // Compress images before upload
+      let imagesToUpload = formData.images || [];
+      let images360ToUpload = formData.images360 || [];
+      
+      if (imagesToUpload.length > 0) {
+        imagesToUpload = await compressImages(imagesToUpload.slice(0, 2), { quality: 0.7 });
+      }
+      
+      if (images360ToUpload.length > 0) {
+        images360ToUpload = await compressImages(images360ToUpload.slice(0, 1), { 
+          is360: true, 
+          quality: 0.8 
+        });
+      }
+      
       const data = new FormData();
       Object.keys(formData).forEach(key => {
-        if (key === 'images' || key === 'images360') {
-          formData[key].forEach(file => data.append(key, file));
+        if (key === 'images') {
+          imagesToUpload.forEach(file => data.append(key, file));
+        } else if (key === 'images360') {
+          images360ToUpload.forEach(file => data.append(key, file));
         } else if (formData[key] !== null && formData[key] !== undefined) {
           data.append(key, formData[key]);
         }
@@ -141,7 +159,7 @@ const AdminSejoursPage = () => {
       fetchSejours();
     } catch (error) {
       console.error('Error creating artisan:', error);
-      alert('Erreur lors de la création');
+      alert('Erreur lors de la création. Les images 360° sont compressées automatiquement.');
     }
   };
 
@@ -153,24 +171,57 @@ const AdminSejoursPage = () => {
                          formData.images360?.some(item => item instanceof File);
       
       if (hasNewFiles) {
+        // Compress images before upload
+        let compressedImages = formData.images || [];
+        let compressed360 = formData.images360 || [];
+        
+        const newImages = formData.images?.filter(item => item instanceof File) || [];
+        const new360Images = formData.images360?.filter(item => item instanceof File) || [];
+        
+        if (newImages.length > 0) {
+          const compressed = await compressImages(newImages.slice(0, 2), { quality: 0.7 });
+          compressedImages = [
+            ...formData.images.filter(item => typeof item === 'string'),
+            ...compressed
+          ];
+        }
+        
+        if (new360Images.length > 0) {
+          // 360 images need higher resolution but still compress
+          const compressed = await compressImages(new360Images.slice(0, 1), { 
+            is360: true, 
+            quality: 0.8 
+          });
+          compressed360 = [
+            ...formData.images360.filter(item => typeof item === 'string'),
+            ...compressed
+          ];
+        }
+        
         // Use FormData for new file uploads
         const data = new FormData();
         Object.keys(formData).forEach(key => {
-          if (key === 'images' || key === 'images360') {
-            if (Array.isArray(formData[key])) {
-              // Send existing image URLs (strings) as JSON
-              const existingImages = formData[key].filter(item => typeof item === 'string');
-              if (existingImages.length > 0) {
-                data.append(`existing_${key}`, JSON.stringify(existingImages));
-              }
-              // Send new image files (limit to 3 at a time to avoid 413)
-              const newFiles = formData[key].filter(file => file instanceof File).slice(0, 3);
-              newFiles.forEach(file => data.append(key, file));
+          if (key === 'images') {
+            const existingImages = compressedImages.filter(item => typeof item === 'string');
+            if (existingImages.length > 0) {
+              data.append('existing_images', JSON.stringify(existingImages));
             }
+            compressedImages.filter(file => file instanceof File).forEach(file => 
+              data.append('images', file)
+            );
+          } else if (key === 'images360') {
+            const existing360 = compressed360.filter(item => typeof item === 'string');
+            if (existing360.length > 0) {
+              data.append('existing_images360', JSON.stringify(existing360));
+            }
+            compressed360.filter(file => file instanceof File).forEach(file => 
+              data.append('images360', file)
+            );
           } else if (formData[key] !== null && formData[key] !== undefined) {
             data.append(key, formData[key]);
           }
         });
+        
         await api.sejours.update(selectedSejour.id, data);
       } else {
         // No new files - send as JSON (much smaller payload)
@@ -186,7 +237,7 @@ const AdminSejoursPage = () => {
       fetchSejours();
     } catch (error) {
       console.error('Error updating sejour:', error);
-      alert('Erreur lors de la modification. Essayez d\'ajouter moins d\'images à la fois (max 3).');
+      alert('Erreur lors de la modification. Les images 360° sont compressées automatiquement.');
     }
   };
 
