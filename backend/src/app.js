@@ -26,10 +26,28 @@ const app = express();
 // MIDDLEWARE CONFIGURATION
 // ============================================================
 
-// CORS configuration
+// CORS configuration - Allow multiple origins
+const allowedOrigins = [
+    'https://safaria212.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    credentials: true
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow all origins in production for now
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Body parser middleware
