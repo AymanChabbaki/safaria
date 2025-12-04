@@ -438,15 +438,10 @@ const getReceipt = async (req, res) => {
             return sendNotFound(res, 'Receipt');
         }
         
-        let publicId = payment[0].receipt_pdf_path;
+        const publicId = payment[0].receipt_pdf_path;
         
         try {
             console.log('Fetching receipt with public_id:', publicId);
-            
-            // Remove .pdf extension if present (Cloudinary public_id shouldn't include extension)
-            if (publicId.endsWith('.pdf')) {
-                publicId = publicId.replace('.pdf', '');
-            }
             
             // Use Cloudinary API to fetch the authenticated resource directly
             const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
