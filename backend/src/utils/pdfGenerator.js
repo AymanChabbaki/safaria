@@ -204,7 +204,9 @@ const uploadReceiptToCloudinary = (pdfBuffer, receiptNumber) => {
                 resource_type: 'raw',
                 folder: 'safaria/receipts',
                 public_id: `receipt_${receiptNumber}_${Date.now()}`,
-                format: 'pdf'
+                format: 'pdf',
+                access_mode: 'public', // Make PDF publicly accessible
+                type: 'upload' // Ensure it's a regular upload (not authenticated)
             },
             (error, result) => {
                 if (error) {
