@@ -9,12 +9,13 @@
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
 
 /**
  * Generate PDF Receipt for Reservation
  * @param {Object} reservationData - Reservation and payment details
- * @param {string} outputPath - Path to save the PDF
- * @returns {Promise<string>} - Path to generated PDF
+ * @param {string} outputPath - Path to save the PDF (used for temp file in /tmp)
+ * @returns {Promise<Buffer>} - PDF buffer for Cloudinary upload
  */
 const generateReceipt = (reservationData, outputPath) => {
     return new Promise((resolve, reject) => {
@@ -25,9 +26,11 @@ const generateReceipt = (reservationData, outputPath) => {
                 margin: 50
             });
 
-            // Pipe to file
-            const stream = fs.createWriteStream(outputPath);
-            doc.pipe(stream);
+            // Collect PDF data in buffer
+            const chunks = [];
+            doc.on('data', (chunk) => chunks.push(chunk));
+            doc.on('end', () => resolve(Buffer.concat(chunks)));
+            doc.on('error', reject);
 
             // Add SAFARIA logo at the top
             const logoPath = path.join(__dirname, '../assets/logoSAFARIA.png');
@@ -182,17 +185,36 @@ const generateReceipt = (reservationData, outputPath) => {
             // Finalize PDF
             doc.end();
 
-            stream.on('finish', () => {
-                resolve(outputPath);
-            });
-
-            stream.on('error', (error) => {
-                reject(error);
-            });
-
         } catch (error) {
             reject(error);
         }
+    });
+};
+
+/**
+ * Upload PDF buffer to Cloudinary
+ * @param {Buffer} pdfBuffer - PDF file buffer
+ * @param {string} receiptNumber - Receipt number for filename
+ * @returns {Promise<string>} - Cloudinary URL
+ */
+const uploadReceiptToCloudinary = (pdfBuffer, receiptNumber) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                resource_type: 'raw',
+                folder: 'safaria/receipts',
+                public_id: `receipt_${receiptNumber}_${Date.now()}`,
+                format: 'pdf'
+            },
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result.secure_url);
+                }
+            }
+        );
+        uploadStream.end(pdfBuffer);
     });
 };
 
@@ -217,6 +239,7 @@ const generateTransactionId = () => {
 
 module.exports = {
     generateReceipt,
+    uploadReceiptToCloudinary,
     generateReceiptNumber,
     generateTransactionId
 };

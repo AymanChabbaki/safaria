@@ -8,7 +8,7 @@
 
 const { pool } = require('../config/db');
 const { sendSuccess, sendError, sendNotFound } = require('../utils/responseHelper');
-const { generateReceipt, generateReceiptNumber, generateTransactionId } = require('../utils/pdfGenerator');
+const { generateReceipt, uploadReceiptToCloudinary, generateReceiptNumber, generateTransactionId } = require('../utils/pdfGenerator');
 const path = require('path');
 const fs = require('fs').promises;
 
@@ -355,18 +355,7 @@ const processPayment = async (req, res) => {
         
         const reservationId = reservationResult.insertId;
         
-        // Create receipts directory if it doesn't exist
-        const receiptsDir = path.join(__dirname, '../../receipts');
-        try {
-            await fs.access(receiptsDir);
-        } catch {
-            await fs.mkdir(receiptsDir, { recursive: true });
-        }
-        
-        // Generate PDF receipt
-        const receiptFileName = `receipt_${receiptNumber}_${Date.now()}.pdf`;
-        const receiptPath = path.join(receiptsDir, receiptFileName);
-        const receiptRelativePath = `receipts/${receiptFileName}`;
+        // Generate PDF receipt (no local directory needed)
         
         const receiptData = {
             receiptNumber,
@@ -388,7 +377,9 @@ const processPayment = async (req, res) => {
             paymentStatus: 'Paid'
         };
         
-        await generateReceipt(receiptData, receiptPath);
+        // Generate PDF buffer and upload to Cloudinary
+        const pdfBuffer = await generateReceipt(receiptData);
+        const receiptCloudinaryUrl = await uploadReceiptToCloudinary(pdfBuffer, receiptNumber);
         
         // Insert payment record (ONLY store last 4 digits, NO full card details)
         await connection.query(
@@ -400,7 +391,7 @@ const processPayment = async (req, res) => {
             [
                 reservationId, transactionId, receiptNumber,
                 cardLastFour, cardHolder, billingAddress || null,
-                total, receiptRelativePath
+                total, receiptCloudinaryUrl
             ]
         );
         
@@ -444,19 +435,16 @@ const getReceipt = async (req, res) => {
             return sendNotFound(res, 'Receipt');
         }
         
-        const receiptPath = path.join(__dirname, '../../', payment[0].receipt_pdf_path);
+        // Receipt is now a Cloudinary URL - redirect to it
+        const receiptUrl = payment[0].receipt_pdf_path;
         
-        // Check if file exists
-        try {
-            await fs.access(receiptPath);
-        } catch {
-            return sendError(res, 'Receipt file not found', 404);
+        // If it's a Cloudinary URL, redirect to it
+        if (receiptUrl.startsWith('http')) {
+            return res.redirect(receiptUrl);
         }
         
-        // Send PDF file
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename="${payment[0].receipt_number}.pdf"`);
-        res.sendFile(receiptPath);
+        // Fallback: legacy local file path (shouldn't happen on Vercel)
+        return sendError(res, 'Receipt URL is invalid', 404);
         
     } catch (error) {
         console.error('Error fetching receipt:', error);
