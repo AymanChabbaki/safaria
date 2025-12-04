@@ -148,30 +148,40 @@ const AdminArtisansPage = () => {
   const handleSubmitEdit = async (e) => {
     e.preventDefault();
     try {
-      const data = new FormData();
-      Object.keys(formData).forEach(key => {
-        if (key === 'images' || key === 'images360') {
-          if (Array.isArray(formData[key])) {
-            // Send existing image URLs (strings) as JSON
-            const existingImages = formData[key].filter(item => typeof item === 'string');
-            if (existingImages.length > 0) {
-              data.append(`existing_${key}`, JSON.stringify(existingImages));
+      const hasNewFiles = formData.images?.some(item => item instanceof File) || 
+                         formData.images360?.some(item => item instanceof File);
+      
+      if (hasNewFiles) {
+        const data = new FormData();
+        Object.keys(formData).forEach(key => {
+          if (key === 'images' || key === 'images360') {
+            if (Array.isArray(formData[key])) {
+              const existingImages = formData[key].filter(item => typeof item === 'string');
+              if (existingImages.length > 0) {
+                data.append(`existing_${key}`, JSON.stringify(existingImages));
+              }
+              const newFiles = formData[key].filter(file => file instanceof File).slice(0, 3);
+              newFiles.forEach(file => data.append(key, file));
             }
-            // Send new image files
-            formData[key].forEach(file => {
-              if (file instanceof File) data.append(key, file);
-            });
+          } else if (formData[key] !== null && formData[key] !== undefined) {
+            data.append(key, formData[key]);
           }
-        } else if (formData[key] !== null && formData[key] !== undefined) {
-          data.append(key, formData[key]);
-        }
-      });
-      await api.artisans.update(selectedArtisan.id, data);
+        });
+        await api.artisans.update(selectedArtisan.id, data);
+      } else {
+        const jsonData = {
+          ...formData,
+          images: formData.images?.filter(item => typeof item === 'string'),
+          images360: formData.images360?.filter(item => typeof item === 'string')
+        };
+        await api.artisans.update(selectedArtisan.id, jsonData);
+      }
+      
       setShowEditModal(false);
       fetchArtisans();
     } catch (error) {
       console.error('Error updating artisan:', error);
-      alert('Erreur lors de la modification');
+      alert('Erreur lors de la modification. Essayez d\'ajouter moins d\'images à la fois (max 3).');
     }
   };
 

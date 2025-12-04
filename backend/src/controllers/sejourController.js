@@ -177,19 +177,39 @@ const updateSejour = async (req, res) => {
             ? req.files['main_image'][0].path 
             : existing[0].main_image;
         
-        // Handle gallery images - replace with existing images (from frontend) + new uploads
-        const existingImages = req.body.existing_images ? JSON.parse(req.body.existing_images) : [];
-        const newImages = req.files && req.files['images'] 
-            ? req.files['images'].map(f => f.path) 
-            : [];
-        const images = JSON.stringify([...existingImages, ...newImages]);
+        // Handle gallery images
+        let images;
+        if (req.body.images && typeof req.body.images === 'string') {
+            // JSON update - no new files
+            images = req.body.images;
+        } else if (Array.isArray(req.body.images)) {
+            // JSON array from frontend
+            images = JSON.stringify(req.body.images);
+        } else {
+            // FormData update with files
+            const existingImages = req.body.existing_images ? JSON.parse(req.body.existing_images) : [];
+            const newImages = req.files && req.files['images'] 
+                ? req.files['images'].map(f => f.path) 
+                : [];
+            images = JSON.stringify([...existingImages, ...newImages]);
+        }
         
-        // Handle 360 images - replace with existing images (from frontend) + new uploads
-        const existing360Images = req.body.existing_images360 ? JSON.parse(req.body.existing_images360) : [];
-        const new360Images = req.files && req.files['images360'] 
-            ? req.files['images360'].map(f => f.path) 
-            : [];
-        const images360 = JSON.stringify([...existing360Images, ...new360Images]);
+        // Handle 360 images
+        let images360;
+        if (req.body.images360 && typeof req.body.images360 === 'string') {
+            // JSON update - no new files
+            images360 = req.body.images360;
+        } else if (Array.isArray(req.body.images360)) {
+            // JSON array from frontend
+            images360 = JSON.stringify(req.body.images360);
+        } else {
+            // FormData update with files
+            const existing360Images = req.body.existing_images360 ? JSON.parse(req.body.existing_images360) : [];
+            const new360Images = req.files && req.files['images360'] 
+                ? req.files['images360'].map(f => f.path) 
+                : [];
+            images360 = JSON.stringify([...existing360Images, ...new360Images]);
+        }
         
         // Update sejour
         await pool.query(
