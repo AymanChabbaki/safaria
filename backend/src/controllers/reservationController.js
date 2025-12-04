@@ -11,6 +11,7 @@ const { sendSuccess, sendError, sendNotFound } = require('../utils/responseHelpe
 const { generateReceipt, uploadReceiptToCloudinary, generateReceiptNumber, generateTransactionId } = require('../utils/pdfGenerator');
 const path = require('path');
 const fs = require('fs').promises;
+const axios = require('axios');
 
 /**
  * Helper function to normalize itemType values
@@ -435,12 +436,27 @@ const getReceipt = async (req, res) => {
             return sendNotFound(res, 'Receipt');
         }
         
-        // Receipt is now a Cloudinary URL - redirect to it
         const receiptUrl = payment[0].receipt_pdf_path;
         
-        // If it's a Cloudinary URL, redirect to it
+        // If it's a Cloudinary URL, fetch and serve it
         if (receiptUrl.startsWith('http')) {
-            return res.redirect(receiptUrl);
+            try {
+                // Fetch PDF from Cloudinary
+                const response = await axios.get(receiptUrl, {
+                    responseType: 'arraybuffer'
+                });
+                
+                // Set headers for PDF download
+                res.setHeader('Content-Type', 'application/pdf');
+                res.setHeader('Content-Disposition', `attachment; filename="${payment[0].receipt_number}.pdf"`);
+                res.setHeader('Content-Length', response.data.length);
+                
+                // Send PDF buffer
+                return res.send(response.data);
+            } catch (error) {
+                console.error('Error fetching PDF from Cloudinary:', error);
+                return sendError(res, 'Failed to fetch receipt PDF', 500);
+            }
         }
         
         // Fallback: legacy local file path (shouldn't happen on Vercel)
