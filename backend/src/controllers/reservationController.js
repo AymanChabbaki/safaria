@@ -382,7 +382,7 @@ const processPayment = async (req, res) => {
         // Generate PDF buffer and upload to Cloudinary
         const pdfBuffer = await generateReceipt(receiptData);
         const receiptData_cloudinary = await uploadReceiptToCloudinary(pdfBuffer, receiptNumber);
-        const receiptCloudinaryPublicId = receiptData_cloudinary.publicId;
+        const receiptCloudinaryUrl = receiptData_cloudinary.url;
         
         // Insert payment record (ONLY store last 4 digits, NO full card details)
         await connection.query(
@@ -394,7 +394,7 @@ const processPayment = async (req, res) => {
             [
                 reservationId, transactionId, receiptNumber,
                 cardLastFour, cardHolder, billingAddress || null,
-                total, receiptCloudinaryPublicId
+                total, receiptCloudinaryUrl
             ]
         );
         
@@ -438,44 +438,10 @@ const getReceipt = async (req, res) => {
             return sendNotFound(res, 'Receipt');
         }
         
-        const publicId = payment[0].receipt_pdf_path;
+        const receiptUrl = payment[0].receipt_pdf_path;
         
-        try {
-            console.log('Fetching receipt with public_id:', publicId);
-            
-            const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-            
-            if (!cloudName) {
-                throw new Error('Cloudinary cloud name not configured');
-            }
-            
-            // Build public Cloudinary URL for the PDF
-            const downloadUrl = `https://res.cloudinary.com/${cloudName}/raw/upload/${publicId}`;
-            
-            console.log('Attempting download from:', downloadUrl);
-            
-            // Fetch PDF from public Cloudinary URL
-            const response = await axios.get(downloadUrl, {
-                responseType: 'arraybuffer',
-                maxRedirects: 5
-            });
-            
-            console.log('Download successful, size:', response.data.length);
-            
-            // Set headers for PDF download
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', `attachment; filename="${payment[0].receipt_number}.pdf"`);
-            res.setHeader('Content-Length', response.data.length);
-            
-            // Send PDF buffer
-            return res.send(response.data);
-        } catch (error) {
-            console.error('Error fetching PDF from Cloudinary:', error.message);
-            console.error('Error response:', error.response?.data);
-            console.error('Error status:', error.response?.status);
-            console.error('Public ID used:', publicId);
-            return sendError(res, 'Failed to fetch receipt PDF', 500, error.message);
-        }
+        // Simply redirect to the Cloudinary URL
+        return res.redirect(receiptUrl);
         
     } catch (error) {
         console.error('Error fetching receipt:', error);

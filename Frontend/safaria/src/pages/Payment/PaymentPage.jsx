@@ -84,21 +84,14 @@ const PaymentPage = () => {
       // Show success animation
       setShowSuccess(true);
 
-      // Download PDF receipt
-      setTimeout(async () => {
+      // Open receipt in new tab (backend redirects to Cloudinary URL)
+      setTimeout(() => {
         try {
-          const pdfBlob = await api.payments.downloadReceipt(response.data.reservationId);
-          
-          const url = window.URL.createObjectURL(pdfBlob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', `SAFARIA_Receipt_${response.data.receiptNumber}.pdf`);
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          window.URL.revokeObjectURL(url);
+          const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+          const receiptUrl = `${API_URL}/api/reservations/${response.data.reservationId}/receipt`;
+          window.open(receiptUrl, '_blank');
         } catch (error) {
-          console.error('Error downloading receipt:', error);
+          console.error('Error opening receipt:', error);
         }
 
         // Navigate to home page after showing success
