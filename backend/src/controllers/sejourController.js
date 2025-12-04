@@ -165,6 +165,15 @@ const updateSejour = async (req, res) => {
         const { id } = req.params;
         const { name_fr, name_en, name_ar, description_fr, description_en, description_ar, latitude, longitude, price } = req.body;
         
+        // Debug logging
+        console.log('Update sejour request:', {
+            id,
+            hasFiles: !!req.files,
+            bodyKeys: Object.keys(req.body),
+            imagesType: typeof req.body.images,
+            images360Type: typeof req.body.images360
+        });
+        
         // Check if sejour exists
         const [existing] = await pool.query('SELECT * FROM sejours WHERE id = ?', [id]);
         
@@ -179,36 +188,44 @@ const updateSejour = async (req, res) => {
         
         // Handle gallery images
         let images;
-        if (req.body.images && typeof req.body.images === 'string') {
-            // JSON update - no new files
-            images = req.body.images;
-        } else if (Array.isArray(req.body.images)) {
-            // JSON array from frontend
+        if (Array.isArray(req.body.images)) {
+            // JSON array from frontend (already parsed by express.json())
             images = JSON.stringify(req.body.images);
-        } else {
-            // FormData update with files
+        } else if (req.body.images && typeof req.body.images === 'string') {
+            // Already stringified JSON
+            images = req.body.images;
+        } else if (req.files && req.files['images']) {
+            // FormData with new files
             const existingImages = req.body.existing_images ? JSON.parse(req.body.existing_images) : [];
-            const newImages = req.files && req.files['images'] 
-                ? req.files['images'].map(f => f.path) 
-                : [];
+            const newImages = req.files['images'].map(f => f.path);
             images = JSON.stringify([...existingImages, ...newImages]);
+        } else if (req.body.existing_images) {
+            // FormData with only existing images
+            images = req.body.existing_images;
+        } else {
+            // Keep existing images from database
+            images = existing[0].images;
         }
         
         // Handle 360 images
         let images360;
-        if (req.body.images360 && typeof req.body.images360 === 'string') {
-            // JSON update - no new files
-            images360 = req.body.images360;
-        } else if (Array.isArray(req.body.images360)) {
-            // JSON array from frontend
+        if (Array.isArray(req.body.images360)) {
+            // JSON array from frontend (already parsed by express.json())
             images360 = JSON.stringify(req.body.images360);
-        } else {
-            // FormData update with files
+        } else if (req.body.images360 && typeof req.body.images360 === 'string') {
+            // Already stringified JSON
+            images360 = req.body.images360;
+        } else if (req.files && req.files['images360']) {
+            // FormData with new files
             const existing360Images = req.body.existing_images360 ? JSON.parse(req.body.existing_images360) : [];
-            const new360Images = req.files && req.files['images360'] 
-                ? req.files['images360'].map(f => f.path) 
-                : [];
+            const new360Images = req.files['images360'].map(f => f.path);
             images360 = JSON.stringify([...existing360Images, ...new360Images]);
+        } else if (req.body.existing_images360) {
+            // FormData with only existing images
+            images360 = req.body.existing_images360;
+        } else {
+            // Keep existing images from database
+            images360 = existing[0].images360;
         }
         
         // Update sejour

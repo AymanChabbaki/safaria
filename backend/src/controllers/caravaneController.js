@@ -177,19 +177,37 @@ const updateCaravane = async (req, res) => {
             ? req.files['main_image'][0].path 
             : existing[0].main_image;
         
-        // Handle gallery images - replace with existing images (from frontend) + new uploads
-        const existingImages = req.body.existing_images ? JSON.parse(req.body.existing_images) : [];
-        const newImages = req.files && req.files['images'] 
-            ? req.files['images'].map(f => f.path) 
-            : [];
-        const images = JSON.stringify([...existingImages, ...newImages]);
+        // Handle gallery images
+        let images;
+        if (Array.isArray(req.body.images)) {
+            images = JSON.stringify(req.body.images);
+        } else if (req.body.images && typeof req.body.images === 'string') {
+            images = req.body.images;
+        } else if (req.files && req.files['images']) {
+            const existingImages = req.body.existing_images ? JSON.parse(req.body.existing_images) : [];
+            const newImages = req.files['images'].map(f => f.path);
+            images = JSON.stringify([...existingImages, ...newImages]);
+        } else if (req.body.existing_images) {
+            images = req.body.existing_images;
+        } else {
+            images = existing[0].images;
+        }
         
-        // Handle 360 images - replace with existing images (from frontend) + new uploads
-        const existing360Images = req.body.existing_images360 ? JSON.parse(req.body.existing_images360) : [];
-        const new360Images = req.files && req.files['images360'] 
-            ? req.files['images360'].map(f => f.path) 
-            : [];
-        const images360 = JSON.stringify([...existing360Images, ...new360Images]);
+        // Handle 360 images
+        let images360;
+        if (Array.isArray(req.body.images360)) {
+            images360 = JSON.stringify(req.body.images360);
+        } else if (req.body.images360 && typeof req.body.images360 === 'string') {
+            images360 = req.body.images360;
+        } else if (req.files && req.files['images360']) {
+            const existing360Images = req.body.existing_images360 ? JSON.parse(req.body.existing_images360) : [];
+            const new360Images = req.files['images360'].map(f => f.path);
+            images360 = JSON.stringify([...existing360Images, ...new360Images]);
+        } else if (req.body.existing_images360) {
+            images360 = req.body.existing_images360;
+        } else {
+            images360 = existing[0].images360;
+        }
         
         // Update caravane
         await pool.query(
