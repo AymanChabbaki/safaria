@@ -84,24 +84,21 @@ const PaymentPage = () => {
       // Show success animation
       setShowSuccess(true);
 
-      // Download PDF receipt
-      setTimeout(async () => {
-        const pdfBlob = await api.payments.downloadReceipt(response.data.reservationId);
-        
-        const url = window.URL.createObjectURL(pdfBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `SAFARIA_Receipt_${response.data.receiptNumber}.pdf`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+      // Download PDF receipt from Cloudinary (backend returns the URL via redirect)
+      setTimeout(() => {
+        try {
+          // Open receipt in new tab (Cloudinary PDF URL)
+          const receiptUrl = `${import.meta.env.VITE_API_BASE_URL}/api/reservations/${response.data.reservationId}/receipt`;
+          window.open(receiptUrl, '_blank');
+        } catch (error) {
+          console.error('Error opening receipt:', error);
+        }
 
-        // Navigate to reservations page
+        // Navigate to home page after showing success
         setTimeout(() => {
-          navigate('/reservation');
+          navigate('/');
         }, 2000);
-      }, 2000);
+      }, 1500);
     } catch (error) {
       console.error('Payment failed:', error);
       console.error('Error details:', error.response?.data);
