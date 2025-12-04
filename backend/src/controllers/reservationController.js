@@ -8,11 +8,9 @@
 
 const { pool } = require('../config/db');
 const { sendSuccess, sendError, sendNotFound } = require('../utils/responseHelper');
-const { generateReceipt, uploadReceiptToCloudinary, generateReceiptNumber, generateTransactionId } = require('../utils/pdfGenerator');
+const { generateReceipt, generateReceiptNumber, generateTransactionId } = require('../utils/pdfGenerator');
 const path = require('path');
 const fs = require('fs').promises;
-const axios = require('axios');
-const cloudinary = require('cloudinary').v2;
 
 /**
  * Helper function to normalize itemType values
@@ -379,12 +377,8 @@ const processPayment = async (req, res) => {
             paymentStatus: 'Paid'
         };
         
-        // Generate PDF buffer and upload to Cloudinary
-        const pdfBuffer = await generateReceipt(receiptData);
-        const receiptData_cloudinary = await uploadReceiptToCloudinary(pdfBuffer, receiptNumber);
-        const receiptCloudinaryUrl = receiptData_cloudinary.url;
-        
         // Insert payment record (ONLY store last 4 digits, NO full card details)
+        // Store receipt number so we can regenerate PDF on demand
         await connection.query(
             `INSERT INTO payments (
                 reservation_id, transaction_id, receipt_number, payment_method,
@@ -394,7 +388,7 @@ const processPayment = async (req, res) => {
             [
                 reservationId, transactionId, receiptNumber,
                 cardLastFour, cardHolder, billingAddress || null,
-                total, receiptCloudinaryUrl
+                total, null  // No need to store path, we'll generate on demand
             ]
         );
         
@@ -426,26 +420,57 @@ const getReceipt = async (req, res) => {
     try {
         const { id } = req.params;
         
-        // Get payment record with receipt path
-        const [payment] = await pool.query(
-            `SELECT receipt_pdf_path, receipt_number 
-             FROM payments 
-             WHERE reservation_id = ?`,
+        // Get reservation and payment details to regenerate receipt
+        const [reservation] = await pool.query(
+            `SELECT r.*, p.receipt_number, p.transaction_id, p.amount, 
+                    u.email, u.phone
+             FROM reservations r
+             JOIN payments p ON p.reservation_id = r.id
+             LEFT JOIN users u ON u.id = r.user_id
+             WHERE r.id = ?`,
             [id]
         );
         
-        if (payment.length === 0 || !payment[0].receipt_pdf_path) {
+        if (reservation.length === 0) {
             return sendNotFound(res, 'Receipt');
         }
         
-        const receiptUrl = payment[0].receipt_pdf_path;
+        const data = reservation[0];
         
-        // Simply redirect to the Cloudinary URL
-        return res.redirect(receiptUrl);
+        // Prepare receipt data
+        const receiptData = {
+            receiptNumber: data.receipt_number,
+            transactionId: data.transaction_id,
+            customerEmail: data.email || data.user_email,
+            customerPhone: data.phone || data.user_phone,
+            itemName: data.item_name || 'Unknown Item',
+            itemType: data.item_type,
+            itemPrice: data.item_price || 0,
+            checkIn: data.check_in,
+            checkOut: data.check_out,
+            days: data.days || 1,
+            guests: data.guests || 1,
+            specialRequests: data.special_requests || 'None',
+            subtotal: data.subtotal || data.amount,
+            serviceFee: Math.round((data.subtotal || data.amount) * 0.1),
+            taxes: Math.round((data.subtotal || data.amount) * 0.05),
+            total: data.amount,
+            paymentStatus: 'Paid'
+        };
+        
+        // Generate PDF buffer
+        const pdfBuffer = await generateReceipt(receiptData);
+        
+        // Send PDF directly
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${data.receipt_number}.pdf"`);
+        res.setHeader('Content-Length', pdfBuffer.length);
+        
+        return res.send(pdfBuffer);
         
     } catch (error) {
-        console.error('Error fetching receipt:', error);
-        return sendError(res, 'Failed to retrieve receipt', 500, error.message);
+        console.error('Error generating receipt:', error);
+        return sendError(res, 'Failed to generate receipt', 500, error.message);
     }
 };
 
