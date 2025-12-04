@@ -21,8 +21,8 @@ router.get('/', getAllCaravanes);
 router.get('/:id', getCaravaneById);
 
 // Protected routes (require authentication) - Using Cloudinary
-router.post('/', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), handleUploadError, createCaravane);
-router.put('/:id', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), handleUploadError, updateCaravane);
+router.post('/', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), createCloudinaryUpload('images360', 10), handleUploadError, createCaravane);
+router.put('/:id', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), createCloudinaryUpload('images360', 10), handleUploadError, updateCaravane);
 router.delete('/:id', deleteCaravane);
 
 module.exports = router;

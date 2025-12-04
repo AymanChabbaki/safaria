@@ -21,8 +21,8 @@ router.get('/', getAllArtisans);
 router.get('/:id', getArtisanById);
 
 // Protected routes (require authentication) - Using Cloudinary
-router.post('/', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), handleUploadError, createArtisan);
-router.put('/:id', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), handleUploadError, updateArtisan);
+router.post('/', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), createCloudinaryUpload('images360', 10), handleUploadError, createArtisan);
+router.put('/:id', createCloudinaryUpload('main_image', 1), createCloudinaryUpload('images', 10), createCloudinaryUpload('images360', 10), handleUploadError, updateArtisan);
 router.delete('/:id', deleteArtisan);
 
 module.exports = router;
