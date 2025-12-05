@@ -280,7 +280,7 @@ const processPayment = async (req, res) => {
         const {
             itemId,
             itemType,
-            itemName = 'Item', // Default value if not provided
+            itemName,
             itemPrice,
             checkIn,
             checkOut,
@@ -295,8 +295,11 @@ const processPayment = async (req, res) => {
             total
         } = reservationData;
         
-        // If itemName is still null/undefined, set a default based on itemType
-        const finalItemName = itemName || `${normalizeItemType(itemType)} Item`;
+        // Normalize itemType first
+        const normalizedItemType = normalizeItemType(itemType);
+        
+        // If itemName is null/undefined, set a default based on itemType
+        const finalItemName = itemName || `${normalizedItemType} Item`;
         
         console.log('Extracted fields:', {
             itemId, itemType, itemName, itemPrice,
@@ -338,9 +341,6 @@ const processPayment = async (req, res) => {
         
         // Start transaction
         await connection.beginTransaction();
-        
-        // Normalize itemType to match database ENUM values
-        const normalizedItemType = normalizeItemType(itemType);
         
         // Insert reservation
         const [reservationResult] = await connection.query(
@@ -444,20 +444,20 @@ const getReceipt = async (req, res) => {
         const receiptData = {
             receiptNumber: data.receipt_number,
             transactionId: data.transaction_id,
-            customerEmail: data.email || data.user_email,
-            customerPhone: data.phone || data.user_phone,
+            customerEmail: data.email || data.user_email || '',
+            customerPhone: data.phone || data.user_phone || '',
             itemName: data.item_name || 'Unknown Item',
             itemType: data.item_type,
             itemPrice: data.item_price || 0,
-            checkIn: data.check_in,
-            checkOut: data.check_out,
+            checkIn: data.start_date, // Database column is start_date
+            checkOut: data.end_date,   // Database column is end_date
             days: data.days || 1,
             guests: data.guests || 1,
             specialRequests: data.special_requests || 'None',
             subtotal: data.subtotal || data.amount,
-            serviceFee: Math.round((data.subtotal || data.amount) * 0.1),
-            taxes: Math.round((data.subtotal || data.amount) * 0.05),
-            total: data.amount,
+            serviceFee: data.service_fee || Math.round((data.subtotal || data.amount) * 0.1),
+            taxes: data.taxes || Math.round((data.subtotal || data.amount) * 0.05),
+            total: data.amount || data.total_price,
             paymentStatus: 'Paid'
         };
         
