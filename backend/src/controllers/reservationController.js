@@ -280,7 +280,7 @@ const processPayment = async (req, res) => {
         const {
             itemId,
             itemType,
-            itemName,
+            itemName = 'Item', // Default value if not provided
             itemPrice,
             checkIn,
             checkOut,
@@ -294,6 +294,9 @@ const processPayment = async (req, res) => {
             taxes,
             total
         } = reservationData;
+        
+        // If itemName is still null/undefined, set a default based on itemType
+        const finalItemName = itemName || `${normalizeItemType(itemType)} Item`;
         
         console.log('Extracted fields:', {
             itemId, itemType, itemName, itemPrice,
@@ -347,7 +350,7 @@ const processPayment = async (req, res) => {
                 subtotal, service_fee, taxes, total_price, status
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed')`,
             [
-                email, phone, normalizedItemType, itemId, itemName, itemPrice,
+                email, phone, normalizedItemType, itemId, finalItemName, itemPrice,
                 checkIn, checkOut, guests, days, specialRequests || null,
                 subtotal, serviceFee, taxes, total
             ]
@@ -362,7 +365,7 @@ const processPayment = async (req, res) => {
             transactionId,
             customerEmail: email,
             customerPhone: phone,
-            itemName,
+            itemName: finalItemName,
             itemType,
             itemPrice,
             checkIn,
