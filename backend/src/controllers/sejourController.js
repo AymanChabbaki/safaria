@@ -76,12 +76,12 @@ const getAllSejours = async (req, res) => {
             return {
                 ...sejour,
                 images: parsedImages,
-                name: lang === 'ar' ? (sejour.name_ar || sejour.name) : 
-                      lang === 'en' ? (sejour.name_en || sejour.name) : 
-                      sejour.name,
-                description: lang === 'ar' ? (sejour.description_ar || sejour.description) : 
-                             lang === 'en' ? (sejour.description_en || sejour.description) : 
-                             sejour.description
+                name: lang === 'ar' ? (sejour.name_ar || sejour.name_fr || sejour.name_en) : 
+                      lang === 'en' ? (sejour.name_en || sejour.name_fr || sejour.name_ar) : 
+                      (sejour.name_fr || sejour.name_en || sejour.name_ar),
+                description: lang === 'ar' ? (sejour.description_ar || sejour.description_fr || sejour.description_en) : 
+                             lang === 'en' ? (sejour.description_en || sejour.description_fr || sejour.description_ar) : 
+                             (sejour.description_fr || sejour.description_en || sejour.description_ar)
             };
         });
         
@@ -133,12 +133,12 @@ const getSejourById = async (req, res) => {
         // Localize the data
         const localizedSejour = {
             ...sejour[0],
-            name: lang === 'ar' ? (sejour[0].name_ar || sejour[0].name) : 
-                  lang === 'en' ? (sejour[0].name_en || sejour[0].name) : 
-                  sejour[0].name,
-            description: lang === 'ar' ? (sejour[0].description_ar || sejour[0].description) : 
-                         lang === 'en' ? (sejour[0].description_en || sejour[0].description) : 
-                         sejour[0].description
+            name: lang === 'ar' ? (sejour[0].name_ar || sejour[0].name_fr || sejour[0].name_en) : 
+                  lang === 'en' ? (sejour[0].name_en || sejour[0].name_fr || sejour[0].name_ar) : 
+                  (sejour[0].name_fr || sejour[0].name_en || sejour[0].name_ar),
+            description: lang === 'ar' ? (sejour[0].description_ar || sejour[0].description_fr || sejour[0].description_en) : 
+                         lang === 'en' ? (sejour[0].description_en || sejour[0].description_fr || sejour[0].description_ar) : 
+                         (sejour[0].description_fr || sejour[0].description_en || sejour[0].description_ar)
         };
         
         const result = {

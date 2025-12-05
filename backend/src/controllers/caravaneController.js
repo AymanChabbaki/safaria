@@ -76,12 +76,12 @@ const getAllCaravanes = async (req, res) => {
             return {
                 ...caravane,
                 images: parsedImages,
-                name: lang === 'ar' ? (caravane.name_ar || caravane.name) : 
-                      lang === 'en' ? (caravane.name_en || caravane.name) : 
-                      caravane.name,
-                description: lang === 'ar' ? (caravane.description_ar || caravane.description) : 
-                             lang === 'en' ? (caravane.description_en || caravane.description) : 
-                             caravane.description
+                name: lang === 'ar' ? (caravane.name_ar || caravane.name_fr || caravane.name_en) : 
+                      lang === 'en' ? (caravane.name_en || caravane.name_fr || caravane.name_ar) : 
+                      (caravane.name_fr || caravane.name_en || caravane.name_ar),
+                description: lang === 'ar' ? (caravane.description_ar || caravane.description_fr || caravane.description_en) : 
+                             lang === 'en' ? (caravane.description_en || caravane.description_fr || caravane.description_ar) : 
+                             (caravane.description_fr || caravane.description_en || caravane.description_ar)
             };
         });
         
@@ -133,12 +133,12 @@ const getCaravaneById = async (req, res) => {
         // Localize the data
         const localizedCaravane = {
             ...caravane[0],
-            name: lang === 'ar' ? (caravane[0].name_ar || caravane[0].name) : 
-                  lang === 'en' ? (caravane[0].name_en || caravane[0].name) : 
-                  caravane[0].name,
-            description: lang === 'ar' ? (caravane[0].description_ar || caravane[0].description) : 
-                         lang === 'en' ? (caravane[0].description_en || caravane[0].description) : 
-                         caravane[0].description
+            name: lang === 'ar' ? (caravane[0].name_ar || caravane[0].name_fr || caravane[0].name_en) : 
+                  lang === 'en' ? (caravane[0].name_en || caravane[0].name_fr || caravane[0].name_ar) : 
+                  (caravane[0].name_fr || caravane[0].name_en || caravane[0].name_ar),
+            description: lang === 'ar' ? (caravane[0].description_ar || caravane[0].description_fr || caravane[0].description_en) : 
+                         lang === 'en' ? (caravane[0].description_en || caravane[0].description_fr || caravane[0].description_ar) : 
+                         (caravane[0].description_fr || caravane[0].description_en || caravane[0].description_ar)
         };
         
         const result = {

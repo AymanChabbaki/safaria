@@ -76,12 +76,12 @@ const getAllArtisans = async (req, res) => {
             return {
                 ...artisan,
                 images: parsedImages,
-                name: lang === 'ar' ? (artisan.name_ar || artisan.name) : 
-                      lang === 'en' ? (artisan.name_en || artisan.name) : 
-                      artisan.name,
-                description: lang === 'ar' ? (artisan.description_ar || artisan.description) : 
-                             lang === 'en' ? (artisan.description_en || artisan.description) : 
-                             artisan.description
+                name: lang === 'ar' ? (artisan.name_ar || artisan.name_fr || artisan.name_en) : 
+                      lang === 'en' ? (artisan.name_en || artisan.name_fr || artisan.name_ar) : 
+                      (artisan.name_fr || artisan.name_en || artisan.name_ar),
+                description: lang === 'ar' ? (artisan.description_ar || artisan.description_fr || artisan.description_en) : 
+                             lang === 'en' ? (artisan.description_en || artisan.description_fr || artisan.description_ar) : 
+                             (artisan.description_fr || artisan.description_en || artisan.description_ar)
             };
         });
         
@@ -133,12 +133,12 @@ const getArtisanById = async (req, res) => {
         // Localize the data
         const localizedArtisan = {
             ...artisan[0],
-            name: lang === 'ar' ? (artisan[0].name_ar || artisan[0].name) : 
-                  lang === 'en' ? (artisan[0].name_en || artisan[0].name) : 
-                  artisan[0].name,
-            description: lang === 'ar' ? (artisan[0].description_ar || artisan[0].description) : 
-                         lang === 'en' ? (artisan[0].description_en || artisan[0].description) : 
-                         artisan[0].description
+            name: lang === 'ar' ? (artisan[0].name_ar || artisan[0].name_fr || artisan[0].name_en) : 
+                  lang === 'en' ? (artisan[0].name_en || artisan[0].name_fr || artisan[0].name_ar) : 
+                  (artisan[0].name_fr || artisan[0].name_en || artisan[0].name_ar),
+            description: lang === 'ar' ? (artisan[0].description_ar || artisan[0].description_fr || artisan[0].description_en) : 
+                         lang === 'en' ? (artisan[0].description_en || artisan[0].description_fr || artisan[0].description_ar) : 
+                         (artisan[0].description_fr || artisan[0].description_en || artisan[0].description_ar)
         };
         
         const result = {
