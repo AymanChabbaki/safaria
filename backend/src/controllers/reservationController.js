@@ -342,15 +342,30 @@ const processPayment = async (req, res) => {
         // Start transaction
         await connection.beginTransaction();
         
-        // Insert reservation
+        // Fetch actual item name from the appropriate table
+        const tableName = getTableName(itemType);
+        let actualItemName = finalItemName;
+        
+        if (tableName) {
+            const [items] = await connection.query(
+                `SELECT name_en, name_fr, name_ar FROM ${tableName} WHERE id = ?`,
+                [itemId]
+            );
+            if (items.length > 0) {
+                // Use English name by default, fallback to French or Arabic
+                actualItemName = items[0].name_en || items[0].name_fr || items[0].name_ar || finalItemName;
+            }
+        }
+        
+        // Insert reservation (without item_name since that column doesn't exist)
         const [reservationResult] = await connection.query(
             `INSERT INTO reservations (
-                user_email, user_phone, item_type, item_id, item_name, item_price,
+                user_email, user_phone, item_type, item_id, item_price,
                 start_date, end_date, guests, days, special_requests,
                 subtotal, service_fee, taxes, total_price, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed')`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed')`,
             [
-                email, phone, normalizedItemType, itemId, finalItemName, itemPrice,
+                email, phone, normalizedItemType, itemId, itemPrice,
                 checkIn, checkOut, guests, days, specialRequests || null,
                 subtotal, serviceFee, taxes, total
             ]
@@ -365,7 +380,7 @@ const processPayment = async (req, res) => {
             transactionId,
             customerEmail: email,
             customerPhone: phone,
-            itemName: finalItemName,
+            itemName: actualItemName,
             itemType,
             itemPrice,
             checkIn,
@@ -440,13 +455,27 @@ const getReceipt = async (req, res) => {
         
         const data = reservation[0];
         
+        // Fetch item name from the appropriate table
+        const tableName = getTableName(data.item_type);
+        let itemName = 'Unknown Item';
+        
+        if (tableName && data.item_id) {
+            const [items] = await pool.query(
+                `SELECT name_en, name_fr, name_ar FROM ${tableName} WHERE id = ?`,
+                [data.item_id]
+            );
+            if (items.length > 0) {
+                itemName = items[0].name_en || items[0].name_fr || items[0].name_ar || 'Unknown Item';
+            }
+        }
+        
         // Prepare receipt data
         const receiptData = {
             receiptNumber: data.receipt_number,
             transactionId: data.transaction_id,
             customerEmail: data.email || data.user_email || '',
             customerPhone: data.phone || data.user_phone || '',
-            itemName: data.item_name || 'Unknown Item',
+            itemName: itemName,
             itemType: data.item_type,
             itemPrice: data.item_price || 0,
             checkIn: data.start_date, // Database column is start_date
